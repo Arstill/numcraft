@@ -43,11 +43,16 @@ class _Frame:
     """Координаты детали (X0 Y0 — левый передний угол, вид сверху) → СК установа → SVG."""
 
     def __init__(self, sheet: TechSheet, setup: Setup):
-        self.p = sheet.part.size
+        from numcraft.faces import face_dims
+        from numcraft.models import Box
+
         self.side = setup.side
         self.center = sheet.part.datum == "center"
-        mx = (sheet.stock.x - self.p.x) / 2
-        my = (sheet.stock.y - self.p.y) / 2
+        w, h, _ = face_dims(setup.side, sheet.part.size)
+        self.p = Box(x=w, y=h, z=0)  # размеры грани в виде на неё
+        top_bottom = setup.side in ("top", "bottom")
+        mx = (sheet.stock.x - sheet.part.size.x) / 2 if top_bottom else 0.0
+        my = (sheet.stock.y - sheet.part.size.y) / 2 if top_bottom else 0.0
         x0, y0 = self.to_setup(-mx, -my)
         x1, y1 = self.to_setup(self.p.x + mx, self.p.y + my)
         self.xmin, self.xmax = min(x0, x1), max(x0, x1)
@@ -108,15 +113,12 @@ def _visible(f, side: str) -> Optional[str]:
 
 
 def setup_svg(sheet: TechSheet, setup: Setup, op: Optional[Operation] = None) -> str:
-    if setup.side not in ("top", "bottom"):
-        return ('<p class="sk-note">Боковой установ — схема не строится; элементы и координаты — '
-                'в таблице операций.</p>')
     fr = _Frame(sheet, setup)
     geom = op.geom if op else ""
     ids = set(op.feature_ids) if op else set()
-    ps = sheet.part.size
+    ps = fr.p  # грань установа: ширина × высота
     contour = next((f for f in sheet.part.features if isinstance(f, ContourFeature)), None)
-    cr = contour.corner_radius if contour else 0.0
+    cr = contour.corner_radius if contour and setup.side in ("top", "bottom") else 0.0
     el: List[str] = []
     unplaced: List[str] = []
 
@@ -213,8 +215,9 @@ def setup_svg(sheet: TechSheet, setup: Setup, op: Optional[Operation] = None) ->
 
     svg = (f'<svg class="sk" viewBox="0 0 {_n(round(fr.width, 2))} {_n(round(fr.height, 2))}" '
            f'style="font-size:{_n(round(fr.fs, 2))}px;--sw:{_n(round(fr.fs / 9, 3))}px" role="img" '
-           f'aria-label="Вид сверху, {setup.title}">' + "".join(el) + "".join(labels) + "</svg>")
-    cap = [f"Вид сверху, {setup.title.split(' — ')[0].lower()}, нуль {setup.wcs}."]
+           f'aria-label="{setup.title}">' + "".join(el) + "".join(labels) + "</svg>")
+    view = "Вид сверху" if setup.side in ("top", "bottom") else f"Вид на грань «{setup.title.split(' — ')[-1]}»"
+    cap = [f"{view}, {setup.title.split(' — ')[0].lower()}, нуль {setup.wcs}."]
     if setup.side == "bottom":
         cap.append("Деталь перевёрнута вокруг X: пунктир — сквозные элементы с верхней стороны.")
     if op and geom:

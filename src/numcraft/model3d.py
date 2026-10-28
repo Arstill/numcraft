@@ -11,7 +11,10 @@ import math
 from typing import List, Optional, Sequence, Tuple
 
 from numcraft.models import HoleFeature, PocketFeature, SlotFeature, TechSheet, ThreadFeature, ContourFeature
+from numcraft.faces import face_dims, from_face, to_face
 from numcraft.sketch import _feature_box
+
+FACE_SIDES = ("top", "bottom", "front", "back", "left", "right")
 
 Vec = Tuple[float, float, float]
 EPS = 0.02
@@ -52,23 +55,24 @@ def _synthetic(sheet: TechSheet) -> List[dict]:
     ]
     edges += [{"p": [(x, y, 0), (x, y, -Z)], "t": ["outer"]} for x, y in _corners(0, 0, X, Y, cr)]
     for f in sheet.part.features:
-        bottom = f.side == "bottom"
-        if f.side not in ("top", "bottom"):
+        if f.side not in ("top", "bottom", "front", "back", "left", "right"):
             continue
+        face_tag = {"top": ["top"], "bottom": ["bot"]}.get(f.side, [])
 
-        def zz(depth_from_face: float) -> float:
-            return -Z + depth_from_face if bottom else -depth_from_face
+        def m(pts: List[Vec]) -> List[Vec]:
+            # (u, v, d) в СК грани → координаты детали
+            return [from_face(f.side, u, v, d, ps) for u, v, d in pts]
 
+        thick = face_dims(f.side, ps)[2]
         if isinstance(f, (PocketFeature, SlotFeature)):
             box = _feature_box(f)
             if box is None:
                 continue
             r = f.corner_radius if isinstance(f, PocketFeature) else min(f.length, f.width) / 2
-            depth = Z if f.through else f.depth
-            top, floor = zz(0), zz(depth)
-            edges.append({"p": _rrect(*box, r, top), "t": [f.id, "bot" if bottom else "top"]})
-            edges.append({"p": _rrect(*box, r, floor), "t": [f.id]})
-            edges += [{"p": [(x, y, top), (x, y, floor)], "t": [f.id]} for x, y in _corners(*box, r)]
+            depth = thick if f.through else f.depth
+            edges.append({"p": m(_rrect(*box, r, 0)), "t": [f.id] + face_tag})
+            edges.append({"p": m(_rrect(*box, r, depth)), "t": [f.id]})
+            edges += [{"p": m([(u, v, 0), (u, v, depth)]), "t": [f.id]} for u, v in _corners(*box, r)]
         elif isinstance(f, (HoleFeature, ThreadFeature)):
             if isinstance(f, HoleFeature):
                 r = f.diameter / 2
@@ -77,23 +81,19 @@ def _synthetic(sheet: TechSheet) -> List[dict]:
                 from numcraft.knowledge.tooling import parse_thread, tap_drill
                 d, p = parse_thread(f.size)
                 r, cb = tap_drill(d, p) / 2, None
-            depth = f.depth or (Z if f.through else 2 * r * 2)
-            z0 = (-Z - f.z_start) if bottom else f.z_start
-            z_end = z0 + depth if bottom else z0 - depth
-            if f.through:
-                z_end = 0.0 if bottom else -Z
-            for x, y in f.positions:
+            d0 = -f.z_start
+            d_end = thick if f.through else d0 + (f.depth or 4 * r)
+            for u, v in f.positions:
                 tags = [f.id]
                 if cb:
-                    zc = z0 + cb.depth if bottom else z0 - cb.depth
-                    edges.append({"p": _circle(x, y, cb.diameter / 2, z0), "t": tags + ["bot" if bottom else "top"]})
-                    edges.append({"p": _circle(x, y, cb.diameter / 2, zc), "t": tags})
-                    edges.append({"p": _circle(x, y, r, zc), "t": tags})
+                    edges.append({"p": m(_circle(u, v, cb.diameter / 2, d0)), "t": tags + face_tag})
+                    edges.append({"p": m(_circle(u, v, cb.diameter / 2, d0 + cb.depth)), "t": tags})
+                    edges.append({"p": m(_circle(u, v, r, d0 + cb.depth)), "t": tags})
                 else:
-                    edges.append({"p": _circle(x, y, r, z0), "t": tags + (["bot" if bottom else "top"] if not f.z_start else [])})
-                edges.append({"p": _circle(x, y, r, z_end), "t": tags})
+                    edges.append({"p": m(_circle(u, v, r, d0)), "t": tags + (face_tag if not f.z_start else [])})
+                edges.append({"p": m(_circle(u, v, r, d_end)), "t": tags})
                 if isinstance(f, ThreadFeature):
-                    edges.append({"p": _circle(x, y, parse_thread(f.size)[0] / 2, z0), "t": tags})
+                    edges.append({"p": m(_circle(u, v, parse_thread(f.size)[0] / 2, d0)), "t": tags})
     return edges
 
 
@@ -102,14 +102,16 @@ def _tag_step_edges(sheet: TechSheet, raw: Sequence[Sequence[Vec]], origin: Vec)
     X, Y, Z = ps.x, ps.y, ps.z
     holes = []
     for f in sheet.part.features:
-        if isinstance(f, (HoleFeature, ThreadFeature)) and f.side in ("top", "bottom"):
+        if isinstance(f, (HoleFeature, ThreadFeature)) and f.side in FACE_SIDES:
             if isinstance(f, HoleFeature):
                 r = max(f.diameter, f.counterbore.diameter if f.counterbore else 0) / 2
             else:
                 from numcraft.knowledge.tooling import parse_thread
                 r = parse_thread(f.size)[0] / 2
-            holes += [(f.id, x, y, r) for x, y in f.positions]
-    pockets = [(f.id, _feature_box(f), f) for f in sheet.part.features if isinstance(f, (PocketFeature, SlotFeature))]
+            d_end = face_dims(f.side, ps)[2] if f.through else -f.z_start + (f.depth or 4 * r)
+            holes += [(f.id, f.side, u, v, r, -f.z_start, d_end) for u, v in f.positions]
+    pockets = [(f.id, _feature_box(f), f) for f in sheet.part.features if isinstance(f, (PocketFeature, SlotFeature))
+               and f.side in FACE_SIDES]
     out = []
     for pl in raw:
         pts = [(round(p[0] - origin[0], 3), round(p[1] - origin[1], 3), round(p[2] - origin[2], 3)) for p in pl]
@@ -121,17 +123,22 @@ def _tag_step_edges(sheet: TechSheet, raw: Sequence[Sequence[Vec]], origin: Vec)
         if all(abs(p[0]) < EPS for p in pts) or all(abs(p[0] - X) < EPS for p in pts) or \
                 all(abs(p[1]) < EPS for p in pts) or all(abs(p[1] - Y) < EPS for p in pts):
             tags.append("outer")
-        hole = next((hid for hid, hx, hy, hr in holes
-                     if all(math.hypot(p[0] - hx, p[1] - hy) <= hr + 0.05 for p in pts)), None)
+        hole = None
+        for hid, side, hu, hv, hr, d0, d1 in holes:
+            loc = [to_face(side, *p, ps) for p in pts]
+            if all(math.hypot(q[0] - hu, q[1] - hv) <= hr + 0.05 and d0 - 0.05 <= q[2] <= d1 + 0.05 for q in loc):
+                hole = hid
+                break
         if hole:
             tags.append(hole)
         else:
             for pid, box, f in pockets:
                 if box is None:
                     continue
-                depth = Z if f.through else f.depth
-                if all(box[0] - 0.05 <= p[0] <= box[2] + 0.05 and box[1] - 0.05 <= p[1] <= box[3] + 0.05
-                       and -depth - 0.05 <= p[2] <= 0.05 for p in pts):
+                depth = face_dims(f.side, ps)[2] if f.through else f.depth
+                loc = [to_face(f.side, *p, ps) for p in pts]
+                if all(box[0] - 0.05 <= q[0] <= box[2] + 0.05 and box[1] - 0.05 <= q[1] <= box[3] + 0.05
+                       and -0.05 <= q[2] <= depth + 0.05 for q in loc):
                     tags.append(pid)
                     break
         out.append({"p": pts, "t": tags})

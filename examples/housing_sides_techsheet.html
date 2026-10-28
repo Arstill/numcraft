@@ -1,0 +1,638 @@
+<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Техкарта: Корпус (5 установов)</title><style>
+:root{--bg:#fff;--fg:#1d1d1f;--muted:#666;--line:#ddd;--head:#f3f4f6;--hi:#fde8e8;--mid:#fff6db;--code:#f6f8fa;
+--partfill:#e9edf2;--hl:#d9480f;--hlfill:rgba(217,72,15,.30);--datum:#1971c2;--partbg:#f7f8fa}
+@media (prefers-color-scheme:dark){:root{--bg:#16181c;--fg:#e8e8e8;--muted:#9aa;--line:#333;--head:#22252b;
+--hi:#4a1f1f;--mid:#3f3519;--code:#1e2127;--partfill:#262b33;--hl:#ff8a4c;--hlfill:rgba(255,138,76,.32);
+--datum:#5fa8ff;--partbg:#1b1e23}}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+max-width:1760px;margin:0 auto;padding:16px}
+h1{font-size:24px}h2{margin-top:32px;border-bottom:1px solid var(--line);padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 4px}
+table{border-collapse:collapse;width:100%;margin:8px 0;font-size:14px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:4px 8px;text-align:left;vertical-align:top}th{background:var(--head)}
+tr.high td{background:var(--hi)}tr.mid td{background:var(--mid)}
+pre{background:var(--code);padding:12px;overflow-x:auto;font-size:13px}
+blockquote{color:var(--muted);border-left:3px solid var(--line);margin:16px 0;padding-left:12px}
+details{margin:4px 0}summary{cursor:pointer;color:var(--muted)}
+details[open]{border-left:3px solid var(--hl);padding:0 0 4px 10px}
+.tools button{font:inherit;padding:4px 10px;border:1px solid var(--line);background:var(--head);color:var(--fg);
+border-radius:6px;cursor:pointer}
+figure.skf{margin:8px 0}figcaption{color:var(--muted);font-size:13px}.sk-note{color:var(--muted)}
+svg.sk{display:block;width:100%;max-width:520px;height:auto}
+.sk .stock{fill:none;stroke:var(--muted);stroke-width:calc(var(--sw)*1.2)}
+.sk .part{fill:var(--partfill);stroke:var(--fg);stroke-width:calc(var(--sw)*1.6)}
+.sk .feat{fill:var(--bg);stroke:var(--muted);stroke-width:var(--sw)}
+.sk .ref{fill:none;stroke:var(--muted);stroke-width:var(--sw)}
+.sk .hl{fill:var(--hlfill);stroke:var(--hl);stroke-width:calc(var(--sw)*2)}
+.sk .hll{fill:none;stroke:var(--hl);stroke-width:calc(var(--sw)*4)}
+.sk .datum{stroke:var(--datum);stroke-width:calc(var(--sw)*2.5)}
+.sk text{fill:var(--muted);font-family:system-ui,sans-serif}.sk .num{fill:var(--hl);font-weight:700}
+.sk .datum-t{fill:var(--datum);font-weight:600}
+
+.v3d{border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--bg)}
+.v3d canvas{width:100%;display:block;touch-action:none;cursor:grab;border-radius:6px;background:var(--partbg)}
+.v3d canvas:active{cursor:grabbing}
+.v3d .bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0}
+.v3d button,.v3d select{font:inherit;font-size:13px;padding:3px 8px;border:1px solid var(--line);background:var(--head);
+color:var(--fg);border-radius:6px;cursor:pointer}
+.v3d select{max-width:100%;flex:1 1 240px}
+.v3d .info{font-size:13px;min-height:1.4em}.v3d .hint{font-size:12px;color:var(--muted)}
+.v3d label{font-size:13px;color:var(--muted)}
+.layout{display:flex;flex-direction:column}.layout aside{order:-1;margin:8px 0 16px}
+@media (min-width:1200px){.layout{display:grid;grid-template-columns:minmax(0,1fr) 540px;gap:28px;align-items:start}
+.layout aside{order:0;grid-column:2;grid-row:1;position:sticky;top:12px;margin:0}.layout main{grid-column:1;grid-row:1}}
+tr.oprow{cursor:pointer}tr.oprow:hover td{background:var(--head)}tr.oprow.cur td{outline:2px solid var(--hl)}
+.btn3d{font:inherit;font-size:12px;padding:2px 8px;border:1px solid var(--hl);color:var(--hl);background:none;
+border-radius:6px;cursor:pointer;margin:4px 0}
+</style></head><body><div class='layout'><main>
+<p class='tools'><button onclick="document.querySelectorAll('details').forEach(d=>d.open=true)">Развернуть все операции</button> <button onclick="document.querySelectorAll('details').forEach(d=>d.open=false)">Свернуть</button></p>
+<h1>Техкарта: Корпус (5 установов)</h1>
+<ul>
+<li><b>Станок:</b> Haas VF-2, FANUC-совместимая стойка</li>
+<li><b>Материал:</b> Алюминий 6061-T6</li>
+<li><b>Деталь:</b> 100×60×40 мм; <b>заготовка:</b> 106×66×50 мм; <b>кол-во:</b> 1 шт.</li>
+<li><b>Установов:</b> 5, <b>операций:</b> 19, <b>инструментов:</b> 8</li>
+</ul>
+<h2>Анализ STEP</h2>
+<pre>STEP: ../tests/fixtures/housing_sides.step  (AUTOMOTIVE_DESIGN { 1 0 10303 214 1 1 1 1 })
+Изделие: Open CASCADE STEP translator 8.0 1; единицы: мм
+Габарит: 100 × 60 × 40 мм; граней: 28
+Поверхности: CYLINDRICAL_SURFACE=4, PLANE=24
+Тип обработки: 2.5D
+Направления обработки: +X, +Y, +Z, -X, -Z
+Отверстия (4):
+  Ø6.8 ось X, глухое, длина 15 мм, точка (0; 30; -28)
+  Ø6.8 ось X, глухое, длина 15 мм, точка (0; 30; -12)
+  Ø8 ось X, глухое, длина 10 мм, точка (0; 45; -20)
+  Ø10 ось Y, сквозное, длина 60 мм, точка (50; 0; -20)
+Полы карманов/уступов:
+  Z=-22 (вниз), 30×15, открыт к краю
+  Z=-34 (вверх), 30×15, открыт к краю
+  Z=-10 (вверх), 40×30
+  Z=-35 (вниз), 50×20</pre>
+<h2>Риски и замечания</h2>
+<table><tr><th>Уровень</th><th>Тема</th><th>Что не так</th><th>Что делать</th></tr>
+<tr class='mid'><td>средний</td><td>Исходные данные</td><td>Есть 3 допущений по неполным данным.</td><td>Проверить раздел «Вопросы к чертежу».</td></tr>
+</table>
+<h2>Вопросы к чертежу (приняты допущения)</h2>
+<ul>
+<li>Карман F6: радиус внутренних углов не указан — принят радиус фрезы R8. Острые внутренние углы фрезой не получить.</li>
+<li>Карман F5: радиус внутренних углов не указан — принят радиус фрезы R6. Острые внутренние углы фрезой не получить.</li>
+<li>Карман F4: радиус внутренних углов не указан — принят радиус фрезы R3. Острые внутренние углы фрезой не получить.</li>
+</ul>
+<h2>Допущения</h2>
+<ul>
+<li>Ø6.8 (2 шт., справа) — диаметр под метчик M8: если это резьба, замените на thread M8.</li>
+<li>Элементы по сторонам: сверху, снизу, спереди, слева, справа.</li>
+<li>Заготовка не задана — принята пиленая плита 106×66×50 мм (+3 мм на сторону по XY, по Z: 1 мм под торцовку сверху + зона захвата в тисках снизу).</li>
+<li>Наружный контур (габарит детали) обрабатывается из заготовки.</li>
+</ul>
+<h2>Установ 1 — верх (сторона A)</h2>
+<p><b>Крепление:</b></p>
+<ul>
+<li>Тиски 6&quot; (Kurt DX6 / Haas): зажим по стороне 66 мм, захват 5 мм по высоте, заготовка на параллелях; над губками ≈ 45 мм.</li>
+<li>Губки рифлёные или гладкие стальные; заготовку осадить на параллели (киянкой), проверить щупом 0.02 мм.</li>
+</ul>
+<p><b>Нуль детали:</b></p>
+<ul>
+<li>G54: X0 Y0 — левый передний угол детали (щуп по заготовке, затем сместить на припуск +3 мм внутрь)</li>
+<li>Z0 — верх готовой детали; заготовка выше на 1 мм (торцовка в ноль).</li>
+</ul>
+<figure class="skf"><svg class="sk" viewBox="0 0 131.44 91.44" style="font-size:3.71px;--sw:0.412px" role="img" aria-label="Установ 1 — верх (сторона A)"><rect class="stock" x="12.72" y="12.72" width="106" height="66" stroke-dasharray="1.51 0.96"/><rect class="part" x="15.72" y="15.72" width="100" height="60"/><rect class="feat" x="45.72" y="30.72" width="40" height="30"/><path class="datum" d="M15.72 75.72h8.162M15.72 75.72v-8.162" fill="none"/><text x="85.72" y="29.607" text-anchor="end">F6</text><text class="datum-t" x="24.624" y="77.019">X</text><text class="datum-t" x="14.607" y="66.816">Y</text><text class="datum-t" x="14.236" y="80.543" text-anchor="end">G54</text><text x="65.72" y="84.656" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 1, нуль G54.</figcaption></figure>
+<table><tr><th>Оп.</th><th>Операция</th><th>Стратегия HSMWorks</th><th>Инструмент</th><th>S, об/мин</th><th>F, мм/мин</th><th>ap, мм</th><th>ae, мм</th><th>Vc, м/мин</th><th>Подача</th></tr>
+<tr><td>1</td><td>Торцовка верха (снять 1 мм)</td><td>Face (торцевание)</td><td>T1 — Торцевая фреза Ø50, 5 пластин (45°)</td><td>5093</td><td>3056</td><td>1</td><td>35</td><td>800</td><td>0.12 мм/зуб</td></tr>
+<tr><td>2</td><td>Черновая наружного контура, глубина 40.3 мм</td><td>2D Adaptive Clearing (адаптивная выборка)</td><td>T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</td><td>8100</td><td>4355</td><td>40.3</td><td>2.4</td><td>407</td><td>0.179 мм/зуб</td></tr>
+<tr><td>3</td><td>Черновая: карман 40×30×10</td><td>2D Adaptive Clearing (адаптивная выборка)</td><td>T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</td><td>8100</td><td>4355</td><td>10</td><td>2.4</td><td>407</td><td>0.179 мм/зуб</td></tr>
+<tr><td>4</td><td>Чистовая наружного контура</td><td>2D Contour (контур)</td><td>T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</td><td>8100</td><td>3235</td><td>40.3</td><td>0.25</td><td>407</td><td>0.133 мм/зуб</td></tr>
+<tr><td>5</td><td>Чистовая дна: карман 40×30×10</td><td>2D Pocket (карман)</td><td>T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</td><td>8100</td><td>2488</td><td>0.15</td><td>9.6</td><td>407</td><td>0.102 мм/зуб</td></tr>
+<tr><td>6</td><td>Чистовая стенок: карман 40×30×10</td><td>2D Contour (контур)</td><td>T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</td><td>8100</td><td>3235</td><td>10</td><td>0.25</td><td>407</td><td>0.133 мм/зуб</td></tr>
+</table>
+<details><summary>Оп. 1. Торцовка верха (снять 1 мм) · T1 — Торцевая фреза Ø50, 5 пластин (45°)</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 131.44 91.44" style="font-size:3.71px;--sw:0.412px" role="img" aria-label="Установ 1 — верх (сторона A)"><rect class="hl" x="12.72" y="12.72" width="106" height="66"/><rect class="part" x="15.72" y="15.72" width="100" height="60"/><rect class="feat" x="45.72" y="30.72" width="40" height="30"/><path class="datum" d="M15.72 75.72h8.162M15.72 75.72v-8.162" fill="none"/><text x="85.72" y="29.607" text-anchor="end">F6</text><text class="datum-t" x="24.624" y="77.019">X</text><text class="datum-t" x="14.607" y="66.816">Y</text><text class="datum-t" x="14.236" y="80.543" text-anchor="end">G54</text><text x="65.72" y="84.656" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: верхняя плоскость заготовки.</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(1)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> Face (торцевание)</li>
+<li><b>Что выбрать в HSMWorks:</b> Geometry: ничего не выбирать — берётся габарит заготовки (Setup → Stock). Heights → Bottom: Model top.</li>
+<li><b>Инструмент:</b> T1 — Торцевая фреза Ø50, 5 пластин (45°)</li>
+<li><b>Глубина:</b> Z0</li>
+<li>Max stepover (макс. шаг): 35 мм (70 % D)</li>
+<li>Stock offset (выход за заготовку): 28 мм</li>
+<li>Direction: Climb (попутное)</li>
+<li>Multiple depths (несколько проходов): вкл.: Max stepdown 0.7 мм, Finishing stepdown 0.3 мм</li>
+<li>Stock to leave (припуск): 0</li>
+<li><b>Режим:</b> S5093 F3056, мощность ≈ 1.25 кВт; СОЖ (эмульсия) поливом, M08</li>
+<li>Проходов по Z ≈ 2; последний — чистовой 0.3 мм.</li>
+</ul>
+</details>
+<details><summary>Оп. 2. Черновая наружного контура, глубина 40.3 мм · T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 131.44 91.44" style="font-size:3.71px;--sw:0.412px" role="img" aria-label="Установ 1 — верх (сторона A)"><rect class="stock" x="12.72" y="12.72" width="106" height="66" stroke-dasharray="1.51 0.96"/><path class="hl" fill-rule="evenodd" d="M12.72 12.72H118.72V78.72H12.72Z M15.72 15.72H115.72V75.72H15.72Z"/><rect class="part" x="15.72" y="15.72" width="100" height="60"/><rect class="hll" x="15.72" y="15.72" width="100" height="60"/><rect class="feat" x="45.72" y="30.72" width="40" height="30"/><path class="datum" d="M15.72 75.72h8.162M15.72 75.72v-8.162" fill="none"/><text x="85.72" y="29.607" text-anchor="end">F6</text><text class="datum-t" x="24.624" y="77.019">X</text><text class="datum-t" x="14.607" y="66.816">Y</text><text class="datum-t" x="14.236" y="80.543" text-anchor="end">G54</text><text x="65.72" y="84.656" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: припуск вокруг наружного контура.</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(2)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> 2D Adaptive Clearing (адаптивная выборка)</li>
+<li><b>Что выбрать в HSMWorks:</b> Pockets/Contours: нижняя кромка наружного контура детали (цепочкой). Stock contours: вкл. Heights → Bottom: Model top, offset −40.3 мм.</li>
+<li><b>Инструмент:</b> T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</li>
+<li><b>Глубина:</b> Z-40.3</li>
+<li>Optimal load (оптимальная нагрузка): 2.4 мм (15 % D)</li>
+<li>Maximum roughing stepdown (шаг по Z): 40.3 мм</li>
+<li>Fine stepdown (промежуточные слои): 10.1 мм</li>
+<li>Stock to leave (припуск): радиальный 0.3 / осевой 0.15 мм</li>
+<li>Ramp type (врезание): Helix, угол 3°, диаметр ≈ 14.4 мм</li>
+<li>Minimum cutting radius: 1.6 мм</li>
+<li>Feed optimization: вкл., снижение в углах 0.7</li>
+<li>Stock contours (контур заготовки): выбрать контур заготовки — врезание снаружи, без спирали</li>
+<li><b>Режим:</b> S8100 F4355, врезание 2178 мм/мин, мощность ≈ 4.91 кВт; СОЖ (эмульсия) поливом, M08</li>
+<li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 8952)</li>
+</ul>
+</details>
+<details><summary>Оп. 3. Черновая: карман 40×30×10 · T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 131.44 91.44" style="font-size:3.71px;--sw:0.412px" role="img" aria-label="Установ 1 — верх (сторона A)"><rect class="stock" x="12.72" y="12.72" width="106" height="66" stroke-dasharray="1.51 0.96"/><rect class="part" x="15.72" y="15.72" width="100" height="60"/><rect class="hl" x="45.72" y="30.72" width="40" height="30"/><path class="datum" d="M15.72 75.72h8.162M15.72 75.72v-8.162" fill="none"/><text x="85.72" y="29.607" text-anchor="end">F6</text><text class="datum-t" x="24.624" y="77.019">X</text><text class="datum-t" x="14.607" y="66.816">Y</text><text class="datum-t" x="14.236" y="80.543" text-anchor="end">G54</text><text x="65.72" y="84.656" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: объём кармана.</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(3)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> 2D Adaptive Clearing (адаптивная выборка)</li>
+<li><b>Что выбрать в HSMWorks:</b> Pockets: грань дна кармана (один щелчок — контур и глубина берутся автоматически).</li>
+<li><b>Инструмент:</b> T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</li>
+<li><b>Глубина:</b> Z-10</li>
+<li>Optimal load (оптимальная нагрузка): 2.4 мм (15 % D)</li>
+<li>Maximum roughing stepdown (шаг по Z): 10 мм</li>
+<li>Fine stepdown (промежуточные слои): 2.5 мм</li>
+<li>Stock to leave (припуск): радиальный 0.3 / осевой 0.15 мм</li>
+<li>Ramp type (врезание): Helix, угол 3°, диаметр ≈ 14.4 мм</li>
+<li>Minimum cutting radius: 1.6 мм</li>
+<li>Feed optimization: вкл., снижение в углах 0.7</li>
+<li><b>Режим:</b> S8100 F4355, врезание 2178 мм/мин, мощность ≈ 1.22 кВт; СОЖ (эмульсия) поливом, M08</li>
+<li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 8952)</li>
+</ul>
+</details>
+<details><summary>Оп. 4. Чистовая наружного контура · T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 131.44 91.44" style="font-size:3.71px;--sw:0.412px" role="img" aria-label="Установ 1 — верх (сторона A)"><rect class="stock" x="12.72" y="12.72" width="106" height="66" stroke-dasharray="1.51 0.96"/><rect class="part" x="15.72" y="15.72" width="100" height="60"/><rect class="hll" x="15.72" y="15.72" width="100" height="60"/><rect class="feat" x="45.72" y="30.72" width="40" height="30"/><path class="datum" d="M15.72 75.72h8.162M15.72 75.72v-8.162" fill="none"/><text x="85.72" y="29.607" text-anchor="end">F6</text><text class="datum-t" x="24.624" y="77.019">X</text><text class="datum-t" x="14.607" y="66.816">Y</text><text class="datum-t" x="14.236" y="80.543" text-anchor="end">G54</text><text x="65.72" y="84.656" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: наружный контур (кромка).</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(4)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> 2D Contour (контур)</li>
+<li><b>Что выбрать в HSMWorks:</b> Contour selection: нижняя кромка наружного контура (цепочкой), сторона — снаружи. Heights → Bottom: Model top, offset −40.3 мм.</li>
+<li><b>Инструмент:</b> T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</li>
+<li><b>Глубина:</b> Z-40.3</li>
+<li>Stock to leave (припуск): 0</li>
+<li>Finishing passes: 1</li>
+<li>Compensation type (коррекция): In computer</li>
+<li>Lead-in / Lead-out: дуга R4.8 мм, касательный вход</li>
+<li>Direction: Climb (попутное)</li>
+<li>Multiple depths: выкл. — вся высота стенки за проход</li>
+<li><b>Режим:</b> S8100 F3235, врезание 970 мм/мин, мощность ≈ 0.38 кВт; СОЖ (эмульсия) поливом, M08</li>
+<li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 9947)</li>
+</ul>
+</details>
+<details><summary>Оп. 5. Чистовая дна: карман 40×30×10 · T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 131.44 91.44" style="font-size:3.71px;--sw:0.412px" role="img" aria-label="Установ 1 — верх (сторона A)"><rect class="stock" x="12.72" y="12.72" width="106" height="66" stroke-dasharray="1.51 0.96"/><rect class="part" x="15.72" y="15.72" width="100" height="60"/><rect class="hl" x="45.72" y="30.72" width="40" height="30"/><path class="datum" d="M15.72 75.72h8.162M15.72 75.72v-8.162" fill="none"/><text x="85.72" y="29.607" text-anchor="end">F6</text><text class="datum-t" x="24.624" y="77.019">X</text><text class="datum-t" x="14.607" y="66.816">Y</text><text class="datum-t" x="14.236" y="80.543" text-anchor="end">G54</text><text x="65.72" y="84.656" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: дно кармана.</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(5)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> 2D Pocket (карман)</li>
+<li><b>Что выбрать в HSMWorks:</b> Pockets: грань дна кармана.</li>
+<li><b>Инструмент:</b> T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</li>
+<li><b>Глубина:</b> Z-10</li>
+<li>Maximum stepover (шаг): 9.6 мм</li>
+<li>Ramp type: Helix 2°</li>
+<li>Multiple depths: выкл. — только чистовой проход по дну</li>
+<li>Stock to leave: радиальный 0.05 / осевой 0 мм (стенки — следующей операцией 2D Contour)</li>
+<li><b>Режим:</b> S8100 F2488, врезание 746 мм/мин, мощность ≈ 0.04 кВт; СОЖ (эмульсия) поливом, M08</li>
+<li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 9947)</li>
+</ul>
+</details>
+<details><summary>Оп. 6. Чистовая стенок: карман 40×30×10 · T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 131.44 91.44" style="font-size:3.71px;--sw:0.412px" role="img" aria-label="Установ 1 — верх (сторона A)"><rect class="stock" x="12.72" y="12.72" width="106" height="66" stroke-dasharray="1.51 0.96"/><rect class="part" x="15.72" y="15.72" width="100" height="60"/><rect class="feat" x="45.72" y="30.72" width="40" height="30"/><rect class="hll" x="45.72" y="30.72" width="40" height="30"/><path class="datum" d="M15.72 75.72h8.162M15.72 75.72v-8.162" fill="none"/><text x="85.72" y="29.607" text-anchor="end">F6</text><text class="datum-t" x="24.624" y="77.019">X</text><text class="datum-t" x="14.607" y="66.816">Y</text><text class="datum-t" x="14.236" y="80.543" text-anchor="end">G54</text><text x="65.72" y="84.656" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: стенки кармана.</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(6)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> 2D Contour (контур)</li>
+<li><b>Что выбрать в HSMWorks:</b> Contour selection: кромка между дном и стенками кармана (цепочкой), сторона — внутри.</li>
+<li><b>Инструмент:</b> T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</li>
+<li><b>Глубина:</b> Z-10</li>
+<li>Stock to leave (припуск): 0</li>
+<li>Finishing passes: 1</li>
+<li>Compensation type (коррекция): In computer</li>
+<li>Lead-in / Lead-out: дуга R4.8 мм, касательный вход</li>
+<li>Direction: Climb (попутное)</li>
+<li>Multiple depths: выкл. — вся высота стенки за проход</li>
+<li><b>Режим:</b> S8100 F3235, врезание 970 мм/мин, мощность ≈ 0.09 кВт; СОЖ (эмульсия) поливом, M08</li>
+<li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 9947)</li>
+</ul>
+</details>
+<h2>Установ 2 — низ (сторона B, переворот)</h2>
+<p><b>Крепление:</b></p>
+<ul>
+<li>Переворот вокруг оси X (передняя грань уходит назад).</li>
+<li>Тиски 6&quot; (Kurt DX6 / Haas): зажим по обработанным боковым граням, гладкие или мягкие губки; под обработанный верх — чистые параллели.</li>
+<li>Захват ≥ 3 мм; деталь выступает над губками на 11 мм и больше (торцовка не должна задеть губки).</li>
+</ul>
+<p><b>Нуль детали:</b></p>
+<ul>
+<li>G55: X0 Y0 — левый передний угол детали по обработанному контуру</li>
+<li>Z0 — верх детали после торцовки: от верха параллелей + толщина 40 мм (сейчас сверху припуск 9 мм).</li>
+</ul>
+<figure class="skf"><svg class="sk" viewBox="0 0 131.44 91.44" style="font-size:3.71px;--sw:0.412px" role="img" aria-label="Установ 2 — низ (сторона B, переворот)"><rect class="stock" x="12.72" y="12.72" width="106" height="66" stroke-dasharray="1.51 0.96"/><rect class="part" x="15.72" y="15.72" width="100" height="60"/><rect class="feat" x="40.72" y="35.72" width="50" height="20"/><path class="datum" d="M15.72 75.72h8.162M15.72 75.72v-8.162" fill="none"/><text x="90.72" y="54.607" text-anchor="end">F5</text><text class="datum-t" x="24.624" y="77.019">X</text><text class="datum-t" x="14.607" y="66.816">Y</text><text class="datum-t" x="14.236" y="80.543" text-anchor="end">G55</text><text x="65.72" y="84.656" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 2, нуль G55. Деталь перевёрнута вокруг X: пунктир — сквозные элементы с верхней стороны.</figcaption></figure>
+<table><tr><th>Оп.</th><th>Операция</th><th>Стратегия HSMWorks</th><th>Инструмент</th><th>S, об/мин</th><th>F, мм/мин</th><th>ap, мм</th><th>ae, мм</th><th>Vc, м/мин</th><th>Подача</th></tr>
+<tr><td>7</td><td>Торцовка в размер по толщине 40 мм (снять 9 мм)</td><td>Face (торцевание)</td><td>T1 — Торцевая фреза Ø50, 5 пластин (45°)</td><td>5093</td><td>3056</td><td>2</td><td>35</td><td>800</td><td>0.12 мм/зуб</td></tr>
+<tr><td>8</td><td>Черновая: карман 50×20×5</td><td>2D Adaptive Clearing (адаптивная выборка)</td><td>T3 — Фреза концевая ZCC AL-3E-D12.0 Ø12 z3 Lc32</td><td>8100</td><td>3267</td><td>5</td><td>1.8</td><td>305</td><td>0.134 мм/зуб</td></tr>
+<tr><td>9</td><td>Чистовая дна: карман 50×20×5</td><td>2D Pocket (карман)</td><td>T3 — Фреза концевая ZCC AL-3E-D12.0 Ø12 z3 Lc32</td><td>8100</td><td>1866</td><td>0.15</td><td>7.2</td><td>305</td><td>0.077 мм/зуб</td></tr>
+<tr><td>10</td><td>Чистовая стенок: карман 50×20×5</td><td>2D Contour (контур)</td><td>T3 — Фреза концевая ZCC AL-3E-D12.0 Ø12 z3 Lc32</td><td>8100</td><td>2426</td><td>5</td><td>0.25</td><td>305</td><td>0.1 мм/зуб</td></tr>
+</table>
+<details><summary>Оп. 7. Торцовка в размер по толщине 40 мм (снять 9 мм) · T1 — Торцевая фреза Ø50, 5 пластин (45°)</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 131.44 91.44" style="font-size:3.71px;--sw:0.412px" role="img" aria-label="Установ 2 — низ (сторона B, переворот)"><rect class="hl" x="12.72" y="12.72" width="106" height="66"/><rect class="part" x="15.72" y="15.72" width="100" height="60"/><rect class="feat" x="40.72" y="35.72" width="50" height="20"/><path class="datum" d="M15.72 75.72h8.162M15.72 75.72v-8.162" fill="none"/><text x="90.72" y="54.607" text-anchor="end">F5</text><text class="datum-t" x="24.624" y="77.019">X</text><text class="datum-t" x="14.607" y="66.816">Y</text><text class="datum-t" x="14.236" y="80.543" text-anchor="end">G55</text><text x="65.72" y="84.656" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 2, нуль G55. Деталь перевёрнута вокруг X: пунктир — сквозные элементы с верхней стороны. Подсвечено: верхняя плоскость заготовки.</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(7)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> Face (торцевание)</li>
+<li><b>Что выбрать в HSMWorks:</b> Geometry: ничего не выбирать — берётся габарит заготовки (Setup → Stock). Heights → Bottom: Model top.</li>
+<li><b>Инструмент:</b> T1 — Торцевая фреза Ø50, 5 пластин (45°)</li>
+<li><b>Глубина:</b> Z0</li>
+<li>Max stepover (макс. шаг): 35 мм (70 % D)</li>
+<li>Stock offset (выход за заготовку): 28 мм</li>
+<li>Direction: Climb (попутное)</li>
+<li>Multiple depths (несколько проходов): вкл.: Max stepdown 2 мм, Finishing stepdown 0.3 мм</li>
+<li>Stock to leave (припуск): 0</li>
+<li><b>Режим:</b> S5093 F3056, мощность ≈ 2.5 кВт; СОЖ (эмульсия) поливом, M08</li>
+<li>Проходов по Z ≈ 6; последний — чистовой 0.3 мм.</li>
+<li>После торцовки замерить толщину микрометром; при необходимости — доп. проход с коррекцией Z.</li>
+</ul>
+</details>
+<details><summary>Оп. 8. Черновая: карман 50×20×5 · T3 — Фреза концевая ZCC AL-3E-D12.0 Ø12 z3 Lc32</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 131.44 91.44" style="font-size:3.71px;--sw:0.412px" role="img" aria-label="Установ 2 — низ (сторона B, переворот)"><rect class="stock" x="12.72" y="12.72" width="106" height="66" stroke-dasharray="1.51 0.96"/><rect class="part" x="15.72" y="15.72" width="100" height="60"/><rect class="hl" x="40.72" y="35.72" width="50" height="20"/><path class="datum" d="M15.72 75.72h8.162M15.72 75.72v-8.162" fill="none"/><text x="90.72" y="54.607" text-anchor="end">F5</text><text class="datum-t" x="24.624" y="77.019">X</text><text class="datum-t" x="14.607" y="66.816">Y</text><text class="datum-t" x="14.236" y="80.543" text-anchor="end">G55</text><text x="65.72" y="84.656" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 2, нуль G55. Деталь перевёрнута вокруг X: пунктир — сквозные элементы с верхней стороны. Подсвечено: объём кармана.</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(8)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> 2D Adaptive Clearing (адаптивная выборка)</li>
+<li><b>Что выбрать в HSMWorks:</b> Pockets: грань дна кармана (один щелчок — контур и глубина берутся автоматически).</li>
+<li><b>Инструмент:</b> T3 — Фреза концевая ZCC AL-3E-D12.0 Ø12 z3 Lc32</li>
+<li><b>Глубина:</b> Z-5</li>
+<li>Optimal load (оптимальная нагрузка): 1.8 мм (15 % D)</li>
+<li>Maximum roughing stepdown (шаг по Z): 5 мм</li>
+<li>Fine stepdown (промежуточные слои): —</li>
+<li>Stock to leave (припуск): радиальный 0.3 / осевой 0.15 мм</li>
+<li>Ramp type (врезание): Helix, угол 3°, диаметр ≈ 10.8 мм</li>
+<li>Minimum cutting radius: 1.2 мм</li>
+<li>Feed optimization: вкл., снижение в углах 0.7</li>
+<li><b>Режим:</b> S8100 F3267, врезание 1633 мм/мин, мощность ≈ 0.34 кВт; СОЖ (эмульсия) поливом, M08</li>
+<li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 11937)</li>
+</ul>
+</details>
+<details><summary>Оп. 9. Чистовая дна: карман 50×20×5 · T3 — Фреза концевая ZCC AL-3E-D12.0 Ø12 z3 Lc32</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 131.44 91.44" style="font-size:3.71px;--sw:0.412px" role="img" aria-label="Установ 2 — низ (сторона B, переворот)"><rect class="stock" x="12.72" y="12.72" width="106" height="66" stroke-dasharray="1.51 0.96"/><rect class="part" x="15.72" y="15.72" width="100" height="60"/><rect class="hl" x="40.72" y="35.72" width="50" height="20"/><path class="datum" d="M15.72 75.72h8.162M15.72 75.72v-8.162" fill="none"/><text x="90.72" y="54.607" text-anchor="end">F5</text><text class="datum-t" x="24.624" y="77.019">X</text><text class="datum-t" x="14.607" y="66.816">Y</text><text class="datum-t" x="14.236" y="80.543" text-anchor="end">G55</text><text x="65.72" y="84.656" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 2, нуль G55. Деталь перевёрнута вокруг X: пунктир — сквозные элементы с верхней стороны. Подсвечено: дно кармана.</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(9)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> 2D Pocket (карман)</li>
+<li><b>Что выбрать в HSMWorks:</b> Pockets: грань дна кармана.</li>
+<li><b>Инструмент:</b> T3 — Фреза концевая ZCC AL-3E-D12.0 Ø12 z3 Lc32</li>
+<li><b>Глубина:</b> Z-5</li>
+<li>Maximum stepover (шаг): 7.2 мм</li>
+<li>Ramp type: Helix 2°</li>
+<li>Multiple depths: выкл. — только чистовой проход по дну</li>
+<li>Stock to leave: радиальный 0.05 / осевой 0 мм (стенки — следующей операцией 2D Contour)</li>
+<li><b>Режим:</b> S8100 F1866, врезание 560 мм/мин, мощность ≈ 0.02 кВт; СОЖ (эмульсия) поливом, M08</li>
+<li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 13263)</li>
+</ul>
+</details>
+<details><summary>Оп. 10. Чистовая стенок: карман 50×20×5 · T3 — Фреза концевая ZCC AL-3E-D12.0 Ø12 z3 Lc32</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 131.44 91.44" style="font-size:3.71px;--sw:0.412px" role="img" aria-label="Установ 2 — низ (сторона B, переворот)"><rect class="stock" x="12.72" y="12.72" width="106" height="66" stroke-dasharray="1.51 0.96"/><rect class="part" x="15.72" y="15.72" width="100" height="60"/><rect class="feat" x="40.72" y="35.72" width="50" height="20"/><rect class="hll" x="40.72" y="35.72" width="50" height="20"/><path class="datum" d="M15.72 75.72h8.162M15.72 75.72v-8.162" fill="none"/><text x="90.72" y="54.607" text-anchor="end">F5</text><text class="datum-t" x="24.624" y="77.019">X</text><text class="datum-t" x="14.607" y="66.816">Y</text><text class="datum-t" x="14.236" y="80.543" text-anchor="end">G55</text><text x="65.72" y="84.656" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 2, нуль G55. Деталь перевёрнута вокруг X: пунктир — сквозные элементы с верхней стороны. Подсвечено: стенки кармана.</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(10)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> 2D Contour (контур)</li>
+<li><b>Что выбрать в HSMWorks:</b> Contour selection: кромка между дном и стенками кармана (цепочкой), сторона — внутри.</li>
+<li><b>Инструмент:</b> T3 — Фреза концевая ZCC AL-3E-D12.0 Ø12 z3 Lc32</li>
+<li><b>Глубина:</b> Z-5</li>
+<li>Stock to leave (припуск): 0</li>
+<li>Finishing passes: 1</li>
+<li>Compensation type (коррекция): In computer</li>
+<li>Lead-in / Lead-out: дуга R3.6 мм, касательный вход</li>
+<li>Direction: Climb (попутное)</li>
+<li>Multiple depths: выкл. — вся высота стенки за проход</li>
+<li><b>Режим:</b> S8100 F2426, врезание 728 мм/мин, мощность ≈ 0.04 кВт; СОЖ (эмульсия) поливом, M08</li>
+<li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 13263)</li>
+</ul>
+</details>
+<h2>Установ 3 — передняя грань</h2>
+<p><b>Крепление:</b></p>
+<ul>
+<li>Деталь на бок, передняя грань вверх: зажим по верхней и нижней плоскостям (обработаны), губки по 40 мм, длина в губках 100 мм.</li>
+<li>Деталь стоит на параллелях гранью «задняя грань»; в губках ≥ 30 мм (половина высоты), над губками 5–10 мм — элементы уходят внутрь детали, губки не мешают.</li>
+<li>Упор по обработанной грани; перпендикулярность базы проверить индикатором ≤ 0.02 мм.</li>
+</ul>
+<p><b>Нуль детали:</b></p>
+<ul>
+<li>G56: X0 Y0 — левый нижний угол грани «передняя грань» (вид на грань: X вдоль грани 100 мм, Y по высоте 40 мм).</li>
+<li>Z0 — плоскость грани.</li>
+</ul>
+<figure class="skf"><svg class="sk" viewBox="0 0 124 64" style="font-size:3.5px;--sw:0.389px" role="img" aria-label="Установ 3 — передняя грань"><rect class="stock" x="12" y="12" width="100" height="40" stroke-dasharray="1.43 0.91"/><rect class="part" x="12" y="12" width="100" height="40"/><circle class="feat" cx="62" cy="32" r="5"/><rect class="feat" x="22" y="34" width="30" height="12"/><path class="datum" d="M12 52h7.7M12 52v-7.7" fill="none"/><text x="68.05" y="27">F2</text><text x="52" y="32.95" text-anchor="end">F4</text><text class="datum-t" x="20.4" y="53.225">X</text><text class="datum-t" x="10.95" y="43.6">Y</text><text class="datum-t" x="10.6" y="56.55" text-anchor="end">G56</text><text x="62" y="57.6" text-anchor="middle">100</text></svg><figcaption>Вид на грань «передняя грань», установ 3, нуль G56.</figcaption></figure>
+<table><tr><th>Оп.</th><th>Операция</th><th>Стратегия HSMWorks</th><th>Инструмент</th><th>S, об/мин</th><th>F, мм/мин</th><th>ap, мм</th><th>ae, мм</th><th>Vc, м/мин</th><th>Подача</th></tr>
+<tr><td>11</td><td>Черновая: карман 30×12×15</td><td>2D Adaptive Clearing (адаптивная выборка)</td><td>T4 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18</td><td>8100</td><td>1633</td><td>15</td><td>0.9</td><td>153</td><td>0.067 мм/зуб</td></tr>
+<tr><td>12</td><td>Центровка под Ø10</td><td>Drill (сверление) G81</td><td>T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10</td><td>3183</td><td>191</td><td>—</td><td>—</td><td>100</td><td>0.06 мм/об</td></tr>
+<tr><td>13</td><td>Сверление Ø10</td><td>Drill (сверление) G83</td><td>T6 — Сверло ZCC 1101SC05-1000 Ø10 5xD</td><td>4775</td><td>1194</td><td>—</td><td>—</td><td>150</td><td>0.25 мм/об</td></tr>
+<tr><td>14</td><td>Чистовая дна: карман 30×12×15</td><td>2D Pocket (карман)</td><td>T4 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18</td><td>8100</td><td>933</td><td>0.15</td><td>3.6</td><td>153</td><td>0.038 мм/зуб</td></tr>
+<tr><td>15</td><td>Чистовая стенок: карман 30×12×15</td><td>2D Contour (контур)</td><td>T4 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18</td><td>8100</td><td>1213</td><td>15</td><td>0.25</td><td>153</td><td>0.05 мм/зуб</td></tr>
+</table>
+<details><summary>Оп. 11. Черновая: карман 30×12×15 · T4 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 124 64" style="font-size:3.5px;--sw:0.389px" role="img" aria-label="Установ 3 — передняя грань"><rect class="stock" x="12" y="12" width="100" height="40" stroke-dasharray="1.43 0.91"/><rect class="part" x="12" y="12" width="100" height="40"/><circle class="feat" cx="62" cy="32" r="5"/><rect class="hl" x="22" y="34" width="30" height="12"/><path class="datum" d="M12 52h7.7M12 52v-7.7" fill="none"/><text x="68.05" y="27">F2</text><text x="52" y="32.95" text-anchor="end">F4</text><text class="datum-t" x="20.4" y="53.225">X</text><text class="datum-t" x="10.95" y="43.6">Y</text><text class="datum-t" x="10.6" y="56.55" text-anchor="end">G56</text><text x="62" y="57.6" text-anchor="middle">100</text></svg><figcaption>Вид на грань «передняя грань», установ 3, нуль G56. Подсвечено: объём кармана.</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(11)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> 2D Adaptive Clearing (адаптивная выборка)</li>
+<li><b>Что выбрать в HSMWorks:</b> Pockets: грань дна кармана (один щелчок — контур и глубина берутся автоматически).</li>
+<li><b>Инструмент:</b> T4 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18</li>
+<li><b>Глубина:</b> Z-15</li>
+<li>Optimal load (оптимальная нагрузка): 0.9 мм (15 % D)</li>
+<li>Maximum roughing stepdown (шаг по Z): 15 мм</li>
+<li>Fine stepdown (промежуточные слои): 3.8 мм</li>
+<li>Stock to leave (припуск): радиальный 0.3 / осевой 0.15 мм</li>
+<li>Ramp type (врезание): Helix, угол 3°, диаметр ≈ 5.4 мм</li>
+<li>Minimum cutting radius: 0.6 мм</li>
+<li>Feed optimization: вкл., снижение в углах 0.7</li>
+<li><b>Режим:</b> S8100 F1633, врезание 817 мм/мин, мощность ≈ 0.26 кВт; СОЖ (эмульсия) поливом, M08</li>
+<li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 23873)</li>
+</ul>
+</details>
+<details><summary>Оп. 12. Центровка под Ø10 · T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 124 64" style="font-size:3.5px;--sw:0.389px" role="img" aria-label="Установ 3 — передняя грань"><rect class="stock" x="12" y="12" width="100" height="40" stroke-dasharray="1.43 0.91"/><rect class="part" x="12" y="12" width="100" height="40"/><circle class="hl" cx="62" cy="32" r="5"/><rect class="feat" x="22" y="34" width="30" height="12"/><path class="datum" d="M12 52h7.7M12 52v-7.7" fill="none"/><text x="68.05" y="27">F2</text><text x="52" y="32.95" text-anchor="end">F4</text><text class="num" x="62" y="36.9" text-anchor="middle">1</text><text class="datum-t" x="20.4" y="53.225">X</text><text class="datum-t" x="10.95" y="43.6">Y</text><text class="datum-t" x="10.6" y="56.55" text-anchor="end">G56</text><text x="62" y="57.6" text-anchor="middle">100</text></svg><figcaption>Вид на грань «передняя грань», установ 3, нуль G56. Подсвечено: отверстия (цифры — порядок обхода).</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(12)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> Drill (сверление)</li>
+<li><b>Что выбрать в HSMWorks:</b> Holes: цилиндрическая грань отверстия Ø10 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.</li>
+<li><b>Инструмент:</b> T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10</li>
+<li><b>Глубина:</b> Z-1.5</li>
+<li><b>Точки (X; Y):</b> (50; 20)</li>
+<li>Cycle type (цикл): Drilling – rapid out (G81)</li>
+<li>Bottom height: 1.5 мм от поверхности входа</li>
+<li>Retract height (R): Z+2 мм от верха</li>
+<li><b>Режим:</b> S3183 F191; СОЖ (эмульсия) поливом, M08</li>
+<li>центровка без фаски (отверстие больше центровки)</li>
+</ul>
+</details>
+<details><summary>Оп. 13. Сверление Ø10 · T6 — Сверло ZCC 1101SC05-1000 Ø10 5xD</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 124 64" style="font-size:3.5px;--sw:0.389px" role="img" aria-label="Установ 3 — передняя грань"><rect class="stock" x="12" y="12" width="100" height="40" stroke-dasharray="1.43 0.91"/><rect class="part" x="12" y="12" width="100" height="40"/><circle class="hl" cx="62" cy="32" r="5"/><rect class="feat" x="22" y="34" width="30" height="12"/><path class="datum" d="M12 52h7.7M12 52v-7.7" fill="none"/><text x="68.05" y="27">F2</text><text x="52" y="32.95" text-anchor="end">F4</text><text class="num" x="62" y="36.9" text-anchor="middle">1</text><text class="datum-t" x="20.4" y="53.225">X</text><text class="datum-t" x="10.95" y="43.6">Y</text><text class="datum-t" x="10.6" y="56.55" text-anchor="end">G56</text><text x="62" y="57.6" text-anchor="middle">100</text></svg><figcaption>Вид на грань «передняя грань», установ 3, нуль G56. Подсвечено: отверстия (цифры — порядок обхода).</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(13)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> Drill (сверление)</li>
+<li><b>Что выбрать в HSMWorks:</b> Holes: цилиндрическая грань отверстия Ø10 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.</li>
+<li><b>Инструмент:</b> T6 — Сверло ZCC 1101SC05-1000 Ø10 5xD</li>
+<li><b>Глубина:</b> Z-62.8</li>
+<li><b>Точки (X; Y):</b> (50; 20)</li>
+<li>Cycle type (цикл): Deep drilling – full retract (G83)</li>
+<li>Bottom height: 62.8 мм (сквозь, с выходом вершины)</li>
+<li>Retract height (R): Z+2 мм от верха</li>
+<li>Pecking depth (Q): 10 мм</li>
+<li>Drill tip through bottom: вкл., Break-through depth 1 мм</li>
+<li><b>Режим:</b> S4775 F1194, мощность ≈ 1.09 кВт; СОЖ (эмульсия) поливом, M08</li>
+</ul>
+</details>
+<details><summary>Оп. 14. Чистовая дна: карман 30×12×15 · T4 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 124 64" style="font-size:3.5px;--sw:0.389px" role="img" aria-label="Установ 3 — передняя грань"><rect class="stock" x="12" y="12" width="100" height="40" stroke-dasharray="1.43 0.91"/><rect class="part" x="12" y="12" width="100" height="40"/><circle class="feat" cx="62" cy="32" r="5"/><rect class="hl" x="22" y="34" width="30" height="12"/><path class="datum" d="M12 52h7.7M12 52v-7.7" fill="none"/><text x="68.05" y="27">F2</text><text x="52" y="32.95" text-anchor="end">F4</text><text class="datum-t" x="20.4" y="53.225">X</text><text class="datum-t" x="10.95" y="43.6">Y</text><text class="datum-t" x="10.6" y="56.55" text-anchor="end">G56</text><text x="62" y="57.6" text-anchor="middle">100</text></svg><figcaption>Вид на грань «передняя грань», установ 3, нуль G56. Подсвечено: дно кармана.</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(14)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> 2D Pocket (карман)</li>
+<li><b>Что выбрать в HSMWorks:</b> Pockets: грань дна кармана.</li>
+<li><b>Инструмент:</b> T4 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18</li>
+<li><b>Глубина:</b> Z-15</li>
+<li>Maximum stepover (шаг): 3.6 мм</li>
+<li>Ramp type: Helix 2°</li>
+<li>Multiple depths: выкл. — только чистовой проход по дну</li>
+<li>Stock to leave: радиальный 0.05 / осевой 0 мм (стенки — следующей операцией 2D Contour)</li>
+<li><b>Режим:</b> S8100 F933, врезание 280 мм/мин, мощность ≈ 0.01 кВт; СОЖ (эмульсия) поливом, M08</li>
+<li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 26526)</li>
+</ul>
+</details>
+<details><summary>Оп. 15. Чистовая стенок: карман 30×12×15 · T4 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 124 64" style="font-size:3.5px;--sw:0.389px" role="img" aria-label="Установ 3 — передняя грань"><rect class="stock" x="12" y="12" width="100" height="40" stroke-dasharray="1.43 0.91"/><rect class="part" x="12" y="12" width="100" height="40"/><circle class="feat" cx="62" cy="32" r="5"/><rect class="feat" x="22" y="34" width="30" height="12"/><rect class="hll" x="22" y="34" width="30" height="12"/><path class="datum" d="M12 52h7.7M12 52v-7.7" fill="none"/><text x="68.05" y="27">F2</text><text x="52" y="32.95" text-anchor="end">F4</text><text class="datum-t" x="20.4" y="53.225">X</text><text class="datum-t" x="10.95" y="43.6">Y</text><text class="datum-t" x="10.6" y="56.55" text-anchor="end">G56</text><text x="62" y="57.6" text-anchor="middle">100</text></svg><figcaption>Вид на грань «передняя грань», установ 3, нуль G56. Подсвечено: стенки кармана.</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(15)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> 2D Contour (контур)</li>
+<li><b>Что выбрать в HSMWorks:</b> Contour selection: кромка между дном и стенками кармана (цепочкой), сторона — внутри.</li>
+<li><b>Инструмент:</b> T4 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18</li>
+<li><b>Глубина:</b> Z-15</li>
+<li>Stock to leave (припуск): 0</li>
+<li>Finishing passes: 1</li>
+<li>Compensation type (коррекция): In computer</li>
+<li>Lead-in / Lead-out: дуга R1.8 мм, касательный вход</li>
+<li>Direction: Climb (попутное)</li>
+<li>Multiple depths: выкл. — вся высота стенки за проход</li>
+<li><b>Режим:</b> S8100 F1213, врезание 364 мм/мин, мощность ≈ 0.05 кВт; СОЖ (эмульсия) поливом, M08</li>
+<li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 26526)</li>
+</ul>
+</details>
+<h2>Установ 4 — левая грань</h2>
+<p><b>Крепление:</b></p>
+<ul>
+<li>Деталь на торец, левая грань вверх: зажим по передней и задней граням (60 мм) или по верху/низу (40 мм) — что шире.</li>
+<li>Деталь стоит на торце (высота 100 мм): в губках ≥ 50 мм, над губками 5–10 мм; при высоте &gt; 120 мм — угольник или тиски с поворотной губкой.</li>
+<li>Упор по обработанной грани; перпендикулярность базы проверить индикатором ≤ 0.02 мм.</li>
+</ul>
+<p><b>Нуль детали:</b></p>
+<ul>
+<li>G57: X0 Y0 — левый нижний угол грани «левая грань» (вид на грань: X вдоль грани 60 мм, Y по высоте 40 мм).</li>
+<li>Z0 — плоскость грани.</li>
+</ul>
+<figure class="skf"><svg class="sk" viewBox="0 0 74.4 54.4" style="font-size:2.1px;--sw:0.233px" role="img" aria-label="Установ 4 — левая грань"><rect class="stock" x="7.2" y="7.2" width="60" height="40" stroke-dasharray="0.86 0.55"/><rect class="part" x="7.2" y="7.2" width="60" height="40"/><circle class="feat" cx="22.2" cy="27.2" r="4"/><path class="datum" d="M7.2 47.2h4.62M7.2 47.2v-4.62" fill="none"/><text x="26.83" y="23.2">F1</text><text class="datum-t" x="12.24" y="47.935">X</text><text class="datum-t" x="6.57" y="42.16">Y</text><text class="datum-t" x="6.36" y="49.93" text-anchor="end">G57</text><text x="37.2" y="50.56" text-anchor="middle">60</text></svg><figcaption>Вид на грань «левая грань», установ 4, нуль G57.</figcaption></figure>
+<table><tr><th>Оп.</th><th>Операция</th><th>Стратегия HSMWorks</th><th>Инструмент</th><th>S, об/мин</th><th>F, мм/мин</th><th>ap, мм</th><th>ae, мм</th><th>Vc, м/мин</th><th>Подача</th></tr>
+<tr><td>16</td><td>Центровка под Ø8</td><td>Drill (сверление) G81</td><td>T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10</td><td>3183</td><td>191</td><td>—</td><td>—</td><td>100</td><td>0.06 мм/об</td></tr>
+<tr><td>17</td><td>Сверление Ø8</td><td>Drill (сверление) G81</td><td>T7 — Сверло ZCC 1534SU03-0800 Ø8 3xD</td><td>5968</td><td>1194</td><td>—</td><td>—</td><td>150</td><td>0.2 мм/об</td></tr>
+</table>
+<details><summary>Оп. 16. Центровка под Ø8 · T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 74.4 54.4" style="font-size:2.1px;--sw:0.233px" role="img" aria-label="Установ 4 — левая грань"><rect class="stock" x="7.2" y="7.2" width="60" height="40" stroke-dasharray="0.86 0.55"/><rect class="part" x="7.2" y="7.2" width="60" height="40"/><circle class="hl" cx="22.2" cy="27.2" r="4"/><path class="datum" d="M7.2 47.2h4.62M7.2 47.2v-4.62" fill="none"/><text x="26.83" y="23.2">F1</text><text class="num" x="22.2" y="30.14" text-anchor="middle">1</text><text class="datum-t" x="12.24" y="47.935">X</text><text class="datum-t" x="6.57" y="42.16">Y</text><text class="datum-t" x="6.36" y="49.93" text-anchor="end">G57</text><text x="37.2" y="50.56" text-anchor="middle">60</text></svg><figcaption>Вид на грань «левая грань», установ 4, нуль G57. Подсвечено: отверстия (цифры — порядок обхода).</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(16)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> Drill (сверление)</li>
+<li><b>Что выбрать в HSMWorks:</b> Holes: цилиндрическая грань отверстия Ø8 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.</li>
+<li><b>Инструмент:</b> T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10</li>
+<li><b>Глубина:</b> Z-4.2</li>
+<li><b>Точки (X; Y):</b> (15; 20)</li>
+<li>Cycle type (цикл): Drilling – rapid out (G81)</li>
+<li>Bottom height: 4.2 мм от поверхности входа</li>
+<li>Retract height (R): Z+2 мм от верха</li>
+<li><b>Режим:</b> S3183 F191; СОЖ (эмульсия) поливом, M08</li>
+<li>центровка с фаской: Ø8.4 на входе</li>
+</ul>
+</details>
+<details><summary>Оп. 17. Сверление Ø8 · T7 — Сверло ZCC 1534SU03-0800 Ø8 3xD</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 74.4 54.4" style="font-size:2.1px;--sw:0.233px" role="img" aria-label="Установ 4 — левая грань"><rect class="stock" x="7.2" y="7.2" width="60" height="40" stroke-dasharray="0.86 0.55"/><rect class="part" x="7.2" y="7.2" width="60" height="40"/><circle class="hl" cx="22.2" cy="27.2" r="4"/><path class="datum" d="M7.2 47.2h4.62M7.2 47.2v-4.62" fill="none"/><text x="26.83" y="23.2">F1</text><text class="num" x="22.2" y="30.14" text-anchor="middle">1</text><text class="datum-t" x="12.24" y="47.935">X</text><text class="datum-t" x="6.57" y="42.16">Y</text><text class="datum-t" x="6.36" y="49.93" text-anchor="end">G57</text><text x="37.2" y="50.56" text-anchor="middle">60</text></svg><figcaption>Вид на грань «левая грань», установ 4, нуль G57. Подсвечено: отверстия (цифры — порядок обхода).</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(17)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> Drill (сверление)</li>
+<li><b>Что выбрать в HSMWorks:</b> Holes: цилиндрическая грань отверстия Ø8 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.</li>
+<li><b>Инструмент:</b> T7 — Сверло ZCC 1534SU03-0800 Ø8 3xD</li>
+<li><b>Глубина:</b> Z-11.44</li>
+<li><b>Точки (X; Y):</b> (15; 20)</li>
+<li>Cycle type (цикл): Drilling – rapid out (G81)</li>
+<li>Bottom height: 11.44 мм (по вершине сверла)</li>
+<li>Retract height (R): Z+2 мм от верха</li>
+<li><b>Режим:</b> S5968 F1194, мощность ≈ 0.7 кВт; СОЖ (эмульсия) поливом, M08</li>
+</ul>
+</details>
+<h2>Установ 5 — правая грань</h2>
+<p><b>Крепление:</b></p>
+<ul>
+<li>Деталь на торец, правая грань вверх: зажим по передней и задней граням (60 мм) или по верху/низу (40 мм) — что шире.</li>
+<li>Деталь стоит на торце (высота 100 мм): в губках ≥ 50 мм, над губками 5–10 мм; при высоте &gt; 120 мм — угольник или тиски с поворотной губкой.</li>
+<li>Упор по обработанной грани; перпендикулярность базы проверить индикатором ≤ 0.02 мм.</li>
+</ul>
+<p><b>Нуль детали:</b></p>
+<ul>
+<li>G58: X0 Y0 — левый нижний угол грани «правая грань» (вид на грань: X вдоль грани 60 мм, Y по высоте 40 мм).</li>
+<li>Z0 — плоскость грани.</li>
+</ul>
+<figure class="skf"><svg class="sk" viewBox="0 0 74.4 54.4" style="font-size:2.1px;--sw:0.233px" role="img" aria-label="Установ 5 — правая грань"><rect class="stock" x="7.2" y="7.2" width="60" height="40" stroke-dasharray="0.86 0.55"/><rect class="part" x="7.2" y="7.2" width="60" height="40"/><circle class="feat" cx="37.2" cy="35.2" r="3.4"/><circle class="feat" cx="37.2" cy="19.2" r="3.4"/><path class="datum" d="M7.2 47.2h4.62M7.2 47.2v-4.62" fill="none"/><text x="41.23" y="31.8">F3</text><text class="datum-t" x="12.24" y="47.935">X</text><text class="datum-t" x="6.57" y="42.16">Y</text><text class="datum-t" x="6.36" y="49.93" text-anchor="end">G58</text><text x="37.2" y="50.56" text-anchor="middle">60</text></svg><figcaption>Вид на грань «правая грань», установ 5, нуль G58.</figcaption></figure>
+<table><tr><th>Оп.</th><th>Операция</th><th>Стратегия HSMWorks</th><th>Инструмент</th><th>S, об/мин</th><th>F, мм/мин</th><th>ap, мм</th><th>ae, мм</th><th>Vc, м/мин</th><th>Подача</th></tr>
+<tr><td>18</td><td>Центровка под Ø6.8</td><td>Drill (сверление) G81</td><td>T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10</td><td>3183</td><td>191</td><td>—</td><td>—</td><td>100</td><td>0.06 мм/об</td></tr>
+<tr><td>19</td><td>Сверление Ø6.8 (2 шт.)</td><td>Drill (сверление) G81</td><td>T8 — Сверло ZCC 1534SU03-0680 Ø6.8 3xD</td><td>7022</td><td>1194</td><td>—</td><td>—</td><td>150</td><td>0.17 мм/об</td></tr>
+</table>
+<details><summary>Оп. 18. Центровка под Ø6.8 · T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 74.4 54.4" style="font-size:2.1px;--sw:0.233px" role="img" aria-label="Установ 5 — правая грань"><rect class="stock" x="7.2" y="7.2" width="60" height="40" stroke-dasharray="0.86 0.55"/><rect class="part" x="7.2" y="7.2" width="60" height="40"/><circle class="hl" cx="37.2" cy="35.2" r="3.4"/><circle class="hl" cx="37.2" cy="19.2" r="3.4"/><path class="datum" d="M7.2 47.2h4.62M7.2 47.2v-4.62" fill="none"/><text x="41.23" y="31.8">F3</text><text class="num" x="37.2" y="38.14" text-anchor="middle">1</text><text class="num" x="37.2" y="22.14" text-anchor="middle">2</text><text class="datum-t" x="12.24" y="47.935">X</text><text class="datum-t" x="6.57" y="42.16">Y</text><text class="datum-t" x="6.36" y="49.93" text-anchor="end">G58</text><text x="37.2" y="50.56" text-anchor="middle">60</text></svg><figcaption>Вид на грань «правая грань», установ 5, нуль G58. Подсвечено: отверстия (цифры — порядок обхода).</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(18)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> Drill (сверление)</li>
+<li><b>Что выбрать в HSMWorks:</b> Holes: цилиндрическая грань отверстия Ø6.8 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.</li>
+<li><b>Инструмент:</b> T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10</li>
+<li><b>Глубина:</b> Z-3.6</li>
+<li><b>Точки (X; Y):</b> (30; 12), (30; 28)</li>
+<li>Cycle type (цикл): Drilling – rapid out (G81)</li>
+<li>Bottom height: 3.6 мм от поверхности входа</li>
+<li>Retract height (R): Z+2 мм от верха</li>
+<li><b>Режим:</b> S3183 F191; СОЖ (эмульсия) поливом, M08</li>
+<li>центровка с фаской: Ø7.2 на входе</li>
+</ul>
+</details>
+<details><summary>Оп. 19. Сверление Ø6.8 (2 шт.) · T8 — Сверло ZCC 1534SU03-0680 Ø6.8 3xD</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 74.4 54.4" style="font-size:2.1px;--sw:0.233px" role="img" aria-label="Установ 5 — правая грань"><rect class="stock" x="7.2" y="7.2" width="60" height="40" stroke-dasharray="0.86 0.55"/><rect class="part" x="7.2" y="7.2" width="60" height="40"/><circle class="hl" cx="37.2" cy="35.2" r="3.4"/><circle class="hl" cx="37.2" cy="19.2" r="3.4"/><path class="datum" d="M7.2 47.2h4.62M7.2 47.2v-4.62" fill="none"/><text x="41.23" y="31.8">F3</text><text class="num" x="37.2" y="38.14" text-anchor="middle">1</text><text class="num" x="37.2" y="22.14" text-anchor="middle">2</text><text class="datum-t" x="12.24" y="47.935">X</text><text class="datum-t" x="6.57" y="42.16">Y</text><text class="datum-t" x="6.36" y="49.93" text-anchor="end">G58</text><text x="37.2" y="50.56" text-anchor="middle">60</text></svg><figcaption>Вид на грань «правая грань», установ 5, нуль G58. Подсвечено: отверстия (цифры — порядок обхода).</figcaption></figure>
+<button class='btn3d' onclick='nc3dShow(19)'>Показать в 3D</button>
+<ul>
+<li><b>Стратегия:</b> Drill (сверление)</li>
+<li><b>Что выбрать в HSMWorks:</b> Holes: цилиндрическая грань отверстия Ø6.8 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.</li>
+<li><b>Инструмент:</b> T8 — Сверло ZCC 1534SU03-0680 Ø6.8 3xD</li>
+<li><b>Глубина:</b> Z-16.22</li>
+<li><b>Точки (X; Y):</b> (30; 12), (30; 28)</li>
+<li>Cycle type (цикл): Drilling – rapid out (G81)</li>
+<li>Bottom height: 16.22 мм (по вершине сверла)</li>
+<li>Retract height (R): Z+2 мм от верха</li>
+<li><b>Режим:</b> S7022 F1194, мощность ≈ 0.51 кВт; СОЖ (эмульсия) поливом, M08</li>
+</ul>
+</details>
+<h2>Инструментальная карта</h2>
+<table><tr><th>T / H / D</th><th>Инструмент</th><th>Артикул</th><th>Ø, мм</th><th>z</th><th>Lc, мм</th><th>L общ., мм</th><th>Вылет, мм</th><th>Материал</th><th>Операции</th></tr>
+<tr><td>T1 / H1 / D1</td><td>Торцевая фреза Ø50, 5 пластин (45°)</td><td>—</td><td>50</td><td>5</td><td>6</td><td>50</td><td>—</td><td>твердый сплав, пластины для Al / стали</td><td>1, 7</td></tr>
+<tr><td>T2 / H2 / D2</td><td>Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</td><td>AL-3E-D16.0 (склад)</td><td>16</td><td>3</td><td>45</td><td>100</td><td>50</td><td>твердый сплав, YK30F</td><td>2, 3, 4, 5, 6</td></tr>
+<tr><td>T3 / H3 / D3</td><td>Фреза концевая ZCC AL-3E-D12.0 Ø12 z3 Lc32</td><td>AL-3E-D12.0 (склад)</td><td>12</td><td>3</td><td>32</td><td>75</td><td>37</td><td>твердый сплав, YK30F</td><td>8, 9, 10</td></tr>
+<tr><td>T4 / H4 / D4</td><td>Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18</td><td>AL-3E-D6.0 (склад)</td><td>6</td><td>3</td><td>18</td><td>60</td><td>23</td><td>твердый сплав, YK30F</td><td>11, 14, 15</td></tr>
+<tr><td>T5 / H5 / D5</td><td>Центровка NC 90° ZCC 1143SC90-1000 Ø10</td><td>1143SC90-1000 (склад)</td><td>10</td><td>2</td><td>20</td><td>89</td><td>19</td><td>твердый сплав, KDG303</td><td>12, 16, 18</td></tr>
+<tr><td>T6 / H6 / D6</td><td>Сверло ZCC 1101SC05-1000 Ø10 5xD</td><td>1101SC05-1000 (под заказ)</td><td>10</td><td>2</td><td>87</td><td>133</td><td>73</td><td>твердый сплав, YK20F</td><td>13</td></tr>
+<tr><td>T7 / H7 / D7</td><td>Сверло ZCC 1534SU03-0800 Ø8 3xD</td><td>1534SU03-0800 (склад)</td><td>8</td><td>2</td><td>41</td><td>79</td><td>21</td><td>твердый сплав, KDG303</td><td>17</td></tr>
+<tr><td>T8 / H8 / D8</td><td>Сверло ZCC 1534SU03-0680 Ø6.8 3xD</td><td>1534SU03-0680 (склад)</td><td>6.8</td><td>2</td><td>34</td><td>79</td><td>26</td><td>твердый сплав, KDG303</td><td>19</td></tr>
+</table>
+<blockquote>Режимы — стартовые для Haas VF-2. Первую деталь вести с коррекцией подачи 70–80 % и контролем нагрузки шпинделя. Траектории формирует HSMWorks; обязательна симуляция в HSMWorks перед выводом УП.</blockquote>
+</main>
+<aside><div class="v3d" id="v3d">
+<div class="bar"><b>3D-вид</b><span class="hint">по рёбрам STEP-модели</span></div>
+<canvas id="nc3d" aria-label="3D-вид детали"></canvas>
+<div class="bar"><button data-view="iso">Изометрия</button><button data-view="top">Сверху</button>
+<button data-view="front">Спереди</button><button data-view="right">Справа</button><button data-view="bottom">Снизу</button>
+<label><input type="checkbox" id="nc3d-stock" checked> заготовка</label>
+<label><input type="checkbox" id="nc3d-flip" checked> как в установе</label></div>
+<div class="bar"><select id="nc3d-op"><option value="">— операция: без подсветки —</option></select></div>
+<div class="info" id="nc3d-info"></div>
+<div class="hint">ЛКМ — вращать в любую сторону · Ctrl/Alt + ЛКМ — повернуть в плоскости экрана · ПКМ или Shift — сдвиг · колесо — масштаб · двойной щелчок — сброс ·
+щелчок по строке операции в таблице — показать её здесь</div>
+<script type="application/json" id="nc3d-data">{"source":"step","size":[100.0,60.0,40.0],"datum":"corner","stock":[-3.0,-3.0,-49.0,103.0,63.0,1.0],"edges":[{"p":[[0.0,0.0,-40.0],[0.0,0.0,0.0]],"t":["outer"]},{"p":[[0.0,0.0,-40.0],[0.0,60.0,-40.0]],"t":["bot","outer"]},{"p":[[0.0,60.0,-40.0],[0.0,60.0,0.0]],"t":["outer"]},{"p":[[0.0,0.0,0.0],[0.0,60.0,0.0]],"t":["top","outer"]},{"p":[[0.0,45.0,-16.0],[0.0,44.61,-16.02],[0.0,44.22,-16.08],[0.0,43.84,-16.17],[0.0,43.47,-16.3],[0.0,43.11,-16.47],[0.0,42.78,-16.67],[0.0,42.46,-16.91],[0.0,42.17,-17.17],[0.0,41.91,-17.46],[0.0,41.67,-17.78],[0.0,41.47,-18.11],[0.0,41.3,-18.47],[0.0,41.17,-18.84],[0.0,41.08,-19.22],[0.0,41.02,-19.61],[0.0,41.0,-20.0],[0.0,41.02,-20.39],[0.0,41.08,-20.78],[0.0,41.17,-21.16],[0.0,41.3,-21.53],[0.0,41.47,-21.89],[0.0,41.67,-22.22],[0.0,41.91,-22.54],[0.0,42.17,-22.83],[0.0,42.46,-23.09],[0.0,42.78,-23.33],[0.0,43.11,-23.53],[0.0,43.47,-23.7],[0.0,43.84,-23.83],[0.0,44.22,-23.92],[0.0,44.61,-23.98],[0.0,45.0,-24.0],[0.0,45.39,-23.98],[0.0,45.78,-23.92],[0.0,46.16,-23.83],[0.0,46.53,-23.7],[0.0,46.89,-23.53],[0.0,47.22,-23.33],[0.0,47.54,-23.09],[0.0,47.83,-22.83],[0.0,48.09,-22.54],[0.0,48.33,-22.22],[0.0,48.53,-21.89],[0.0,48.7,-21.53],[0.0,48.83,-21.16],[0.0,48.92,-20.78],[0.0,48.98,-20.39],[0.0,49.0,-20.0],[0.0,48.98,-19.61],[0.0,48.92,-19.22],[0.0,48.83,-18.84],[0.0,48.7,-18.47],[0.0,48.53,-18.11],[0.0,48.33,-17.78],[0.0,48.09,-17.46],[0.0,47.83,-17.17],[0.0,47.54,-16.91],[0.0,47.22,-16.67],[0.0,46.89,-16.47],[0.0,46.53,-16.3],[0.0,46.16,-16.17],[0.0,45.78,-16.08],[0.0,45.39,-16.02],[0.0,45.0,-16.0]],"t":["outer","F1"]},{"p":[[0.0,0.0,-40.0],[100.0,0.0,-40.0]],"t":["bot","outer"]},{"p":[[0.0,0.0,0.0],[100.0,0.0,0.0]],"t":["top","outer"]},{"p":[[100.0,0.0,-40.0],[100.0,0.0,0.0]],"t":["outer"]},{"p":[[10.0,0.0,-22.0],[40.0,0.0,-22.0]],"t":["outer","F4"]},{"p":[[10.0,0.0,-22.0],[10.0,0.0,-34.0]],"t":["outer","F4"]},{"p":[[10.0,0.0,-34.0],[40.0,0.0,-34.0]],"t":["outer","F4"]},{"p":[[40.0,0.0,-22.0],[40.0,0.0,-34.0]],"t":["outer","F4"]},{"p":[[50.0,0.0,-15.0],[50.49,0.0,-15.02],[50.98,0.0,-15.1],[51.45,0.0,-15.21],[51.91,0.0,-15.38],[52.36,0.0,-15.59],[52.78,0.0,-15.84],[53.17,0.0,-16.14],[53.54,0.0,-16.46],[53.87,0.0,-16.83],[54.16,0.0,-17.22],[54.41,0.0,-17.64],[54.62,0.0,-18.09],[54.78,0.0,-18.55],[54.9,0.0,-19.02],[54.98,0.0,-19.51],[55.0,0.0,-20.0],[54.98,0.0,-20.49],[54.9,0.0,-20.98],[54.78,0.0,-21.45],[54.62,0.0,-21.91],[54.41,0.0,-22.36],[54.16,0.0,-22.78],[53.87,0.0,-23.17],[53.54,0.0,-23.54],[53.17,0.0,-23.86],[52.78,0.0,-24.16],[52.36,0.0,-24.41],[51.91,0.0,-24.62],[51.45,0.0,-24.79],[50.98,0.0,-24.9],[50.49,0.0,-24.98],[50.0,0.0,-25.0],[49.51,0.0,-24.98],[49.02,0.0,-24.9],[48.55,0.0,-24.79],[48.09,0.0,-24.62],[47.64,0.0,-24.41],[47.22,0.0,-24.16],[46.83,0.0,-23.86],[46.46,0.0,-23.54],[46.13,0.0,-23.17],[45.84,0.0,-22.78],[45.59,0.0,-22.36],[45.38,0.0,-21.91],[45.22,0.0,-21.45],[45.1,0.0,-20.98],[45.02,0.0,-20.49],[45.0,0.0,-20.0],[45.02,0.0,-19.51],[45.1,0.0,-19.02],[45.22,0.0,-18.55],[45.38,0.0,-18.09],[45.59,0.0,-17.64],[45.84,0.0,-17.22],[46.13,0.0,-16.83],[46.46,0.0,-16.46],[46.83,0.0,-16.14],[47.22,0.0,-15.84],[47.64,0.0,-15.59],[48.09,0.0,-15.38],[48.55,0.0,-15.21],[49.02,0.0,-15.1],[49.51,0.0,-15.02],[50.0,0.0,-15.0]],"t":["outer","F2"]},{"p":[[100.0,0.0,0.0],[100.0,60.0,0.0]],"t":["top","outer"]},{"p":[[0.0,60.0,0.0],[100.0,60.0,0.0]],"t":["top","outer"]},{"p":[[70.0,15.0,0.0],[30.0,15.0,0.0]],"t":["top","F6"]},{"p":[[30.0,15.0,0.0],[30.0,45.0,0.0]],"t":["top","F6"]},{"p":[[70.0,45.0,0.0],[30.0,45.0,0.0]],"t":["top","F6"]},{"p":[[70.0,15.0,0.0],[70.0,45.0,0.0]],"t":["top","F6"]},{"p":[[100.0,0.0,-40.0],[100.0,60.0,-40.0]],"t":["bot","outer"]},{"p":[[0.0,60.0,-40.0],[100.0,60.0,-40.0]],"t":["bot","outer"]},{"p":[[75.0,20.0,-40.0],[25.0,20.0,-40.0]],"t":["bot","F5"]},{"p":[[25.0,20.0,-40.0],[25.0,40.0,-40.0]],"t":["bot","F5"]},{"p":[[75.0,40.0,-40.0],[25.0,40.0,-40.0]],"t":["bot","F5"]},{"p":[[75.0,20.0,-40.0],[75.0,40.0,-40.0]],"t":["bot","F5"]},{"p":[[100.0,60.0,-40.0],[100.0,60.0,0.0]],"t":["outer"]},{"p":[[50.0,60.0,-15.0],[50.49,60.0,-15.02],[50.98,60.0,-15.1],[51.45,60.0,-15.21],[51.91,60.0,-15.38],[52.36,60.0,-15.59],[52.78,60.0,-15.84],[53.17,60.0,-16.14],[53.54,60.0,-16.46],[53.87,60.0,-16.83],[54.16,60.0,-17.22],[54.41,60.0,-17.64],[54.62,60.0,-18.09],[54.78,60.0,-18.55],[54.9,60.0,-19.02],[54.98,60.0,-19.51],[55.0,60.0,-20.0],[54.98,60.0,-20.49],[54.9,60.0,-20.98],[54.78,60.0,-21.45],[54.62,60.0,-21.91],[54.41,60.0,-22.36],[54.16,60.0,-22.78],[53.87,60.0,-23.17],[53.54,60.0,-23.54],[53.17,60.0,-23.86],[52.78,60.0,-24.16],[52.36,60.0,-24.41],[51.91,60.0,-24.62],[51.45,60.0,-24.79],[50.98,60.0,-24.9],[50.49,60.0,-24.98],[50.0,60.0,-25.0],[49.51,60.0,-24.98],[49.02,60.0,-24.9],[48.55,60.0,-24.79],[48.09,60.0,-24.62],[47.64,60.0,-24.41],[47.22,60.0,-24.16],[46.83,60.0,-23.86],[46.46,60.0,-23.54],[46.13,60.0,-23.17],[45.84,60.0,-22.78],[45.59,60.0,-22.36],[45.38,60.0,-21.91],[45.22,60.0,-21.45],[45.1,60.0,-20.98],[45.02,60.0,-20.49],[45.0,60.0,-20.0],[45.02,60.0,-19.51],[45.1,60.0,-19.02],[45.22,60.0,-18.55],[45.38,60.0,-18.09],[45.59,60.0,-17.64],[45.84,60.0,-17.22],[46.13,60.0,-16.83],[46.46,60.0,-16.46],[46.83,60.0,-16.14],[47.22,60.0,-15.84],[47.64,60.0,-15.59],[48.09,60.0,-15.38],[48.55,60.0,-15.21],[49.02,60.0,-15.1],[49.51,60.0,-15.02],[50.0,60.0,-15.0]],"t":["outer","F2"]},{"p":[[10.0,45.0,-16.0],[10.0,44.61,-16.02],[10.0,44.22,-16.08],[10.0,43.84,-16.17],[10.0,43.47,-16.3],[10.0,43.11,-16.47],[10.0,42.78,-16.67],[10.0,42.46,-16.91],[10.0,42.17,-17.17],[10.0,41.91,-17.46],[10.0,41.67,-17.78],[10.0,41.47,-18.11],[10.0,41.3,-18.47],[10.0,41.17,-18.84],[10.0,41.08,-19.22],[10.0,41.02,-19.61],[10.0,41.0,-20.0],[10.0,41.02,-20.39],[10.0,41.08,-20.78],[10.0,41.17,-21.16],[10.0,41.3,-21.53],[10.0,41.47,-21.89],[10.0,41.67,-22.22],[10.0,41.91,-22.54],[10.0,42.17,-22.83],[10.0,42.46,-23.09],[10.0,42.78,-23.33],[10.0,43.11,-23.53],[10.0,43.47,-23.7],[10.0,43.84,-23.83],[10.0,44.22,-23.92],[10.0,44.61,-23.98],[10.0,45.0,-24.0],[10.0,45.39,-23.98],[10.0,45.78,-23.92],[10.0,46.16,-23.83],[10.0,46.53,-23.7],[10.0,46.89,-23.53],[10.0,47.22,-23.33],[10.0,47.54,-23.09],[10.0,47.83,-22.83],[10.0,48.09,-22.54],[10.0,48.33,-22.22],[10.0,48.53,-21.89],[10.0,48.7,-21.53],[10.0,48.83,-21.16],[10.0,48.92,-20.78],[10.0,48.98,-20.39],[10.0,49.0,-20.0],[10.0,48.98,-19.61],[10.0,48.92,-19.22],[10.0,48.83,-18.84],[10.0,48.7,-18.47],[10.0,48.53,-18.11],[10.0,48.33,-17.78],[10.0,48.09,-17.46],[10.0,47.83,-17.17],[10.0,47.54,-16.91],[10.0,47.22,-16.67],[10.0,46.89,-16.47],[10.0,46.53,-16.3],[10.0,46.16,-16.17],[10.0,45.78,-16.08],[10.0,45.39,-16.02],[10.0,45.0,-16.0]],"t":["F1"]},{"p":[[100.0,30.0,-31.4],[100.0,29.67,-31.38],[100.0,29.34,-31.34],[100.0,29.01,-31.25],[100.0,28.7,-31.14],[100.0,28.4,-31.0],[100.0,28.11,-30.83],[100.0,27.84,-30.63],[100.0,27.6,-30.4],[100.0,27.37,-30.16],[100.0,27.17,-29.89],[100.0,27.0,-29.6],[100.0,26.86,-29.3],[100.0,26.75,-28.99],[100.0,26.66,-28.66],[100.0,26.62,-28.33],[100.0,26.6,-28.0],[100.0,26.62,-27.67],[100.0,26.66,-27.34],[100.0,26.75,-27.01],[100.0,26.86,-26.7],[100.0,27.0,-26.4],[100.0,27.17,-26.11],[100.0,27.37,-25.84],[100.0,27.6,-25.6],[100.0,27.84,-25.37],[100.0,28.11,-25.17],[100.0,28.4,-25.0],[100.0,28.7,-24.86],[100.0,29.01,-24.75],[100.0,29.34,-24.66],[100.0,29.67,-24.62],[100.0,30.0,-24.6],[100.0,30.33,-24.62],[100.0,30.66,-24.66],[100.0,30.99,-24.75],[100.0,31.3,-24.86],[100.0,31.6,-25.0],[100.0,31.89,-25.17],[100.0,32.16,-25.37],[100.0,32.4,-25.6],[100.0,32.63,-25.84],[100.0,32.83,-26.11],[100.0,33.0,-26.4],[100.0,33.14,-26.7],[100.0,33.25,-27.01],[100.0,33.34,-27.34],[100.0,33.38,-27.67],[100.0,33.4,-28.0],[100.0,33.38,-28.33],[100.0,33.34,-28.66],[100.0,33.25,-28.99],[100.0,33.14,-29.3],[100.0,33.0,-29.6],[100.0,32.83,-29.89],[100.0,32.63,-30.16],[100.0,32.4,-30.4],[100.0,32.16,-30.63],[100.0,31.89,-30.83],[100.0,31.6,-31.0],[100.0,31.3,-31.14],[100.0,30.99,-31.25],[100.0,30.66,-31.34],[100.0,30.33,-31.38],[100.0,30.0,-31.4]],"t":["outer","F3"]},{"p":[[100.0,30.0,-15.4],[100.0,29.67,-15.38],[100.0,29.34,-15.34],[100.0,29.01,-15.25],[100.0,28.7,-15.14],[100.0,28.4,-15.0],[100.0,28.11,-14.83],[100.0,27.84,-14.63],[100.0,27.6,-14.4],[100.0,27.37,-14.16],[100.0,27.17,-13.89],[100.0,27.0,-13.6],[100.0,26.86,-13.3],[100.0,26.75,-12.99],[100.0,26.66,-12.66],[100.0,26.62,-12.33],[100.0,26.6,-12.0],[100.0,26.62,-11.67],[100.0,26.66,-11.34],[100.0,26.75,-11.01],[100.0,26.86,-10.7],[100.0,27.0,-10.4],[100.0,27.17,-10.11],[100.0,27.37,-9.84],[100.0,27.6,-9.6],[100.0,27.84,-9.37],[100.0,28.11,-9.17],[100.0,28.4,-9.0],[100.0,28.7,-8.86],[100.0,29.01,-8.75],[100.0,29.34,-8.66],[100.0,29.67,-8.62],[100.0,30.0,-8.6],[100.0,30.33,-8.62],[100.0,30.66,-8.66],[100.0,30.99,-8.75],[100.0,31.3,-8.86],[100.0,31.6,-9.0],[100.0,31.89,-9.17],[100.0,32.16,-9.37],[100.0,32.4,-9.6],[100.0,32.63,-9.84],[100.0,32.83,-10.11],[100.0,33.0,-10.4],[100.0,33.14,-10.7],[100.0,33.25,-11.01],[100.0,33.34,-11.34],[100.0,33.38,-11.67],[100.0,33.4,-12.0],[100.0,33.38,-12.33],[100.0,33.34,-12.66],[100.0,33.25,-12.99],[100.0,33.14,-13.3],[100.0,33.0,-13.6],[100.0,32.83,-13.89],[100.0,32.63,-14.16],[100.0,32.4,-14.4],[100.0,32.16,-14.63],[100.0,31.89,-14.83],[100.0,31.6,-15.0],[100.0,31.3,-15.14],[100.0,30.99,-15.25],[100.0,30.66,-15.34],[100.0,30.33,-15.38],[100.0,30.0,-15.4]],"t":["outer","F3"]},{"p":[[10.0,0.0,-22.0],[10.0,15.0,-22.0]],"t":["F4"]},{"p":[[40.0,0.0,-22.0],[40.0,15.0,-22.0]],"t":["F4"]},{"p":[[10.0,15.0,-22.0],[40.0,15.0,-22.0]],"t":["F4"]},{"p":[[40.0,0.0,-34.0],[40.0,15.0,-34.0]],"t":["F4"]},{"p":[[40.0,15.0,-34.0],[40.0,15.0,-22.0]],"t":["F4"]},{"p":[[10.0,0.0,-34.0],[10.0,15.0,-34.0]],"t":["F4"]},{"p":[[10.0,15.0,-34.0],[40.0,15.0,-34.0]],"t":["F4"]},{"p":[[10.0,15.0,-34.0],[10.0,15.0,-22.0]],"t":["F4"]},{"p":[[70.0,15.0,-10.0],[70.0,15.0,0.0]],"t":["F6"]},{"p":[[30.0,15.0,-10.0],[70.0,15.0,-10.0]],"t":["F6"]},{"p":[[30.0,15.0,-10.0],[30.0,15.0,0.0]],"t":["F6"]},{"p":[[70.0,15.0,-10.0],[70.0,45.0,-10.0]],"t":["F6"]},{"p":[[70.0,45.0,-10.0],[70.0,45.0,0.0]],"t":["F6"]},{"p":[[30.0,45.0,-10.0],[70.0,45.0,-10.0]],"t":["F6"]},{"p":[[30.0,45.0,-10.0],[30.0,45.0,0.0]],"t":["F6"]},{"p":[[30.0,15.0,-10.0],[30.0,45.0,-10.0]],"t":["F6"]},{"p":[[75.0,20.0,-40.0],[75.0,20.0,-35.0]],"t":["F5"]},{"p":[[25.0,20.0,-40.0],[25.0,20.0,-35.0]],"t":["F5"]},{"p":[[25.0,20.0,-35.0],[75.0,20.0,-35.0]],"t":["F5"]},{"p":[[75.0,40.0,-40.0],[75.0,40.0,-35.0]],"t":["F5"]},{"p":[[75.0,20.0,-35.0],[75.0,40.0,-35.0]],"t":["F5"]},{"p":[[25.0,40.0,-40.0],[25.0,40.0,-35.0]],"t":["F5"]},{"p":[[25.0,40.0,-35.0],[75.0,40.0,-35.0]],"t":["F5"]},{"p":[[25.0,20.0,-35.0],[25.0,40.0,-35.0]],"t":["F5"]},{"p":[[85.0,30.0,-31.4],[85.0,29.67,-31.38],[85.0,29.34,-31.34],[85.0,29.01,-31.25],[85.0,28.7,-31.14],[85.0,28.4,-31.0],[85.0,28.11,-30.83],[85.0,27.84,-30.63],[85.0,27.6,-30.4],[85.0,27.37,-30.16],[85.0,27.17,-29.89],[85.0,27.0,-29.6],[85.0,26.86,-29.3],[85.0,26.75,-28.99],[85.0,26.66,-28.66],[85.0,26.62,-28.33],[85.0,26.6,-28.0],[85.0,26.62,-27.67],[85.0,26.66,-27.34],[85.0,26.75,-27.01],[85.0,26.86,-26.7],[85.0,27.0,-26.4],[85.0,27.17,-26.11],[85.0,27.37,-25.84],[85.0,27.6,-25.6],[85.0,27.84,-25.37],[85.0,28.11,-25.17],[85.0,28.4,-25.0],[85.0,28.7,-24.86],[85.0,29.01,-24.75],[85.0,29.34,-24.66],[85.0,29.67,-24.62],[85.0,30.0,-24.6],[85.0,30.33,-24.62],[85.0,30.66,-24.66],[85.0,30.99,-24.75],[85.0,31.3,-24.86],[85.0,31.6,-25.0],[85.0,31.89,-25.17],[85.0,32.16,-25.37],[85.0,32.4,-25.6],[85.0,32.63,-25.84],[85.0,32.83,-26.11],[85.0,33.0,-26.4],[85.0,33.14,-26.7],[85.0,33.25,-27.01],[85.0,33.34,-27.34],[85.0,33.38,-27.67],[85.0,33.4,-28.0],[85.0,33.38,-28.33],[85.0,33.34,-28.66],[85.0,33.25,-28.99],[85.0,33.14,-29.3],[85.0,33.0,-29.6],[85.0,32.83,-29.89],[85.0,32.63,-30.16],[85.0,32.4,-30.4],[85.0,32.16,-30.63],[85.0,31.89,-30.83],[85.0,31.6,-31.0],[85.0,31.3,-31.14],[85.0,30.99,-31.25],[85.0,30.66,-31.34],[85.0,30.33,-31.38],[85.0,30.0,-31.4]],"t":["F3"]},{"p":[[85.0,30.0,-15.4],[85.0,29.67,-15.38],[85.0,29.34,-15.34],[85.0,29.01,-15.25],[85.0,28.7,-15.14],[85.0,28.4,-15.0],[85.0,28.11,-14.83],[85.0,27.84,-14.63],[85.0,27.6,-14.4],[85.0,27.37,-14.16],[85.0,27.17,-13.89],[85.0,27.0,-13.6],[85.0,26.86,-13.3],[85.0,26.75,-12.99],[85.0,26.66,-12.66],[85.0,26.62,-12.33],[85.0,26.6,-12.0],[85.0,26.62,-11.67],[85.0,26.66,-11.34],[85.0,26.75,-11.01],[85.0,26.86,-10.7],[85.0,27.0,-10.4],[85.0,27.17,-10.11],[85.0,27.37,-9.84],[85.0,27.6,-9.6],[85.0,27.84,-9.37],[85.0,28.11,-9.17],[85.0,28.4,-9.0],[85.0,28.7,-8.86],[85.0,29.01,-8.75],[85.0,29.34,-8.66],[85.0,29.67,-8.62],[85.0,30.0,-8.6],[85.0,30.33,-8.62],[85.0,30.66,-8.66],[85.0,30.99,-8.75],[85.0,31.3,-8.86],[85.0,31.6,-9.0],[85.0,31.89,-9.17],[85.0,32.16,-9.37],[85.0,32.4,-9.6],[85.0,32.63,-9.84],[85.0,32.83,-10.11],[85.0,33.0,-10.4],[85.0,33.14,-10.7],[85.0,33.25,-11.01],[85.0,33.34,-11.34],[85.0,33.38,-11.67],[85.0,33.4,-12.0],[85.0,33.38,-12.33],[85.0,33.34,-12.66],[85.0,33.25,-12.99],[85.0,33.14,-13.3],[85.0,33.0,-13.6],[85.0,32.83,-13.89],[85.0,32.63,-14.16],[85.0,32.4,-14.4],[85.0,32.16,-14.63],[85.0,31.89,-14.83],[85.0,31.6,-15.0],[85.0,31.3,-15.14],[85.0,30.99,-15.25],[85.0,30.66,-15.34],[85.0,30.33,-15.38],[85.0,30.0,-15.4]],"t":["F3"]}],"ops":[{"n":1,"title":"Торцовка верха (снять 1 мм)","tool":"T1 — Торцевая фреза Ø50, 5 пластин (45°)","geom":"face","ids":["A"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":2,"title":"Черновая наружного контура, глубина 40.3 мм","tool":"T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45","geom":"outer_rough","ids":["K"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":3,"title":"Черновая: карман 40×30×10","tool":"T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45","geom":"pocket_area","ids":["F6"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":4,"title":"Чистовая наружного контура","tool":"T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45","geom":"outer_walls","ids":["K"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":5,"title":"Чистовая дна: карман 40×30×10","tool":"T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45","geom":"pocket_floor","ids":["F6"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":6,"title":"Чистовая стенок: карман 40×30×10","tool":"T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45","geom":"pocket_walls","ids":["F6"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":7,"title":"Торцовка в размер по толщине 40 мм (снять 9 мм)","tool":"T1 — Торцевая фреза Ø50, 5 пластин (45°)","geom":"face","ids":["B"],"side":"bottom","setup":"Установ 2 — низ (сторона B, переворот)","wcs":"G55"},{"n":8,"title":"Черновая: карман 50×20×5","tool":"T3 — Фреза концевая ZCC AL-3E-D12.0 Ø12 z3 Lc32","geom":"pocket_area","ids":["F5"],"side":"bottom","setup":"Установ 2 — низ (сторона B, переворот)","wcs":"G55"},{"n":9,"title":"Чистовая дна: карман 50×20×5","tool":"T3 — Фреза концевая ZCC AL-3E-D12.0 Ø12 z3 Lc32","geom":"pocket_floor","ids":["F5"],"side":"bottom","setup":"Установ 2 — низ (сторона B, переворот)","wcs":"G55"},{"n":10,"title":"Чистовая стенок: карман 50×20×5","tool":"T3 — Фреза концевая ZCC AL-3E-D12.0 Ø12 z3 Lc32","geom":"pocket_walls","ids":["F5"],"side":"bottom","setup":"Установ 2 — низ (сторона B, переворот)","wcs":"G55"},{"n":11,"title":"Черновая: карман 30×12×15","tool":"T4 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18","geom":"pocket_area","ids":["F4"],"side":"front","setup":"Установ 3 — передняя грань","wcs":"G56"},{"n":12,"title":"Центровка под Ø10","tool":"T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10","geom":"holes","ids":["F2"],"side":"front","setup":"Установ 3 — передняя грань","wcs":"G56"},{"n":13,"title":"Сверление Ø10","tool":"T6 — Сверло ZCC 1101SC05-1000 Ø10 5xD","geom":"holes","ids":["F2"],"side":"front","setup":"Установ 3 — передняя грань","wcs":"G56"},{"n":14,"title":"Чистовая дна: карман 30×12×15","tool":"T4 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18","geom":"pocket_floor","ids":["F4"],"side":"front","setup":"Установ 3 — передняя грань","wcs":"G56"},{"n":15,"title":"Чистовая стенок: карман 30×12×15","tool":"T4 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18","geom":"pocket_walls","ids":["F4"],"side":"front","setup":"Установ 3 — передняя грань","wcs":"G56"},{"n":16,"title":"Центровка под Ø8","tool":"T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10","geom":"holes","ids":["F1"],"side":"left","setup":"Установ 4 — левая грань","wcs":"G57"},{"n":17,"title":"Сверление Ø8","tool":"T7 — Сверло ZCC 1534SU03-0800 Ø8 3xD","geom":"holes","ids":["F1"],"side":"left","setup":"Установ 4 — левая грань","wcs":"G57"},{"n":18,"title":"Центровка под Ø6.8","tool":"T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10","geom":"holes","ids":["F3"],"side":"right","setup":"Установ 5 — правая грань","wcs":"G58"},{"n":19,"title":"Сверление Ø6.8 (2 шт.)","tool":"T8 — Сверло ZCC 1534SU03-0680 Ø6.8 3xD","geom":"holes","ids":["F3"],"side":"right","setup":"Установ 5 — правая грань","wcs":"G58"}],"pockets":["F4","F5","F6"],"holes":["F1","F2","F3"]}</script>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+const M=JSON.parse(document.getElementById('nc3d-data').textContent);
+const GEOM={"face": "верхняя плоскость заготовки", "outer_rough": "припуск вокруг наружного контура", "outer_walls": "наружный контур", "pocket_area": "объём кармана", "pocket_corners": "остаток в углах кармана", "pocket_floor": "дно кармана", "pocket_walls": "стенки кармана", "slot_area": "паз", "slot_walls": "стенки паза", "holes": "отверстия", "hole_area": "выборка отверстия", "hole_walls": "стенка отверстия", "thread": "резьбовые отверстия", "chamfer_outer": "верхняя кромка контура", "chamfer_pockets": "кромки карманов и пазов", "chamfer_holes": "кромки отверстий", "chamfer_all": "все верхние кромки", "surface": "3D-поверхность"};
+const cv=document.getElementById('nc3d'),ctx=cv.getContext('2d');
+const sel=document.getElementById('nc3d-op'),info=document.getElementById('nc3d-info');
+const flip=document.getElementById('nc3d-flip'),stockCb=document.getElementById('nc3d-stock');
+const [X,Y,Z]=M.size;let R=null,zoom=1,panX=0,panY=0,cur=null;
+// матрица вида: строки — оси экрана (вправо, вверх, к зрителю) в мировых координатах; вращение без ограничений
+function fromAzEl(a,e){const ca=Math.cos(a),sa=Math.sin(a),ce=Math.cos(e),se=Math.sin(e);
+ return [[ca,-sa,0],[sa*se,ca*se,ce],[-sa*ce,-ca*ce,se]];}
+function mul(A,B){return A.map(r=>[0,1,2].map(j=>r[0]*B[0][j]+r[1]*B[1][j]+r[2]*B[2][j]));}
+function ortho(M){const n=v=>{const l=Math.hypot(...v)||1;return v.map(x=>x/l);};const a=n(M[0]);let b=M[1];
+ const d=a[0]*b[0]+a[1]*b[1]+a[2]*b[2];b=n(b.map((x,i)=>x-d*a[i]));
+ const c=[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];return [a,b,c];}
+function turn(ay,ax){const cy=Math.cos(ay),sy=Math.sin(ay),cx=Math.cos(ax),sx=Math.sin(ax);
+ const Ry=[[cy,0,sy],[0,1,0],[-sy,0,cy]],Rx=[[1,0,0],[0,cx,-sx],[0,sx,cx]];R=ortho(mul(Rx,mul(Ry,R)));}
+R=fromAzEl(-0.62,0.6);
+M.edges.forEach(e=>{e.ts=new Set(e.t);let lo=1e9,hi=-1e9;e.p.forEach(p=>{lo=Math.min(lo,p[2]);hi=Math.max(hi,p[2]);});e.lo=lo;e.hi=hi;});
+const fmin={};M.edges.forEach(e=>e.t.forEach(t=>{fmin[t]=Math.min(t in fmin?fmin[t]:1e9,e.lo);}));
+const S=M.stock,sb=[[S[0],S[1],S[2]],[S[3],S[1],S[2]],[S[3],S[4],S[2]],[S[0],S[4],S[2]],[S[0],S[1],S[5]],[S[3],S[1],S[5]],[S[3],S[4],S[5]],[S[0],S[4],S[5]]];
+const stockEdges=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]].map(([a,b])=>[sb[a],sb[b]]);
+function flipped(){return flip.checked&&cur&&cur.side!=='top';}
+// координаты детали → СК установа (грань установа вверх, нуль — левый передний угол грани); см. numcraft/faces.py
+function toSetup(side,x,y,z){switch(side){
+ case 'bottom':return [x,Y-y,-Z-z];
+ case 'front':return [x,z+Z,-y];
+ case 'back':return [X-x,z+Z,-(Y-y)];
+ case 'left':return [Y-y,z+Z,-x];
+ case 'right':return [y,z+Z,-(X-x)];
+ default:return [x,y,z];}}
+function tf(p){return flipped()?toSetup(cur.side,p[0],p[1],p[2]):[p[0],p[1],p[2]];}
+function center(){const c=[[0,0,0],[X,Y,-Z]].map(q=>tf(q));return [0,1,2].map(i=>(c[0][i]+c[1][i])/2);}
+let C=[X/2,Y/2,-Z/2];
+function rot(x,y,z){x-=C[0];y-=C[1];z-=C[2];const r=R;
+ return [r[0][0]*x+r[0][1]*y+r[0][2]*z,r[1][0]*x+r[1][1]*y+r[1][2]*z,-(r[2][0]*x+r[2][1]*y+r[2][2]*z)];}
+function hl(e){if(!cur)return false;const g=cur.geom,ids=cur.ids,face=cur.side==='bottom'?'bot':'top';
+ if(g==='face')return e.ts.has(face);
+ if(g==='outer_rough'||g==='outer_walls')return e.ts.has('outer');
+ if(g==='chamfer_outer')return e.ts.has('outer')&&e.ts.has(face);
+ if(g==='chamfer_all')return e.ts.has(face);
+ if(g==='chamfer_pockets')return M.pockets.some(i=>e.ts.has(i))&&e.ts.has(face);
+ if(g==='chamfer_holes')return M.holes.some(i=>e.ts.has(i))&&(e.ts.has(face)||Math.abs(e.hi)<0.05);
+ if(g==='pocket_floor')return ids.some(i=>e.ts.has(i)&&Math.abs(e.hi-fmin[i])<0.05);
+ return ids.some(i=>e.ts.has(i));}
+function color(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()||'#888';}
+function draw(){C=center();
+ const dpr=window.devicePixelRatio||1,W=cv.clientWidth,H=Math.min(Math.round(W*0.75),620);
+ cv.width=W*dpr;cv.height=H*dpr;cv.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+ const diag=Math.hypot(X,Y,Z)||1,s=0.82*Math.min(W,H)/diag*zoom;
+ const P=p=>{const r=rot(...tf(p));return [W/2+(r[0]+panX)*s,H/2-(r[1]+panY)*s,r[2]];};
+ const fg=color('--fg'),hc=color('--hl'),mu=color('--muted');
+ let dmin=1e9,dmax=-1e9;const items=M.edges.map(e=>{const q=e.p.map(P);let d=0;q.forEach(v=>{d+=v[2];dmin=Math.min(dmin,v[2]);dmax=Math.max(dmax,v[2]);});return {e,q,d:d/q.length,h:hl(e)};});
+ items.sort((a,b)=>b.d-a.d);
+ if(stockCb.checked){ctx.save();ctx.setLineDash([5,4]);ctx.strokeStyle=mu;ctx.lineWidth=1;ctx.globalAlpha=.7;
+  const top=cur&&(cur.geom==='face'||cur.geom==='outer_rough');if(top){ctx.strokeStyle=hc;ctx.globalAlpha=1;}
+  stockEdges.forEach(([a,b])=>{const p=P(a),q=P(b);ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);ctx.stroke();});ctx.restore();}
+ const span=Math.max(dmax-dmin,1e-6);
+ for(const pass of [false,true])for(const it of items){if(it.h!==pass)continue;
+  ctx.beginPath();it.q.forEach((v,i)=>i?ctx.lineTo(v[0],v[1]):ctx.moveTo(v[0],v[1]));
+  if(it.h){ctx.strokeStyle=hc;ctx.lineWidth=3;ctx.globalAlpha=1;}
+  else{ctx.strokeStyle=fg;ctx.lineWidth=1.2;ctx.globalAlpha=cur?0.25+0.35*(1-(it.d-dmin)/span):0.35+0.65*(1-(it.d-dmin)/span);}
+  ctx.stroke();}
+ ctx.globalAlpha=1;
+ // нуль установа
+ const o=M.datum==='center'?[X/2,Y/2,0]:[0,0,0],L=diag*0.18,wcs=cur?cur.wcs:'G54';
+ const Q=p=>{const r=rot(p[0],p[1],p[2]);return [W/2+(r[0]+panX)*s,H/2-(r[1]+panY)*s];};
+ const O=Q(o);const ax=[[[o[0]+L,o[1],o[2]],'X','#e03131'],[[o[0],o[1]+L,o[2]],'Y','#2f9e44'],[[o[0],o[1],o[2]+L],'Z','#1971c2']];
+ ctx.font='600 13px system-ui,sans-serif';ax.forEach(([p,t,c])=>{const q=Q(p);ctx.strokeStyle=c;ctx.fillStyle=c;ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(O[0],O[1]);ctx.lineTo(q[0],q[1]);ctx.stroke();ctx.fillText(t,q[0]+3,q[1]-3);});
+ ctx.fillStyle=color('--datum');ctx.fillText(wcs,O[0]+4,O[1]+16);}
+function view(a,e){R=fromAzEl(a,e);zoom=1;panX=panY=0;draw();}
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{const v=b.dataset.view;
+ ({top:()=>view(0,Math.PI/2),front:()=>view(0,0),right:()=>view(-Math.PI/2,0),iso:()=>view(-0.62,0.6),bottom:()=>view(0,-Math.PI/2)})[v]();});
+let drag=null;const pts=new Map();
+cv.addEventListener('pointerdown',ev=>{cv.setPointerCapture(ev.pointerId);pts.set(ev.pointerId,[ev.clientX,ev.clientY]);
+ drag={x:ev.clientX,y:ev.clientY,pan:ev.button===2||ev.shiftKey,d:null};});
+cv.addEventListener('pointermove',ev=>{if(!drag)return;const pr=pts.get(ev.pointerId);if(pr){pts.set(ev.pointerId,[ev.clientX,ev.clientY]);}
+ if(pts.size===2){const [a,b]=[...pts.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);if(drag.d)zoom*=d/drag.d;drag.d=d;draw();return;}
+ const dx=ev.clientX-drag.x,dy=ev.clientY-drag.y;drag.x=ev.clientX;drag.y=ev.clientY;
+ if(drag.pan){const W=cv.clientWidth,H=cv.clientHeight,s=0.82*Math.min(W,H)/Math.hypot(X,Y,Z)*zoom;panX+=dx/s;panY-=dy/s;}
+ else if(ev.altKey||ev.ctrlKey){const a=dx*0.01;const c=Math.cos(a),s2=Math.sin(a);R=ortho(mul([[c,-s2,0],[s2,c,0],[0,0,1]],R));}
+ else{turn(dx*0.01,dy*0.01);}draw();});
+const up=ev=>{pts.delete(ev.pointerId);if(!pts.size)drag=null;else if(drag)drag.d=null;};
+cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+cv.addEventListener('contextmenu',ev=>ev.preventDefault());
+cv.addEventListener('wheel',ev=>{ev.preventDefault();zoom*=Math.exp(-ev.deltaY*0.0015);draw();},{passive:false});
+cv.addEventListener('dblclick',()=>view(-0.62,0.6));
+let g='';M.ops.forEach(op=>{if(op.setup!==g){g=op.setup;const og=document.createElement('optgroup');og.label=g;sel.appendChild(og);}
+ const o=document.createElement('option');o.value=op.n;o.textContent='Оп. '+op.n+' — '+op.title;sel.lastChild.appendChild(o);});
+function setOp(n){cur=M.ops.find(o=>String(o.n)===String(n))||null;sel.value=cur?cur.n:'';
+ info.textContent=cur?('Оп. '+cur.n+' · '+cur.tool+' · '+(GEOM[cur.geom]||'')+(flipped()?(cur.side==='bottom'?' · деталь перевёрнута (установ 2)':' · '+cur.setup+': грань вверх, как в тисках'):'')):'Выберите операцию — обрабатываемые рёбра подсветятся.';
+ document.querySelectorAll('tr.oprow').forEach(r=>r.classList.toggle('cur',cur&&r.dataset.op===String(cur.n)));draw();}
+sel.onchange=()=>setOp(sel.value);flip.onchange=()=>setOp(sel.value);stockCb.onchange=draw;
+window.nc3dShow=n=>{setOp(n);const a=document.getElementById('v3d');const r=a.getBoundingClientRect();
+ if(r.top<0||r.bottom>window.innerHeight)a.scrollIntoView({behavior:'smooth',block:'start'});};
+document.querySelectorAll('table').forEach(t=>{const h=t.querySelector('th');if(!h||h.textContent.trim()!=='Оп.')return;
+ t.querySelectorAll('tr').forEach((r,i)=>{if(!i)return;const n=r.cells[0].textContent.trim();r.dataset.op=n;r.classList.add('oprow');
+ r.title='Показать в 3D';r.onclick=()=>window.nc3dShow(n);});});
+window.addEventListener('resize',draw);setOp('');
+});
+</script>
+</div></aside>
+</div></body></html>

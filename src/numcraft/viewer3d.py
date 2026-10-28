@@ -46,13 +46,22 @@ function ortho(M){const n=v=>{const l=Math.hypot(...v)||1;return v.map(x=>x/l);}
 function turn(ay,ax){const cy=Math.cos(ay),sy=Math.sin(ay),cx=Math.cos(ax),sx=Math.sin(ax);
  const Ry=[[cy,0,sy],[0,1,0],[-sy,0,cy]],Rx=[[1,0,0],[0,cx,-sx],[0,sx,cx]];R=ortho(mul(Rx,mul(Ry,R)));}
 R=fromAzEl(-0.62,0.6);
-const C=[X/2,Y/2,-Z/2];
 M.edges.forEach(e=>{e.ts=new Set(e.t);let lo=1e9,hi=-1e9;e.p.forEach(p=>{lo=Math.min(lo,p[2]);hi=Math.max(hi,p[2]);});e.lo=lo;e.hi=hi;});
 const fmin={};M.edges.forEach(e=>e.t.forEach(t=>{fmin[t]=Math.min(t in fmin?fmin[t]:1e9,e.lo);}));
 const S=M.stock,sb=[[S[0],S[1],S[2]],[S[3],S[1],S[2]],[S[3],S[4],S[2]],[S[0],S[4],S[2]],[S[0],S[1],S[5]],[S[3],S[1],S[5]],[S[3],S[4],S[5]],[S[0],S[4],S[5]]];
 const stockEdges=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]].map(([a,b])=>[sb[a],sb[b]]);
-function flipped(){return flip.checked&&cur&&cur.side==='bottom';}
-function tf(p){let x=p[0],y=p[1],z=p[2];if(flipped()){y=Y-y;z=-Z-z;}return [x,y,z];}
+function flipped(){return flip.checked&&cur&&cur.side!=='top';}
+// координаты детали → СК установа (грань установа вверх, нуль — левый передний угол грани); см. numcraft/faces.py
+function toSetup(side,x,y,z){switch(side){
+ case 'bottom':return [x,Y-y,-Z-z];
+ case 'front':return [x,z+Z,-y];
+ case 'back':return [X-x,z+Z,-(Y-y)];
+ case 'left':return [Y-y,z+Z,-x];
+ case 'right':return [y,z+Z,-(X-x)];
+ default:return [x,y,z];}}
+function tf(p){return flipped()?toSetup(cur.side,p[0],p[1],p[2]):[p[0],p[1],p[2]];}
+function center(){const c=[[0,0,0],[X,Y,-Z]].map(q=>tf(q));return [0,1,2].map(i=>(c[0][i]+c[1][i])/2);}
+let C=[X/2,Y/2,-Z/2];
 function rot(x,y,z){x-=C[0];y-=C[1];z-=C[2];const r=R;
  return [r[0][0]*x+r[0][1]*y+r[0][2]*z,r[1][0]*x+r[1][1]*y+r[1][2]*z,-(r[2][0]*x+r[2][1]*y+r[2][2]*z)];}
 function hl(e){if(!cur)return false;const g=cur.geom,ids=cur.ids,face=cur.side==='bottom'?'bot':'top';
@@ -65,7 +74,7 @@ function hl(e){if(!cur)return false;const g=cur.geom,ids=cur.ids,face=cur.side==
  if(g==='pocket_floor')return ids.some(i=>e.ts.has(i)&&Math.abs(e.hi-fmin[i])<0.05);
  return ids.some(i=>e.ts.has(i));}
 function color(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()||'#888';}
-function draw(){
+function draw(){C=center();
  const dpr=window.devicePixelRatio||1,W=cv.clientWidth,H=Math.min(Math.round(W*0.75),620);
  cv.width=W*dpr;cv.height=H*dpr;cv.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
  const diag=Math.hypot(X,Y,Z)||1,s=0.82*Math.min(W,H)/diag*zoom;
@@ -110,7 +119,7 @@ cv.addEventListener('dblclick',()=>view(-0.62,0.6));
 let g='';M.ops.forEach(op=>{if(op.setup!==g){g=op.setup;const og=document.createElement('optgroup');og.label=g;sel.appendChild(og);}
  const o=document.createElement('option');o.value=op.n;o.textContent='Оп. '+op.n+' — '+op.title;sel.lastChild.appendChild(o);});
 function setOp(n){cur=M.ops.find(o=>String(o.n)===String(n))||null;sel.value=cur?cur.n:'';
- info.textContent=cur?('Оп. '+cur.n+' · '+cur.tool+' · '+(GEOM[cur.geom]||'')+(flipped()?' · деталь перевёрнута (установ 2)':'')):'Выберите операцию — обрабатываемые рёбра подсветятся.';
+ info.textContent=cur?('Оп. '+cur.n+' · '+cur.tool+' · '+(GEOM[cur.geom]||'')+(flipped()?(cur.side==='bottom'?' · деталь перевёрнута (установ 2)':' · '+cur.setup+': грань вверх, как в тисках'):'')):'Выберите операцию — обрабатываемые рёбра подсветятся.';
  document.querySelectorAll('tr.oprow').forEach(r=>r.classList.toggle('cur',cur&&r.dataset.op===String(cur.n)));draw();}
 sel.onchange=()=>setOp(sel.value);flip.onchange=()=>setOp(sel.value);stockCb.onchange=draw;
 window.nc3dShow=n=>{setOp(n);const a=document.getElementById('v3d');const r=a.getBoundingClientRect();

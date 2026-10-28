@@ -12,6 +12,7 @@ import math
 from typing import Dict, List, Optional, Tuple
 
 from numcraft import cutting, strategies as S
+from numcraft.faces import face_dims
 from numcraft.knowledge import tooling
 from numcraft.knowledge.machine import Machine, load_machine
 from numcraft.knowledge.materials import Material, resolve_material
@@ -62,14 +63,20 @@ class Planner:
         return stock
 
     # ------------------------------------------------------------------ helpers
+    def _thick(self, side: str) -> float:
+        """Глубина детали от грани до противоположной грани (для сквозных элементов)."""
+        return face_dims(side, self.part.size)[2]
+
     def _xy_positions(self, pts, side: str) -> List[Tuple[float, float]]:
+        """Координаты элемента (вид сверху или вид на грань) → СК установа."""
         p = self.part.size
+        w, h, _ = face_dims(side, p)
         out = []
         for x, y in pts:
             if side == "bottom":  # переворот вокруг оси X
                 y = p.y - y
             if self.part.datum == "center":
-                x, y = x - p.x / 2, y - p.y / 2
+                x, y = x - w / 2, y - h / 2
             out.append((round(x, 3), round(y, 3)))
         return out
 
@@ -140,7 +147,7 @@ class Planner:
 
     def pocket_ops(self, f: PocketFeature) -> List[Operation]:
         ops: List[Operation] = []
-        depth = self.part.size.z + 0.3 if f.through else f.depth
+        depth = self._thick(f.side) + 0.3 if f.through else f.depth
         narrow = min(f.length, f.width)
         r_corner = f.corner_radius
         rough = self._end_mill(min(16.0, 0.65 * narrow), depth + 1, f"черновая кармана {f.id}")
@@ -178,7 +185,7 @@ class Planner:
 
     def slot_ops(self, f: SlotFeature) -> List[Operation]:
         ops: List[Operation] = []
-        depth = self.part.size.z + 0.3 if f.through else f.depth
+        depth = self._thick(f.side) + 0.3 if f.through else f.depth
         cnt = f" ×{f.count}" if f.count > 1 else ""
         name = f"паз {_n(f.length)}×{_n(f.width)}×{_n(depth)}{cnt}"
         exact = tooling.pick_end_mill(self.g, f.width, min_lc=depth, min_d=f.width)
@@ -242,7 +249,7 @@ class Planner:
     def hole_ops(self, f: HoleFeature, positions) -> List[Operation]:
         ops: List[Operation] = []
         z0 = f.z_start
-        depth = f.depth if f.depth else (self.part.size.z + z0 if f.through else None)
+        depth = f.depth if f.depth else (self._thick(f.side) + z0 if f.through else None)
         if depth is None:
             depth = round(f.diameter * 2, 1)
             self.questions.append(f"Отверстие {f.id} Ø{_n(f.diameter)}: глубина не указана — принято {_n(depth)} мм.")
@@ -302,7 +309,7 @@ class Planner:
         size = f"M{_n(d)}" + (f"x{_n(p)}" if p != tooling.METRIC_COARSE.get(d, (None,))[0] else "")
         tl = f.depth
         if tl is None:
-            tl = self.part.size.z + f.z_start if f.through else round(2 * d, 1)
+            tl = self._thick(f.side) + f.z_start if f.through else round(2 * d, 1)
             if not f.through:
                 self.questions.append(f"Резьба {f.id} {size}: длина резьбы не указана — принято 2D = {_n(tl)} мм.")
         cnt = f" ({f.count} шт.)" if f.count > 1 else ""
@@ -391,8 +398,8 @@ class Planner:
                 inside = all(box[0] + r <= x <= box[2] - r and box[1] + r <= y <= box[3] - r for x, y in h.positions)
                 if inside:
                     h.z_start = -pk.depth
-                    if h.through and h.depth and h.depth >= self.part.size.z - 1e-6:
-                        h.depth = round(self.part.size.z - pk.depth, 3)
+                    if h.through and h.depth and h.depth >= self._thick(h.side) - 1e-6:
+                        h.depth = round(self._thick(h.side) - pk.depth, 3)
                     self.assumptions.append(f"{h.id}: отверстие в дне кармана {pk.id} — вход с Z{_n(-pk.depth)}.")
                     break
 
@@ -488,18 +495,32 @@ class Planner:
             setups.append(Setup(number=2, side="bottom", title="Установ 2 — низ (сторона B, переворот)",
                                 wcs="G55", stock_top=round(bottom_allow, 3), workholding=wh2, datum=self._datum_text(bottom_allow, flip=True), operations=s2_ops))
 
-        # --- боковые установы
+        # --- боковые установы: деталь на бок / на торец, обрабатываемая грань вверх
         for side in ("front", "back", "left", "right"):
             feats = by_side.get(side, [])
             if not feats:
                 continue
             ops = self._feature_ops(feats, side)
             wcs = f"G{54 + len(setups)}" if len(setups) < 6 else "G54.1 P1"
+            w, h, depth = face_dims(side, ps)
+            name = SIDE_RU[side]
+            if side in ("front", "back"):
+                hold = [f"Деталь на бок, {name} вверх: зажим по верхней и нижней плоскостям (обработаны), "
+                        f"губки по {_n(ps.z)} мм, длина в губках {_n(ps.x)} мм.",
+                        f"Деталь стоит на параллелях гранью «{SIDE_RU['back' if side == 'front' else 'front']}»; "
+                        f"в губках ≥ {_n(round(depth / 2))} мм (половина высоты), над губками 5–10 мм — "
+                        "элементы уходят внутрь детали, губки не мешают."]
+            else:
+                hold = [f"Деталь на торец, {name} вверх: зажим по передней и задней граням "
+                        f"({_n(ps.y)} мм) или по верху/низу ({_n(ps.z)} мм) — что шире.",
+                        f"Деталь стоит на торце (высота {_n(depth)} мм): в губках ≥ {_n(round(depth / 2))} мм, "
+                        "над губками 5–10 мм; при высоте > 120 мм — угольник или тиски с поворотной губкой."]
+            hold.append("Упор по обработанной грани; перпендикулярность базы проверить индикатором ≤ 0.02 мм.")
             setups.append(Setup(
-                number=len(setups) + 1, side=side, title=f"Установ {len(setups) + 1} — {SIDE_RU[side]}", wcs=wcs,
-                workholding=[f"Деталь в тиски вертикально, {SIDE_RU[side]} вверх; базирование на угольник/упор "
-                             "по обработанной грани.", "Проверить индикатором перпендикулярность базовой грани ≤ 0.02 мм."],
-                datum=[f"{wcs}: X/Y от обработанных граней детали (щуп), Z0 — обрабатываемая грань."],
+                number=len(setups) + 1, side=side, title=f"Установ {len(setups) + 1} — {name}", wcs=wcs,
+                workholding=hold,
+                datum=[f"{wcs}: X0 Y0 — левый нижний угол грани «{name}» (вид на грань: X вдоль грани "
+                       f"{_n(w)} мм, Y по высоте {_n(h)} мм).", "Z0 — плоскость грани."],
                 operations=ops))
 
         tools = self._finalize(setups)
