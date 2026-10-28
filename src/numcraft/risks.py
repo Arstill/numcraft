@@ -144,6 +144,17 @@ def assess(sheet: TechSheet, mat: Material, machine: Machine) -> List[Risk]:
                 add_op(op, "высокий", "Длина режущей части", f"глубина {_n(round(depth, 2))} мм > Lc {_n(t.flute_length)} "
                        f"фрезы Ø{_n(t.diameter)}", "Хвостовик заденет стенку: фреза с удлинённой режущей частью "
                        "или шейкой (Neck), либо обработка в два пояса с переворотом.")
+            if t.kind == "tap" and t.reach and depth > t.reach + 0.01:
+                add_op(op, "высокий", "Длина метчика", f"глубина {_n(round(depth, 2))} мм от верха > рабочей длины "
+                       f"{t.article or 'метчика'} {_n(t.reach)} мм", "Метчик с хвостовиком DIN 376/374 "
+                       "(хвостовик проходит в отверстие) или удлинённый; уточнить глубину резьбы.")
+            if t.overall_length and t.kind != "face_mill":
+                grip = max(20.0, 3 * (t.shank_d or t.diameter))
+                if depth + 5 > t.overall_length - grip:
+                    add_op(op, "высокий", "Длина инструмента", f"{t.article or t.label()}: нужно ≥ "
+                           f"{_n(round(depth + 5, 1))} мм вылета (глубина + 5 мм над деталью), а при зажиме ≥ "
+                           f"{_n(grip)} мм доступно {_n(round(t.overall_length - grip, 1))} мм",
+                           "Взять удлинённое исполнение (большая общая длина / шейка) по каталогу ZCC.")
             if t.kind == "end_mill" and ld > 4:
                 add_op(op, "высокий", "Вылет", f"глубина {_n(round(depth, 2))} мм фрезой Ø{_n(t.diameter)} "
                        f"(L/D = {_n(round(ld, 1))})", "Удлинённая фреза с шейкой, ae и fz −30 %, термо/гидропатрон; "

@@ -152,12 +152,41 @@ def reamer(d: float, fit: str) -> Tool:
                 overall_length=round(d * 6 + 50, 0), description=f"Развёртка Ø{_n(d)}{fit} тв. сплав")
 
 
-def tap(size: str, through: bool) -> Tool:
+TAP_GRIP = 25.0  # зажим метчика в цанге / патроне, мм
+
+
+@lru_cache(maxsize=1)
+def catalog_taps() -> list:
+    path = _DIR / "catalogs" / "zcc_taps.yaml"
+    if not path.exists():
+        return []
+    with open(path, "r", encoding="utf-8") as f:
+        return yaml.safe_load(f).get("taps", [])
+
+
+def tap(size: str, through: bool, depth: float = 0.0, tsc: bool = False) -> Tool:
+    """Метчик из каталога ZCC под резьбу, тип отверстия и глубину (рабочая длина l3 ≥ depth).
+    Предпочтение: достаёт → со склада → короче (жёстче). Без каталога — обобщённый метчик."""
     d, p = parse_thread(size)
+    name = f"M{_n(d)}" + (f"x{_n(p)}" if METRIC_COARSE.get(d, (None,))[0] != p else "")
+    hole = "through" if through else "blind"
+    cands = [r for r in catalog_taps() if math.isclose(r["d"], d) and math.isclose(r["pitch"], p)
+             and r["hole"] == hole and (tsc or not r["internal_coolant"])]
+    def reach(r: dict) -> float:
+        # DIN 376/374: хвостовик тоньше резьбы и проходит в отверстие — ограничивает общая длина минус зажим
+        return r["l1"] - TAP_GRIP if r["shank_d"] < r["d"] - 0.3 else r["l3"]
+
+    if cands:
+        r = sorted(cands, key=lambda r: (reach(r) < depth, not r["in_stock"], r["l1"]))[0]
+        kind = "сквозная, подточка (B)" if through else "глухая, спираль 40° (C)"
+        return Tool(kind="tap", diameter=d, flutes=3, pitch=p, thread=name, tool_material="HSS-E", coating="TiAlN",
+                    overall_length=r["l1"], flute_length=r["l2"], reach=reach(r), shank_d=r["shank_d"],
+                    article=r["article"], in_stock=r["in_stock"], core_drill=r["core_drill"],
+                    description=f"Метчик ZCC {r['article']} ({kind}, DIN {r['shank_din']}, HSS-E HG23)")
     kind = "с подточкой (сквозная)" if through else "спиральная (глухая)"
-    return Tool(kind="tap", diameter=d, flutes=3, pitch=p, thread=size.upper().replace("М", "M"),
+    return Tool(kind="tap", diameter=d, flutes=3, pitch=p, thread=name,
                 tool_material="HSS-E", coating="TiN/TiCN",
-                description=f"Метчик машинный {size.upper().replace('М', 'M')} {kind}, HSS-E")
+                description=f"Метчик машинный {name} {kind}, HSS-E")
 
 
 def reaming_allowance(d: float) -> float:

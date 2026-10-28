@@ -111,16 +111,18 @@ def to_markdown(sheet: TechSheet, details: bool = True) -> str:
 
     w("## Инструментальная карта")
     w("")
-    w("| T / H / D | Инструмент | Ø, мм | z | Lc, мм | Вылет, мм | Материал | Операции |")
-    w("|---|---|---|---|---|---|---|---|")
+    w("| T / H / D | Инструмент | Артикул | Ø, мм | z | Lc, мм | L общ., мм | Вылет, мм | Материал | Операции |")
+    w("|---|---|---|---|---|---|---|---|---|---|")
     uses: Dict[int, List[str]] = {}
     for s in sheet.setups:
         for op in s.operations:
             uses.setdefault(op.tool.number, []).append(str(op.number))
     for t in sheet.tools:
         mat = t.tool_material + (f", {t.coating}" if t.coating else "")
-        w(f"| T{t.number} / H{t.number} / D{t.number} | {t.label()} | {_n(t.diameter)} | {t.flutes} | "
-          f"{_v(t.flute_length or None)} | {_v(t.stickout or None)} | {mat} | {', '.join(uses.get(t.number, []))} |")
+        art = f"{t.article} ({'склад' if t.in_stock else 'под заказ'})" if t.article else "—"
+        w(f"| T{t.number} / H{t.number} / D{t.number} | {t.label()} | {art} | {_n(t.diameter)} | {t.flutes} | "
+          f"{_v(t.flute_length or None)} | {_v(t.overall_length or None)} | {_v(t.stickout or None)} | {mat} | "
+          f"{', '.join(uses.get(t.number, []))} |")
     w("")
     w("> Режимы — стартовые для Haas VF-2. Первую деталь вести с коррекцией подачи 70–80 % и контролем нагрузки "
       "шпинделя. Траектории формирует HSMWorks; обязательна симуляция в HSMWorks перед выводом УП.")

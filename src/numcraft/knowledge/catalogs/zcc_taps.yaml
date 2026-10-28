@@ -1,0 +1,1777 @@
+# Метчики ZCC-CT (каталог «HSS tools», раздел HSS machine taps).
+# Создано: python -m numcraft catalog taps <pdf>. Поля: d — номинал, pitch — шаг, l1 — общая длина,
+# l2 — длина резьбовой части, l3 — рабочая длина до хвостовика, core_drill — сверло под резьбу по каталогу.
+# Скорость резания (каталог C18, HSS-E HG23, СОЖ снаружи): сталь 45 — 8–18 м/мин, алюминий деформ. — 10–20 м/мин.
+# Только для синхронного (жёсткого) нарезания, без компенсационного патрона.
+catalog: ZCC-CT HSS tools
+taps:
+- article: 4701US-M3-6H
+  series: 4701US
+  d: 3.0
+  pitch: 0.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 3.5
+  l1: 56.0
+  l2: 5.0
+  l3: 18.0
+  core_drill: 2.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701US-M4-6H
+  series: 4701US
+  d: 4.0
+  pitch: 0.7
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 4.5
+  l1: 63.0
+  l2: 7.0
+  l3: 21.0
+  core_drill: 3.3
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701US-M5-6H
+  series: 4701US
+  d: 5.0
+  pitch: 0.8
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 6.0
+  l1: 70.0
+  l2: 8.0
+  l3: 25.0
+  core_drill: 4.2
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701US-M6-6H
+  series: 4701US
+  d: 6.0
+  pitch: 1.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 6.0
+  l1: 80.0
+  l2: 10.0
+  l3: 35.0
+  core_drill: 5.1
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701US-M8-6H
+  series: 4701US
+  d: 8.0
+  pitch: 1.25
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 8.0
+  l1: 90.0
+  l2: 13.0
+  l3: 35.0
+  core_drill: 6.8
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701UCS-M8-6H
+  series: 4701UCS
+  d: 8.0
+  pitch: 1.25
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 8.0
+  l1: 90.0
+  l2: 13.0
+  l3: 35.0
+  core_drill: 6.8
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701US-M10-6H
+  series: 4701US
+  d: 10.0
+  pitch: 1.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 10.0
+  l1: 100.0
+  l2: 15.0
+  l3: 39.0
+  core_drill: 8.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701UCS-M10-6H
+  series: 4701UCS
+  d: 10.0
+  pitch: 1.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 10.0
+  l1: 100.0
+  l2: 15.0
+  l3: 39.0
+  core_drill: 8.5
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601US-M8-6H
+  series: 4601US
+  d: 8.0
+  pitch: 1.25
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 6.0
+  l1: 90.0
+  l2: 13.0
+  l3: 45.0
+  core_drill: 6.8
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601UCS-M8-6H
+  series: 4601UCS
+  d: 8.0
+  pitch: 1.25
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 6.0
+  l1: 90.0
+  l2: 13.0
+  l3: 45.0
+  core_drill: 6.8
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601US-M10-6H
+  series: 4601US
+  d: 10.0
+  pitch: 1.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 7.0
+  l1: 100.0
+  l2: 15.0
+  l3: 50.0
+  core_drill: 8.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601UCS-M10-6H
+  series: 4601UCS
+  d: 10.0
+  pitch: 1.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 7.0
+  l1: 100.0
+  l2: 15.0
+  l3: 50.0
+  core_drill: 8.5
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601US-M12-6H
+  series: 4601US
+  d: 12.0
+  pitch: 1.75
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 9.0
+  l1: 110.0
+  l2: 18.0
+  l3: 55.0
+  core_drill: 10.2
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601UCS-M12-6H
+  series: 4601UCS
+  d: 12.0
+  pitch: 1.75
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 9.0
+  l1: 110.0
+  l2: 18.0
+  l3: 55.0
+  core_drill: 10.2
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601US-M14-6H
+  series: 4601US
+  d: 14.0
+  pitch: 2.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 11.0
+  l1: 110.0
+  l2: 20.0
+  l3: 55.0
+  core_drill: 12.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601UCS-M14-6H
+  series: 4601UCS
+  d: 14.0
+  pitch: 2.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 11.0
+  l1: 110.0
+  l2: 20.0
+  l3: 55.0
+  core_drill: 12.0
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601US-M16-6H
+  series: 4601US
+  d: 16.0
+  pitch: 2.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 12.0
+  l1: 110.0
+  l2: 20.0
+  l3: 55.0
+  core_drill: 14.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601UCS-M16-6H
+  series: 4601UCS
+  d: 16.0
+  pitch: 2.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 12.0
+  l1: 110.0
+  l2: 20.0
+  l3: 55.0
+  core_drill: 14.0
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601US-M18-6H
+  series: 4601US
+  d: 18.0
+  pitch: 2.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 14.0
+  l1: 125.0
+  l2: 25.0
+  l3: 65.0
+  core_drill: 15.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601UCS-M18-6H
+  series: 4601UCS
+  d: 18.0
+  pitch: 2.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 14.0
+  l1: 125.0
+  l2: 25.0
+  l3: 65.0
+  core_drill: 15.5
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601US-M20-6H
+  series: 4601US
+  d: 20.0
+  pitch: 2.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 16.0
+  l1: 140.0
+  l2: 25.0
+  l3: 70.0
+  core_drill: 17.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601UCS-M20-6H
+  series: 4601UCS
+  d: 20.0
+  pitch: 2.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 16.0
+  l1: 140.0
+  l2: 25.0
+  l3: 70.0
+  core_drill: 17.5
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601US-M22-6H
+  series: 4601US
+  d: 22.0
+  pitch: 2.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 18.0
+  l1: 140.0
+  l2: 25.0
+  l3: 70.0
+  core_drill: 19.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601UCS-M22-6H
+  series: 4601UCS
+  d: 22.0
+  pitch: 2.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 18.0
+  l1: 140.0
+  l2: 25.0
+  l3: 70.0
+  core_drill: 19.5
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601US-M24-6H
+  series: 4601US
+  d: 24.0
+  pitch: 3.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 18.0
+  l1: 160.0
+  l2: 30.0
+  l3: 80.0
+  core_drill: 21.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4601UCS-M24-6H
+  series: 4601UCS
+  d: 24.0
+  pitch: 3.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 376
+  shank_d: 18.0
+  l1: 160.0
+  l2: 30.0
+  l3: 80.0
+  core_drill: 21.0
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702U-M3-6H
+  series: 4702U
+  d: 3.0
+  pitch: 0.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 3.5
+  l1: 56.0
+  l2: 7.5
+  l3: 18.0
+  core_drill: 2.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702U-M4-6H
+  series: 4702U
+  d: 4.0
+  pitch: 0.7
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 4.5
+  l1: 63.0
+  l2: 9.5
+  l3: 21.0
+  core_drill: 3.3
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702U-M5-6H
+  series: 4702U
+  d: 5.0
+  pitch: 0.8
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 6.0
+  l1: 70.0
+  l2: 12.5
+  l3: 25.0
+  core_drill: 4.2
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702U-M6-6H
+  series: 4702U
+  d: 6.0
+  pitch: 1.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 6.0
+  l1: 80.0
+  l2: 14.8
+  l3: 30.0
+  core_drill: 5.1
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702U-M8-6H
+  series: 4702U
+  d: 8.0
+  pitch: 1.25
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 8.0
+  l1: 90.0
+  l2: 17.8
+  l3: 35.0
+  core_drill: 6.8
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702UC-M8-6H
+  series: 4702UC
+  d: 8.0
+  pitch: 1.25
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 8.0
+  l1: 90.0
+  l2: 17.8
+  l3: 35.0
+  core_drill: 6.8
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702U-M10-6H
+  series: 4702U
+  d: 10.0
+  pitch: 1.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 10.0
+  l1: 100.0
+  l2: 19.8
+  l3: 39.0
+  core_drill: 8.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702UC-M10-6H
+  series: 4702UC
+  d: 10.0
+  pitch: 1.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 10.0
+  l1: 100.0
+  l2: 19.8
+  l3: 39.0
+  core_drill: 8.5
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602U-M8-6H
+  series: 4602U
+  d: 8.0
+  pitch: 1.25
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 6.0
+  l1: 90.0
+  l2: 17.8
+  l3: 35.0
+  core_drill: 6.8
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602UC-M8-6H
+  series: 4602UC
+  d: 8.0
+  pitch: 1.25
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 6.0
+  l1: 90.0
+  l2: 17.8
+  l3: 35.0
+  core_drill: 6.8
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602U-M10-6H
+  series: 4602U
+  d: 10.0
+  pitch: 1.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 7.0
+  l1: 100.0
+  l2: 19.8
+  l3: 39.0
+  core_drill: 8.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602UC-M10-6H
+  series: 4602UC
+  d: 10.0
+  pitch: 1.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 7.0
+  l1: 100.0
+  l2: 19.8
+  l3: 39.0
+  core_drill: 8.5
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602U-M12-6H
+  series: 4602U
+  d: 12.0
+  pitch: 1.75
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 9.0
+  l1: 110.0
+  l2: 24.8
+  l3: 42.0
+  core_drill: 10.2
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602UC-M12-6H
+  series: 4602UC
+  d: 12.0
+  pitch: 1.75
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 9.0
+  l1: 110.0
+  l2: 24.8
+  l3: 42.0
+  core_drill: 10.2
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602U-M14-6H
+  series: 4602U
+  d: 14.0
+  pitch: 2.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 11.0
+  l1: 110.0
+  l2: 24.0
+  l3: 50.0
+  core_drill: 12.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602UC-M14-6H
+  series: 4602UC
+  d: 14.0
+  pitch: 2.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 11.0
+  l1: 110.0
+  l2: 24.0
+  l3: 50.0
+  core_drill: 12.0
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602U-M16-6H
+  series: 4602U
+  d: 16.0
+  pitch: 2.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 12.0
+  l1: 110.0
+  l2: 26.0
+  l3: 52.0
+  core_drill: 14.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602UC-M16-6H
+  series: 4602UC
+  d: 16.0
+  pitch: 2.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 12.0
+  l1: 110.0
+  l2: 26.0
+  l3: 52.0
+  core_drill: 14.0
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602U-M18-6H
+  series: 4602U
+  d: 18.0
+  pitch: 2.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 14.0
+  l1: 125.0
+  l2: 31.0
+  l3: 57.0
+  core_drill: 15.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602UC-M18-6H
+  series: 4602UC
+  d: 18.0
+  pitch: 2.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 14.0
+  l1: 125.0
+  l2: 31.0
+  l3: 57.0
+  core_drill: 15.5
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602U-M20-6H
+  series: 4602U
+  d: 20.0
+  pitch: 2.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 16.0
+  l1: 140.0
+  l2: 31.0
+  l3: 57.0
+  core_drill: 17.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602UC-M20-6H
+  series: 4602UC
+  d: 20.0
+  pitch: 2.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 16.0
+  l1: 140.0
+  l2: 31.0
+  l3: 57.0
+  core_drill: 17.5
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602U-M22-6H
+  series: 4602U
+  d: 22.0
+  pitch: 2.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 18.0
+  l1: 140.0
+  l2: 32.0
+  l3: 58.0
+  core_drill: 19.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602UC-M22-6H
+  series: 4602UC
+  d: 22.0
+  pitch: 2.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 18.0
+  l1: 140.0
+  l2: 32.0
+  l3: 58.0
+  core_drill: 19.5
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602U-M24-6H
+  series: 4602U
+  d: 24.0
+  pitch: 3.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 18.0
+  l1: 160.0
+  l2: 39.0
+  l3: 65.0
+  core_drill: 21.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4602UC-M24-6H
+  series: 4602UC
+  d: 24.0
+  pitch: 3.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 376
+  shank_d: 18.0
+  l1: 160.0
+  l2: 39.0
+  l3: 65.0
+  core_drill: 21.0
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701US-M3*0.35-6H
+  series: 4701US
+  d: 3.0
+  pitch: 0.35
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 3.5
+  l1: 56.0
+  l2: 5.0
+  l3: 18.0
+  core_drill: 2.65
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701US-M4*0.5-6H
+  series: 4701US
+  d: 4.0
+  pitch: 0.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 4.5
+  l1: 63.0
+  l2: 7.0
+  l3: 21.0
+  core_drill: 3.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701US-M5*0.5-6H
+  series: 4701US
+  d: 5.0
+  pitch: 0.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 6.0
+  l1: 70.0
+  l2: 8.0
+  l3: 25.0
+  core_drill: 4.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701US-M6*0.5-6H
+  series: 4701US
+  d: 6.0
+  pitch: 0.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 6.0
+  l1: 80.0
+  l2: 10.0
+  l3: 35.0
+  core_drill: 5.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701US-M6*0.75-6H
+  series: 4701US
+  d: 6.0
+  pitch: 0.75
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 6.0
+  l1: 80.0
+  l2: 10.0
+  l3: 35.0
+  core_drill: 5.25
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701US-M8*0.75-6H
+  series: 4701US
+  d: 8.0
+  pitch: 0.75
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 8.0
+  l1: 80.0
+  l2: 13.0
+  l3: 35.0
+  core_drill: 7.25
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701UCS-M8*0.75-6H
+  series: 4701UCS
+  d: 8.0
+  pitch: 0.75
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 8.0
+  l1: 80.0
+  l2: 13.0
+  l3: 35.0
+  core_drill: 7.25
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701US-M8*1-6H
+  series: 4701US
+  d: 8.0
+  pitch: 1.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 8.0
+  l1: 90.0
+  l2: 13.0
+  l3: 35.0
+  core_drill: 7.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701UCS-M8*1-6H
+  series: 4701UCS
+  d: 8.0
+  pitch: 1.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 8.0
+  l1: 90.0
+  l2: 13.0
+  l3: 35.0
+  core_drill: 7.0
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701US-M10*0.75-6H
+  series: 4701US
+  d: 10.0
+  pitch: 0.75
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 10.0
+  l1: 90.0
+  l2: 15.0
+  l3: 39.0
+  core_drill: 9.25
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701UCS-M10*0.75-6H
+  series: 4701UCS
+  d: 10.0
+  pitch: 0.75
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 10.0
+  l1: 90.0
+  l2: 15.0
+  l3: 39.0
+  core_drill: 9.25
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701US-M10*1-6H
+  series: 4701US
+  d: 10.0
+  pitch: 1.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 10.0
+  l1: 90.0
+  l2: 15.0
+  l3: 39.0
+  core_drill: 9.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701UCS-M10*1-6H
+  series: 4701UCS
+  d: 10.0
+  pitch: 1.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 10.0
+  l1: 90.0
+  l2: 15.0
+  l3: 39.0
+  core_drill: 9.0
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701US-M10*1.25-6H
+  series: 4701US
+  d: 10.0
+  pitch: 1.25
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 10.0
+  l1: 100.0
+  l2: 15.0
+  l3: 39.0
+  core_drill: 8.75
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4701UCS-M10*1.25-6H
+  series: 4701UCS
+  d: 10.0
+  pitch: 1.25
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 371
+  shank_d: 10.0
+  l1: 100.0
+  l2: 15.0
+  l3: 39.0
+  core_drill: 8.75
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M12*1-6H
+  series: 4401US
+  d: 12.0
+  pitch: 1.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 9.0
+  l1: 100.0
+  l2: 18.0
+  l3: 50.0
+  core_drill: 11.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M12*1.5-6H
+  series: 4401US
+  d: 12.0
+  pitch: 1.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 9.0
+  l1: 100.0
+  l2: 18.0
+  l3: 50.0
+  core_drill: 10.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M14*1-6H
+  series: 4401US
+  d: 14.0
+  pitch: 1.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 11.0
+  l1: 100.0
+  l2: 15.0
+  l3: 50.0
+  core_drill: 13.0
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M14*1.5-6H
+  series: 4401US
+  d: 14.0
+  pitch: 1.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 11.0
+  l1: 100.0
+  l2: 20.0
+  l3: 50.0
+  core_drill: 12.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M16*1-6H
+  series: 4401US
+  d: 16.0
+  pitch: 1.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 12.0
+  l1: 100.0
+  l2: 15.0
+  l3: 50.0
+  core_drill: 15.0
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M16*1.5-6H
+  series: 4401US
+  d: 16.0
+  pitch: 1.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 12.0
+  l1: 100.0
+  l2: 20.0
+  l3: 50.0
+  core_drill: 14.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M18*1-6H
+  series: 4401US
+  d: 18.0
+  pitch: 1.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 14.0
+  l1: 110.0
+  l2: 15.0
+  l3: 55.0
+  core_drill: 17.0
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M18*1.5-6H
+  series: 4401US
+  d: 18.0
+  pitch: 1.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 14.0
+  l1: 110.0
+  l2: 25.0
+  l3: 55.0
+  core_drill: 16.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M18*2-6H
+  series: 4401US
+  d: 18.0
+  pitch: 2.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 14.0
+  l1: 125.0
+  l2: 25.0
+  l3: 65.0
+  core_drill: 16.0
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M20*1-6H
+  series: 4401US
+  d: 20.0
+  pitch: 1.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 16.0
+  l1: 125.0
+  l2: 15.0
+  l3: 65.0
+  core_drill: 19.0
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M20*1.5-6H
+  series: 4401US
+  d: 20.0
+  pitch: 1.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 16.0
+  l1: 125.0
+  l2: 25.0
+  l3: 65.0
+  core_drill: 18.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M20*2-6H
+  series: 4401US
+  d: 20.0
+  pitch: 2.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 16.0
+  l1: 140.0
+  l2: 25.0
+  l3: 70.0
+  core_drill: 18.0
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M22*1-6H
+  series: 4401US
+  d: 22.0
+  pitch: 1.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 18.0
+  l1: 125.0
+  l2: 15.0
+  l3: 65.0
+  core_drill: 21.0
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M22*1.5-6H
+  series: 4401US
+  d: 22.0
+  pitch: 1.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 18.0
+  l1: 125.0
+  l2: 25.0
+  l3: 65.0
+  core_drill: 20.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M22*2-6H
+  series: 4401US
+  d: 22.0
+  pitch: 2.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 18.0
+  l1: 140.0
+  l2: 25.0
+  l3: 70.0
+  core_drill: 20.0
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M24*1-6H
+  series: 4401US
+  d: 24.0
+  pitch: 1.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 18.0
+  l1: 140.0
+  l2: 15.0
+  l3: 70.0
+  core_drill: 23.0
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M24*1.5-6H
+  series: 4401US
+  d: 24.0
+  pitch: 1.5
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 18.0
+  l1: 140.0
+  l2: 30.0
+  l3: 70.0
+  core_drill: 22.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4401US-M24*2-6H
+  series: 4401US
+  d: 24.0
+  pitch: 2.0
+  hole: blind
+  form: C (спиральная канавка 40°)
+  shank_din: 374
+  shank_d: 18.0
+  l1: 140.0
+  l2: 30.0
+  l3: 70.0
+  core_drill: 22.0
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702U-M3*0.35-6H
+  series: 4702U
+  d: 3.0
+  pitch: 0.35
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 3.5
+  l1: 56.0
+  l2: 7.5
+  l3: 18.0
+  core_drill: 2.65
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702U-M4*0.5-6H
+  series: 4702U
+  d: 4.0
+  pitch: 0.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 4.5
+  l1: 63.0
+  l2: 9.5
+  l3: 21.0
+  core_drill: 3.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702U-M5*0.5-6H
+  series: 4702U
+  d: 5.0
+  pitch: 0.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 6.0
+  l1: 70.0
+  l2: 12.5
+  l3: 25.0
+  core_drill: 4.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702U-M6*0.5-6H
+  series: 4702U
+  d: 6.0
+  pitch: 0.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 6.0
+  l1: 80.0
+  l2: 14.8
+  l3: 30.0
+  core_drill: 5.5
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702U-M6*0.75-6H
+  series: 4702U
+  d: 6.0
+  pitch: 0.75
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 6.0
+  l1: 80.0
+  l2: 14.8
+  l3: 30.0
+  core_drill: 5.25
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702U-M8*0.75-6H
+  series: 4702U
+  d: 8.0
+  pitch: 0.75
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 8.0
+  l1: 80.0
+  l2: 14.8
+  l3: 35.0
+  core_drill: 7.25
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702UC-M8*0.75-6H
+  series: 4702UC
+  d: 8.0
+  pitch: 0.75
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 8.0
+  l1: 80.0
+  l2: 14.8
+  l3: 35.0
+  core_drill: 7.25
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702U-M8*1-6H
+  series: 4702U
+  d: 8.0
+  pitch: 1.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 8.0
+  l1: 90.0
+  l2: 17.8
+  l3: 35.0
+  core_drill: 7.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702UC-M8*1-6H
+  series: 4702UC
+  d: 8.0
+  pitch: 1.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 8.0
+  l1: 90.0
+  l2: 17.8
+  l3: 35.0
+  core_drill: 7.0
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702U-M10*0.75-6H
+  series: 4702U
+  d: 10.0
+  pitch: 0.75
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 10.0
+  l1: 90.0
+  l2: 16.8
+  l3: 39.0
+  core_drill: 9.25
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702UC-M10*0.75-6H
+  series: 4702UC
+  d: 10.0
+  pitch: 0.75
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 10.0
+  l1: 90.0
+  l2: 16.8
+  l3: 39.0
+  core_drill: 9.25
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702U-M10*1-6H
+  series: 4702U
+  d: 10.0
+  pitch: 1.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 10.0
+  l1: 90.0
+  l2: 16.8
+  l3: 39.0
+  core_drill: 9.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702UC-M10*1-6H
+  series: 4702UC
+  d: 10.0
+  pitch: 1.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 10.0
+  l1: 90.0
+  l2: 16.8
+  l3: 39.0
+  core_drill: 9.0
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702U-M10*1.25-6H
+  series: 4702U
+  d: 10.0
+  pitch: 1.25
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 10.0
+  l1: 100.0
+  l2: 19.8
+  l3: 39.0
+  core_drill: 8.75
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4702UC-M10*1.25-6H
+  series: 4702UC
+  d: 10.0
+  pitch: 1.25
+  hole: through
+  form: B (с подточкой)
+  shank_din: 371
+  shank_d: 10.0
+  l1: 100.0
+  l2: 19.8
+  l3: 39.0
+  core_drill: 8.75
+  internal_coolant: true
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M12*1-6H
+  series: 4402U
+  d: 12.0
+  pitch: 1.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 9.0
+  l1: 100.0
+  l2: 24.8
+  l3: 37.0
+  core_drill: 11.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M12*1.5-6H
+  series: 4402U
+  d: 12.0
+  pitch: 1.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 9.0
+  l1: 100.0
+  l2: 24.8
+  l3: 42.0
+  core_drill: 10.5
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M14*1-6H
+  series: 4402U
+  d: 14.0
+  pitch: 1.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 11.0
+  l1: 100.0
+  l2: 22.0
+  l3: 37.0
+  core_drill: 13.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M14*1.5-6H
+  series: 4402U
+  d: 14.0
+  pitch: 1.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 11.0
+  l1: 100.0
+  l2: 24.0
+  l3: 45.0
+  core_drill: 12.5
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M16*1-6H
+  series: 4402U
+  d: 16.0
+  pitch: 1.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 12.0
+  l1: 100.0
+  l2: 22.0
+  l3: 37.0
+  core_drill: 15.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M16*1.5-6H
+  series: 4402U
+  d: 16.0
+  pitch: 1.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 12.0
+  l1: 100.0
+  l2: 26.0
+  l3: 47.0
+  core_drill: 14.5
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M18*1-6H
+  series: 4402U
+  d: 18.0
+  pitch: 1.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 14.0
+  l1: 110.0
+  l2: 22.0
+  l3: 37.0
+  core_drill: 17.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M18*1.5-6H
+  series: 4402U
+  d: 18.0
+  pitch: 1.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 14.0
+  l1: 110.0
+  l2: 31.0
+  l3: 52.0
+  core_drill: 16.5
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M18*2-6H
+  series: 4402U
+  d: 18.0
+  pitch: 2.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 14.0
+  l1: 125.0
+  l2: 31.0
+  l3: 52.0
+  core_drill: 16.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M20*1-6H
+  series: 4402U
+  d: 20.0
+  pitch: 1.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 16.0
+  l1: 125.0
+  l2: 22.0
+  l3: 37.0
+  core_drill: 19.0
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M20*1.5-6H
+  series: 4402U
+  d: 20.0
+  pitch: 1.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 16.0
+  l1: 125.0
+  l2: 31.0
+  l3: 52.0
+  core_drill: 18.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M20*2-6H
+  series: 4402U
+  d: 20.0
+  pitch: 2.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 16.0
+  l1: 140.0
+  l2: 31.0
+  l3: 52.0
+  core_drill: 18.0
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M22*1-6H
+  series: 4402U
+  d: 22.0
+  pitch: 1.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 18.0
+  l1: 125.0
+  l2: 24.0
+  l3: 39.0
+  core_drill: 21.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M22*1.5-6H
+  series: 4402U
+  d: 22.0
+  pitch: 1.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 18.0
+  l1: 125.0
+  l2: 32.0
+  l3: 53.0
+  core_drill: 20.5
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M22*2-6H
+  series: 4402U
+  d: 22.0
+  pitch: 2.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 18.0
+  l1: 140.0
+  l2: 32.0
+  l3: 53.0
+  core_drill: 20.0
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M24*1-6H
+  series: 4402U
+  d: 24.0
+  pitch: 1.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 18.0
+  l1: 140.0
+  l2: 24.0
+  l3: 39.0
+  core_drill: 23.0
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M24*1.5-6H
+  series: 4402U
+  d: 24.0
+  pitch: 1.5
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 18.0
+  l1: 140.0
+  l2: 39.0
+  l3: 60.0
+  core_drill: 22.5
+  internal_coolant: false
+  in_stock: true
+  grade: HG23 (HSS-E, TiAlN)
+- article: 4402U-M24*2-6H
+  series: 4402U
+  d: 24.0
+  pitch: 2.0
+  hole: through
+  form: B (с подточкой)
+  shank_din: 374
+  shank_d: 18.0
+  l1: 140.0
+  l2: 39.0
+  l3: 60.0
+  core_drill: 22.0
+  internal_coolant: false
+  in_stock: false
+  grade: HG23 (HSS-E, TiAlN)

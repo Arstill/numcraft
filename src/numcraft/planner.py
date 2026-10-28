@@ -305,26 +305,30 @@ class Planner:
             tl = self.part.size.z + f.z_start if f.through else round(2 * d, 1)
             if not f.through:
                 self.questions.append(f"Резьба {f.id} {size}: длина резьбы не указана — принято 2D = {_n(tl)} мм.")
-        drill_d = tooling.tap_drill(d, p)
         cnt = f" ({f.count} шт.)" if f.count > 1 else ""
         method = f.method
         if method == "auto":
             method = "tap" if d <= 12 else "thread_mill"
+        z0 = f.z_start
+        tz = tl + (3 * p if f.through else 0)
+        tap = tooling.tap(size, f.through, depth=tz - z0) if method == "tap" else None
+        drill_d = (tap.core_drill if tap and tap.core_drill else None) or tooling.tap_drill(d, p)
         # глубина сверления: длина резьбы + заборная часть метчика 3P
         drill_depth = tl if f.through else tl + 3 * p
-        z0 = f.z_start
         ops.append(self._spot(f.id, d, positions, chamfer=0.3, z0=z0))
         ops[-1].title = f"Центровка с фаской под {size}"
         ops.append(self._drill(f.id, drill_d, drill_depth, f.through, positions, f"под резьбу {size}{cnt}", z0=z0))
-        if method == "tap":
-            tool = tooling.tap(size, f.through)
+        if tap is not None:
+            tool = tap
             cd = cutting.tapping(tool, self.mat, self.machine)
-            tz = tl + (3 * p if f.through else 0)
             ops.append(self._op(f"Нарезание резьбы {size}{cnt}", S.DRILL, tool, cd, ST_TAP, [f.id],
                                 S.tapping(p, f"{_n(tz)} мм"), cycle="G84", z_depth=round(z0 - tz, 2), z_start=z0,
                                 positions=positions, geom="holes", sel_d=drill_d))
             if not f.through:
                 ops[-1].notes.append(f"Запас под стружку и заборный конус: сверление на {_n(3 * p)} мм глубже резьбы.")
+            if tool.core_drill and not math.isclose(tool.core_drill, tooling.tap_drill(d, p)):
+                ops[-1].notes.append(f"Сверло под резьбу Ø{_n(tool.core_drill)} — по рекомендации каталога ZCC.")
+            ops[-1].notes.append("Только жёсткое (синхронное) нарезание, без компенсационного патрона.")
         else:
             tool = tooling.thread_mill(d)
             if tool:

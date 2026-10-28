@@ -181,10 +181,15 @@ class Tool(BaseModel):
     description: str = ""
     number: int = 0  # T-номер, назначается планировщиком
     stickout: float = 0.0  # рекомендуемый вылет из патрона
+    article: Optional[str] = None  # артикул по каталогу (ZCC и т.п.)
+    in_stock: Optional[bool] = None  # True — со склада, False — под заказ
+    reach: float = 0.0  # рабочая длина: метчик — до хвостовика (l3), фреза с шейкой — длина шейки
+    shank_d: float = 0.0
+    core_drill: Optional[float] = None  # метчик: сверло под резьбу по каталогу
 
     def key(self) -> Tuple:
         return (self.kind, round(self.diameter, 3), self.flutes, self.corner_radius,
-                self.for_group, self.thread, self.flute_length)
+                self.for_group, self.thread, self.flute_length, self.article)
 
     def label(self) -> str:
         return self.description or f"{self.kind} Ø{_n(self.diameter)}"

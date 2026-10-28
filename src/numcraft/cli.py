@@ -170,6 +170,29 @@ def cmd_cut(a) -> int:
     return 0
 
 
+def cmd_catalog(a) -> int:
+    from numcraft.catalogs import zcc
+
+    if a.what == "text":
+        out = a.out or str(Path(a.file).with_suffix(".txt"))
+        print(f"Выгружаю текст из {a.file} … (большой каталог — несколько минут)")
+        n = zcc.dump_text(a.file, out, a.pages)
+        size = Path(out).stat().st_size / 1e6
+        print(f"Готово: {n} стр. → {out} ({size:.1f} МБ). Этот файл можно отправить для подключения каталога.")
+        return 0
+    import yaml
+
+    rows = zcc.parse_taps_pdf(a.file)
+    if not rows:
+        print("В файле не найдено таблиц метчиков ZCC.", file=sys.stderr)
+        return 2
+    out = a.out or str(Path(__file__).parent / "knowledge" / "catalogs" / "zcc_taps.yaml")
+    Path(out).write_text(yaml.safe_dump({"catalog": "ZCC-CT HSS tools", "taps": rows}, allow_unicode=True,
+                                        sort_keys=False, width=120), encoding="utf-8")
+    print(f"Метчиков: {len(rows)} → {out}")
+    return 0
+
+
 def cmd_materials(_a) -> int:
     for m in all_materials().values():
         print(f"{m.name}: {m.hardness}; псевдонимы: {', '.join(m.aliases)}")
@@ -219,6 +242,13 @@ def main(argv=None) -> int:
     pc.add_argument("--ae", type=float)
     pc.add_argument("--rpm", type=int)
     pc.set_defaults(fn=cmd_cut)
+
+    pk = sub.add_parser("catalog", help="импорт каталога ZCC: taps — метчики в библиотеку, text — выгрузка текста")
+    pk.add_argument("what", choices=["taps", "text"])
+    pk.add_argument("file", help="PDF каталога")
+    pk.add_argument("-o", "--out", help="куда сохранить")
+    pk.add_argument("--pages", help="страницы, напр. 120-380 (для text)")
+    pk.set_defaults(fn=cmd_catalog)
 
     pm = sub.add_parser("materials", help="поддерживаемые материалы")
     pm.set_defaults(fn=cmd_materials)

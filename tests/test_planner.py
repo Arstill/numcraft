@@ -43,8 +43,10 @@ def test_reaming_and_tap_drill():
     assert ream.tool.diameter == 10
     pre = next(o for o in ops if o.cycle in ("G81", "G73", "G83") and o.tool.kind == "drill" and 9 < o.tool.diameter < 10)
     assert pre.tool.diameter == pytest.approx(9.8)
-    tap_drill = next(o for o in ops if o.tool.kind == "drill" and o.tool.diameter == 5.0)
     tap = next(o for o in ops if o.cycle == "G84")
+    assert tap.tool.article == "4701US-M6-6H"  # глухая М6 — метчик ZCC со спиральной канавкой
+    tap_drill = next(o for o in ops if o.tool.kind == "drill" and o.tool.diameter == tap.tool.core_drill)
+    assert tap.tool.core_drill == 5.1  # сверло под резьбу по каталогу ZCC
     assert tap_drill.z_depth < tap.z_depth  # сверлим глубже резьбы
     assert tap.cutting.feed == pytest.approx(tap.cutting.rpm * 1.0)
 
