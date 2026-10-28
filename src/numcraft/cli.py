@@ -52,6 +52,32 @@ def _ask_material() -> str | None:
         return None
 
 
+def _ask_stock(part, proposed):
+    """Ручной ввод заготовки в консоли; Enter — оставить предложенную."""
+    from numcraft.models import Box
+
+    if not sys.stdin.isatty():
+        return None
+    print(f"\nДеталь «{part.name}»: {part.size.fmt()} (X × Y × Z — длина × ширина × высота).")
+    while True:
+        try:
+            line = input(f"Заготовка X×Y×Z, мм (Enter — предложенная {proposed.fmt()}): ").strip()
+        except EOFError:
+            return None
+        if not line:
+            return None
+        try:
+            x, y, z = _stock(line)
+        except argparse.ArgumentTypeError:
+            print("  Введите три числа через «x», например 130x90x30.")
+            continue
+        if x < part.size.x - 0.01 or y < part.size.y - 0.01 or z < part.size.z - 0.01:
+            print(f"  Заготовка меньше детали ({part.size.fmt()}). Если деталь в заготовке развёрнута — "
+                  "укажите размеры в порядке X × Y × Z детали.")
+            continue
+        return Box(x=x, y=y, z=z)
+
+
 def cmd_plan(a) -> int:
     from numcraft.pipeline import InputError, Inputs, run
     from numcraft.techsheet import to_html, to_json, to_markdown
@@ -65,7 +91,8 @@ def cmd_plan(a) -> int:
         try:
             res = run(Inputs(text=text, step_path=a.step, drawing_path=a.drawing, part_json=a.json,
                              material=material, name=a.name, stock=a.stock),
-                      gcode=a.gcode, dialect=a.dialect, max_rpm=a.rpm)
+                      gcode=a.gcode, dialect=a.dialect, max_rpm=a.rpm,
+                      ask_stock=_ask_stock if a.ask_stock and not a.stock else None)
             break
         except InputError as e:
             if not material and any("материал" in m.lower() for m in e.missing) and (material := _ask_material()):
@@ -212,7 +239,7 @@ def _split_dropped(line: str) -> list:
 def cmd_drop(a) -> int:
     """Режим для numcraft.bat: файлы из аргументов или перетаскиванием в окно, техкарта открывается сама."""
     def run_files(files: list) -> int:
-        return main(["plan", *files, "--gcode", "--open"])
+        return main(["plan", *files, "--ask-stock", "--open"])
 
     if a.files:
         return run_files(a.files)
@@ -263,6 +290,7 @@ def main(argv=None) -> int:
     pp.add_argument("--name", help="наименование детали")
     pp.add_argument("--stock", type=_stock, help="заготовка, напр. 126x86x30")
     pp.add_argument("--gcode", action="store_true", help="добавить черновик УП")
+    pp.add_argument("--ask-stock", action="store_true", help="спросить размеры заготовки в консоли")
     pp.add_argument("--dialect", choices=["fanuc", "haas"], default="fanuc")
     pp.add_argument("--rpm", type=int, help="макс. обороты шпинделя (опция 12000)")
     pp.add_argument("-o", "--out", help="сохранить техкарту .md")

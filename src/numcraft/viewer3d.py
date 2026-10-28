@@ -35,7 +35,17 @@ const GEOM=__GEOM__;
 const cv=document.getElementById('nc3d'),ctx=cv.getContext('2d');
 const sel=document.getElementById('nc3d-op'),info=document.getElementById('nc3d-info');
 const flip=document.getElementById('nc3d-flip'),stockCb=document.getElementById('nc3d-stock');
-const [X,Y,Z]=M.size;let az=-0.62,el=0.6,zoom=1,panX=0,panY=0,cur=null;
+const [X,Y,Z]=M.size;let R=null,zoom=1,panX=0,panY=0,cur=null;
+// матрица вида: строки — оси экрана (вправо, вверх, к зрителю) в мировых координатах; вращение без ограничений
+function fromAzEl(a,e){const ca=Math.cos(a),sa=Math.sin(a),ce=Math.cos(e),se=Math.sin(e);
+ return [[ca,-sa,0],[sa*se,ca*se,ce],[-sa*ce,-ca*ce,se]];}
+function mul(A,B){return A.map(r=>[0,1,2].map(j=>r[0]*B[0][j]+r[1]*B[1][j]+r[2]*B[2][j]));}
+function ortho(M){const n=v=>{const l=Math.hypot(...v)||1;return v.map(x=>x/l);};const a=n(M[0]);let b=M[1];
+ const d=a[0]*b[0]+a[1]*b[1]+a[2]*b[2];b=n(b.map((x,i)=>x-d*a[i]));
+ const c=[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];return [a,b,c];}
+function turn(ay,ax){const cy=Math.cos(ay),sy=Math.sin(ay),cx=Math.cos(ax),sx=Math.sin(ax);
+ const Ry=[[cy,0,sy],[0,1,0],[-sy,0,cy]],Rx=[[1,0,0],[0,cx,-sx],[0,sx,cx]];R=ortho(mul(Rx,mul(Ry,R)));}
+R=fromAzEl(-0.62,0.6);
 const C=[X/2,Y/2,-Z/2];
 M.edges.forEach(e=>{e.ts=new Set(e.t);let lo=1e9,hi=-1e9;e.p.forEach(p=>{lo=Math.min(lo,p[2]);hi=Math.max(hi,p[2]);});e.lo=lo;e.hi=hi;});
 const fmin={};M.edges.forEach(e=>e.t.forEach(t=>{fmin[t]=Math.min(t in fmin?fmin[t]:1e9,e.lo);}));
@@ -43,8 +53,8 @@ const S=M.stock,sb=[[S[0],S[1],S[2]],[S[3],S[1],S[2]],[S[3],S[4],S[2]],[S[0],S[4
 const stockEdges=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]].map(([a,b])=>[sb[a],sb[b]]);
 function flipped(){return flip.checked&&cur&&cur.side==='bottom';}
 function tf(p){let x=p[0],y=p[1],z=p[2];if(flipped()){y=Y-y;z=-Z-z;}return [x,y,z];}
-function rot(x,y,z){x-=C[0];y-=C[1];z-=C[2];const ca=Math.cos(az),sa=Math.sin(az),x1=x*ca-y*sa,y1=x*sa+y*ca,
- ce=Math.cos(el),se=Math.sin(el);return [x1,y1*se+z*ce,y1*ce-z*se];}
+function rot(x,y,z){x-=C[0];y-=C[1];z-=C[2];const r=R;
+ return [r[0][0]*x+r[0][1]*y+r[0][2]*z,r[1][0]*x+r[1][1]*y+r[1][2]*z,-(r[2][0]*x+r[2][1]*y+r[2][2]*z)];}
 function hl(e){if(!cur)return false;const g=cur.geom,ids=cur.ids,face=cur.side==='bottom'?'bot':'top';
  if(g==='face')return e.ts.has(face);
  if(g==='outer_rough'||g==='outer_walls')return e.ts.has('outer');
@@ -75,12 +85,12 @@ function draw(){
  ctx.globalAlpha=1;
  // нуль установа
  const o=M.datum==='center'?[X/2,Y/2,0]:[0,0,0],L=diag*0.18,wcs=cur?cur.wcs:'G54';
- const R=p=>{const r=rot(p[0],p[1],p[2]);return [W/2+(r[0]+panX)*s,H/2-(r[1]+panY)*s];};
- const O=R(o);const ax=[[[o[0]+L,o[1],o[2]],'X','#e03131'],[[o[0],o[1]+L,o[2]],'Y','#2f9e44'],[[o[0],o[1],o[2]+L],'Z','#1971c2']];
- ctx.font='600 13px system-ui,sans-serif';ax.forEach(([p,t,c])=>{const q=R(p);ctx.strokeStyle=c;ctx.fillStyle=c;ctx.lineWidth=2.5;
+ const Q=p=>{const r=rot(p[0],p[1],p[2]);return [W/2+(r[0]+panX)*s,H/2-(r[1]+panY)*s];};
+ const O=Q(o);const ax=[[[o[0]+L,o[1],o[2]],'X','#e03131'],[[o[0],o[1]+L,o[2]],'Y','#2f9e44'],[[o[0],o[1],o[2]+L],'Z','#1971c2']];
+ ctx.font='600 13px system-ui,sans-serif';ax.forEach(([p,t,c])=>{const q=Q(p);ctx.strokeStyle=c;ctx.fillStyle=c;ctx.lineWidth=2.5;
   ctx.beginPath();ctx.moveTo(O[0],O[1]);ctx.lineTo(q[0],q[1]);ctx.stroke();ctx.fillText(t,q[0]+3,q[1]-3);});
  ctx.fillStyle=color('--datum');ctx.fillText(wcs,O[0]+4,O[1]+16);}
-function view(a,e){az=a;el=e;zoom=1;panX=panY=0;draw();}
+function view(a,e){R=fromAzEl(a,e);zoom=1;panX=panY=0;draw();}
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{const v=b.dataset.view;
  ({top:()=>view(0,Math.PI/2),front:()=>view(0,0),right:()=>view(-Math.PI/2,0),iso:()=>view(-0.62,0.6),bottom:()=>view(0,-Math.PI/2)})[v]();});
 let drag=null;const pts=new Map();
@@ -90,7 +100,8 @@ cv.addEventListener('pointermove',ev=>{if(!drag)return;const pr=pts.get(ev.point
  if(pts.size===2){const [a,b]=[...pts.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);if(drag.d)zoom*=d/drag.d;drag.d=d;draw();return;}
  const dx=ev.clientX-drag.x,dy=ev.clientY-drag.y;drag.x=ev.clientX;drag.y=ev.clientY;
  if(drag.pan){const W=cv.clientWidth,H=cv.clientHeight,s=0.82*Math.min(W,H)/Math.hypot(X,Y,Z)*zoom;panX+=dx/s;panY-=dy/s;}
- else{az+=dx*0.01;el=Math.max(-Math.PI/2,Math.min(Math.PI/2,el+dy*0.01));}draw();});
+ else if(ev.altKey||ev.ctrlKey){const a=dx*0.01;const c=Math.cos(a),s2=Math.sin(a);R=ortho(mul([[c,-s2,0],[s2,c,0],[0,0,1]],R));}
+ else{turn(dx*0.01,dy*0.01);}draw();});
 const up=ev=>{pts.delete(ev.pointerId);if(!pts.size)drag=null;else if(drag)drag.d=null;};
 cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
 cv.addEventListener('contextmenu',ev=>ev.preventDefault());
@@ -99,7 +110,7 @@ cv.addEventListener('dblclick',()=>view(-0.62,0.6));
 let g='';M.ops.forEach(op=>{if(op.setup!==g){g=op.setup;const og=document.createElement('optgroup');og.label=g;sel.appendChild(og);}
  const o=document.createElement('option');o.value=op.n;o.textContent='Оп. '+op.n+' — '+op.title;sel.lastChild.appendChild(o);});
 function setOp(n){cur=M.ops.find(o=>String(o.n)===String(n))||null;sel.value=cur?cur.n:'';
- info.textContent=cur?('Оп. '+cur.n+': '+(GEOM[cur.geom]||'')+(flipped()?' · деталь перевёрнута (установ 2)':'')):'Выберите операцию — обрабатываемые рёбра подсветятся.';
+ info.textContent=cur?('Оп. '+cur.n+' · '+cur.tool+' · '+(GEOM[cur.geom]||'')+(flipped()?' · деталь перевёрнута (установ 2)':'')):'Выберите операцию — обрабатываемые рёбра подсветятся.';
  document.querySelectorAll('tr.oprow').forEach(r=>r.classList.toggle('cur',cur&&r.dataset.op===String(cur.n)));draw();}
 sel.onchange=()=>setOp(sel.value);flip.onchange=()=>setOp(sel.value);stockCb.onchange=draw;
 window.nc3dShow=n=>{setOp(n);const a=document.getElementById('v3d');const r=a.getBoundingClientRect();
@@ -128,7 +139,7 @@ def viewer_html(model: dict) -> str:
 <label><input type="checkbox" id="nc3d-flip" checked> как в установе</label></div>
 <div class="bar"><select id="nc3d-op"><option value="">— операция: без подсветки —</option></select></div>
 <div class="info" id="nc3d-info"></div>
-<div class="hint">ЛКМ — вращать · ПКМ или Shift — сдвиг · колесо — масштаб · двойной щелчок — сброс ·
+<div class="hint">ЛКМ — вращать в любую сторону · Ctrl/Alt + ЛКМ — повернуть в плоскости экрана · ПКМ или Shift — сдвиг · колесо — масштаб · двойной щелчок — сброс ·
 щелчок по строке операции в таблице — показать её здесь</div>
 <script type="application/json" id="nc3d-data">{data}</script>
 <script>{JS.replace("__GEOM__", json.dumps(GEOM_3D, ensure_ascii=False))}</script>

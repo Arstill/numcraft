@@ -9,13 +9,13 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Optional
+from typing import Callable, List, Optional
 
 from numcraft import model3d
 from numcraft.gcode import generate
 from numcraft.knowledge.machine import load_machine
 from numcraft.knowledge.materials import UnknownMaterial, resolve_material
-from numcraft.models import Part, TechSheet
+from numcraft.models import Box, Part, TechSheet
 from numcraft.parsers import drawing as drw
 from numcraft.parsers import step as stp
 from numcraft.parsers.text import parse_description
@@ -108,9 +108,23 @@ def build_part(inp: Inputs) -> tuple[Part, List[str], Optional[str], Optional[st
     return part, notes, step_summary, analysis
 
 
-def run(inp: Inputs, gcode: bool = False, dialect: str = "fanuc", max_rpm: Optional[int] = None) -> Result:
+def default_stock(part: Part, machine=None) -> Box:
+    """Заготовка, которую планировщик назначит сам (для подсказки при ручном вводе)."""
+    from numcraft.planner import Planner
+
+    return Planner(part.model_copy(deep=True), machine)._stock()
+
+
+def run(inp: Inputs, gcode: bool = False, dialect: str = "fanuc", max_rpm: Optional[int] = None,
+        ask_stock: Optional[Callable[[Part, Box], Optional[Box]]] = None) -> Result:
+    """ask_stock(part, предложенная) → Box или None — ручной ввод заготовки (если она не задана)."""
     part, notes, step_summary, analysis = build_part(inp)
     machine = load_machine(max_rpm=max_rpm)
+    if ask_stock and part.stock is None:
+        chosen = ask_stock(part, default_stock(part, machine))
+        if chosen is not None:
+            part.stock = chosen
+            notes.append(f"Заготовка задана вручную: {chosen.fmt()}.")
     sheet = plan_part(part, machine)
     sheet.assumptions = notes + sheet.assumptions
     if analysis is not None:

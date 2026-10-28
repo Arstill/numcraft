@@ -152,7 +152,8 @@ def build(sheet: TechSheet, step_edges: Optional[Sequence[Sequence[Vec]]] = None
     top = next((s.stock_top for s in sheet.setups if s.side == "top"), 0.0)
     bot = next((s.stock_top for s in sheet.setups if s.side == "bottom"), 0.0)
     mx, my = (sheet.stock.x - ps.x) / 2, (sheet.stock.y - ps.y) / 2
-    ops = [{"n": op.number, "title": op.title, "geom": op.geom, "ids": op.feature_ids, "side": s.side,
+    ops = [{"n": op.number, "title": op.title, "tool": f"T{op.tool.number} — {op.tool.label()}",
+            "geom": op.geom, "ids": op.feature_ids, "side": s.side,
             "setup": s.title, "wcs": s.wcs}
            for s in sheet.setups for op in s.operations]
     return {

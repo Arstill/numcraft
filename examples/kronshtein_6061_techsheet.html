@@ -71,27 +71,27 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li>Z0 — верх готовой детали; заготовка выше на 1 мм (торцовка в ноль).</li>
 </ul>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="feat" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="feat" cx="28.12" cy="88.12" r="3.3"/><circle class="feat" cx="128.12" cy="88.12" r="3.3"/><circle class="feat" cx="28.12" cy="28.12" r="3.3"/><circle class="feat" cx="128.12" cy="28.12" r="3.3"/><circle class="feat" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="33.12" cy="58.12" r="2.5"/><circle class="feat" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="123.12" cy="58.12" r="2.5"/><circle class="feat" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
-<table><tr><th>Оп.</th><th>Операция</th><th>Стратегия HSMWorks</th><th>T</th><th>S, об/мин</th><th>F, мм/мин</th><th>ap, мм</th><th>ae, мм</th><th>Vc, м/мин</th><th>Подача</th></tr>
-<tr><td>1</td><td>Торцовка верха (снять 1 мм)</td><td>Face (торцевание)</td><td>T1</td><td>5093</td><td>3056</td><td>1</td><td>35</td><td>800</td><td>0.12 мм/зуб</td></tr>
-<tr><td>2</td><td>Черновая наружного контура, глубина 20.3 мм</td><td>2D Adaptive Clearing (адаптивная выборка)</td><td>T2</td><td>8100</td><td>4355</td><td>20.3</td><td>2.4</td><td>407</td><td>0.179 мм/зуб</td></tr>
-<tr><td>3</td><td>Черновая: карман 60×40×8</td><td>2D Adaptive Clearing (адаптивная выборка)</td><td>T2</td><td>8100</td><td>4355</td><td>8</td><td>2.4</td><td>407</td><td>0.179 мм/зуб</td></tr>
-<tr><td>4</td><td>Черновая: паз 30×8×5</td><td>2D Adaptive Clearing (адаптивная выборка)</td><td>T3</td><td>8100</td><td>1633</td><td>5</td><td>0.9</td><td>153</td><td>0.067 мм/зуб</td></tr>
-<tr><td>5</td><td>Дообработка углов R5: карман 60×40×8</td><td>2D Adaptive Clearing (адаптивная выборка)</td><td>T4</td><td>8100</td><td>2178</td><td>8</td><td>1.2</td><td>204</td><td>0.09 мм/зуб</td></tr>
-<tr><td>6</td><td>Центровка под Ø6.6</td><td>Drill (сверление) G81</td><td>T5</td><td>3183</td><td>191</td><td>—</td><td>—</td><td>100</td><td>0.06 мм/об</td></tr>
-<tr><td>7</td><td>Центровка с фаской под M6</td><td>Drill (сверление) G81</td><td>T5</td><td>3183</td><td>191</td><td>—</td><td>—</td><td>100</td><td>0.06 мм/об</td></tr>
-<tr><td>8</td><td>Центровка под Ø9.8</td><td>Drill (сверление) G81</td><td>T5</td><td>3183</td><td>191</td><td>—</td><td>—</td><td>100</td><td>0.06 мм/об</td></tr>
-<tr><td>9</td><td>Сверление Ø6.6 (4 шт.)</td><td>Drill (сверление) G73</td><td>T6</td><td>7234</td><td>1194</td><td>—</td><td>—</td><td>150</td><td>0.165 мм/об</td></tr>
-<tr><td>10</td><td>Сверление Ø5.1 под резьбу M6 (2 шт.)</td><td>Drill (сверление) G73</td><td>T7</td><td>8100</td><td>1033</td><td>—</td><td>—</td><td>130</td><td>0.128 мм/об</td></tr>
-<tr><td>11</td><td>Сверление Ø9.8 под развёртку Ø10H7</td><td>Drill (сверление) G81</td><td>T8</td><td>4872</td><td>1194</td><td>—</td><td>—</td><td>150</td><td>0.245 мм/об</td></tr>
-<tr><td>12</td><td>Чистовая наружного контура</td><td>2D Contour (контур)</td><td>T2</td><td>8100</td><td>3235</td><td>20.3</td><td>0.25</td><td>407</td><td>0.133 мм/зуб</td></tr>
-<tr><td>13</td><td>Чистовая дна: карман 60×40×8</td><td>2D Pocket (карман)</td><td>T4</td><td>8100</td><td>1244</td><td>0.15</td><td>4.8</td><td>204</td><td>0.051 мм/зуб</td></tr>
-<tr><td>14</td><td>Чистовая стенок: карман 60×40×8</td><td>2D Contour (контур)</td><td>T4</td><td>8100</td><td>1617</td><td>8</td><td>0.25</td><td>204</td><td>0.067 мм/зуб</td></tr>
-<tr><td>15</td><td>Чистовая стенок: паз 30×8×5</td><td>2D Contour (контур)</td><td>T3</td><td>8100</td><td>1213</td><td>5</td><td>0.25</td><td>153</td><td>0.05 мм/зуб</td></tr>
-<tr><td>16</td><td>Фаска 0.5×45° — наружный контур</td><td>2D Contour — Chamfer (фаска)</td><td>T9</td><td>8100</td><td>1296</td><td>—</td><td>—</td><td>127</td><td>0.04 мм/зуб</td></tr>
-<tr><td>17</td><td>Нарезание резьбы M6 (2 шт.)</td><td>Drill (сверление) G84</td><td>T10</td><td>796</td><td>796</td><td>—</td><td>—</td><td>15</td><td>1 мм/об</td></tr>
-<tr><td>18</td><td>Развёртывание Ø10H7</td><td>Drill (сверление) G85</td><td>T11</td><td>1273</td><td>382</td><td>—</td><td>—</td><td>40</td><td>0.3 мм/об</td></tr>
+<table><tr><th>Оп.</th><th>Операция</th><th>Стратегия HSMWorks</th><th>Инструмент</th><th>S, об/мин</th><th>F, мм/мин</th><th>ap, мм</th><th>ae, мм</th><th>Vc, м/мин</th><th>Подача</th></tr>
+<tr><td>1</td><td>Торцовка верха (снять 1 мм)</td><td>Face (торцевание)</td><td>T1 — Торцевая фреза Ø50, 5 пластин (45°)</td><td>5093</td><td>3056</td><td>1</td><td>35</td><td>800</td><td>0.12 мм/зуб</td></tr>
+<tr><td>2</td><td>Черновая наружного контура, глубина 20.3 мм</td><td>2D Adaptive Clearing (адаптивная выборка)</td><td>T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</td><td>8100</td><td>4355</td><td>20.3</td><td>2.4</td><td>407</td><td>0.179 мм/зуб</td></tr>
+<tr><td>3</td><td>Черновая: карман 60×40×8</td><td>2D Adaptive Clearing (адаптивная выборка)</td><td>T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</td><td>8100</td><td>4355</td><td>8</td><td>2.4</td><td>407</td><td>0.179 мм/зуб</td></tr>
+<tr><td>4</td><td>Черновая: паз 30×8×5</td><td>2D Adaptive Clearing (адаптивная выборка)</td><td>T3 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18</td><td>8100</td><td>1633</td><td>5</td><td>0.9</td><td>153</td><td>0.067 мм/зуб</td></tr>
+<tr><td>5</td><td>Дообработка углов R5: карман 60×40×8</td><td>2D Adaptive Clearing (адаптивная выборка)</td><td>T4 — Фреза концевая ZCC AL-3E-D8.0 Ø8 z3 Lc20</td><td>8100</td><td>2178</td><td>8</td><td>1.2</td><td>204</td><td>0.09 мм/зуб</td></tr>
+<tr><td>6</td><td>Центровка под Ø6.6</td><td>Drill (сверление) G81</td><td>T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10</td><td>3183</td><td>191</td><td>—</td><td>—</td><td>100</td><td>0.06 мм/об</td></tr>
+<tr><td>7</td><td>Центровка с фаской под M6</td><td>Drill (сверление) G81</td><td>T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10</td><td>3183</td><td>191</td><td>—</td><td>—</td><td>100</td><td>0.06 мм/об</td></tr>
+<tr><td>8</td><td>Центровка под Ø9.8</td><td>Drill (сверление) G81</td><td>T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10</td><td>3183</td><td>191</td><td>—</td><td>—</td><td>100</td><td>0.06 мм/об</td></tr>
+<tr><td>9</td><td>Сверление Ø6.6 (4 шт.)</td><td>Drill (сверление) G73</td><td>T6 — Сверло ZCC 1534SU03-0660 Ø6.6 3xD</td><td>7234</td><td>1194</td><td>—</td><td>—</td><td>150</td><td>0.165 мм/об</td></tr>
+<tr><td>10</td><td>Сверление Ø5.1 под резьбу M6 (2 шт.)</td><td>Drill (сверление) G73</td><td>T7 — Сверло ZCC 1534SU03-0510 Ø5.1 3xD</td><td>8100</td><td>1033</td><td>—</td><td>—</td><td>130</td><td>0.128 мм/об</td></tr>
+<tr><td>11</td><td>Сверление Ø9.8 под развёртку Ø10H7</td><td>Drill (сверление) G81</td><td>T8 — Сверло ZCC 1534SU03-0980 Ø9.8 3xD</td><td>4872</td><td>1194</td><td>—</td><td>—</td><td>150</td><td>0.245 мм/об</td></tr>
+<tr><td>12</td><td>Чистовая наружного контура</td><td>2D Contour (контур)</td><td>T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</td><td>8100</td><td>3235</td><td>20.3</td><td>0.25</td><td>407</td><td>0.133 мм/зуб</td></tr>
+<tr><td>13</td><td>Чистовая дна: карман 60×40×8</td><td>2D Pocket (карман)</td><td>T4 — Фреза концевая ZCC AL-3E-D8.0 Ø8 z3 Lc20</td><td>8100</td><td>1244</td><td>0.15</td><td>4.8</td><td>204</td><td>0.051 мм/зуб</td></tr>
+<tr><td>14</td><td>Чистовая стенок: карман 60×40×8</td><td>2D Contour (контур)</td><td>T4 — Фреза концевая ZCC AL-3E-D8.0 Ø8 z3 Lc20</td><td>8100</td><td>1617</td><td>8</td><td>0.25</td><td>204</td><td>0.067 мм/зуб</td></tr>
+<tr><td>15</td><td>Чистовая стенок: паз 30×8×5</td><td>2D Contour (контур)</td><td>T3 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18</td><td>8100</td><td>1213</td><td>5</td><td>0.25</td><td>153</td><td>0.05 мм/зуб</td></tr>
+<tr><td>16</td><td>Фаска 0.5×45° — наружный контур</td><td>2D Contour — Chamfer (фаска)</td><td>T9 — Фасочная фреза 90° ZCC 5601R904FM-1000 Ø10</td><td>8100</td><td>1296</td><td>—</td><td>—</td><td>127</td><td>0.04 мм/зуб</td></tr>
+<tr><td>17</td><td>Нарезание резьбы M6 (2 шт.)</td><td>Drill (сверление) G84</td><td>T10 — Метчик ZCC 4701US-M6-6H (глухая, спираль 40° (C), DIN 371, HSS-E HG23)</td><td>796</td><td>796</td><td>—</td><td>—</td><td>15</td><td>1 мм/об</td></tr>
+<tr><td>18</td><td>Развёртывание Ø10H7</td><td>Drill (сверление) G85</td><td>T11 — Развёртка ZCC 3112H7-1000 Ø10H7</td><td>1273</td><td>382</td><td>—</td><td>—</td><td>40</td><td>0.3 мм/об</td></tr>
 </table>
-<details><summary>Оп. 1. Торцовка верха (снять 1 мм)</summary>
+<details><summary>Оп. 1. Торцовка верха (снять 1 мм) · T1 — Торцевая фреза Ø50, 5 пластин (45°)</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="hl" x="15.12" y="15.12" width="126" height="86"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="feat" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="feat" cx="28.12" cy="88.12" r="3.3"/><circle class="feat" cx="128.12" cy="88.12" r="3.3"/><circle class="feat" cx="28.12" cy="28.12" r="3.3"/><circle class="feat" cx="128.12" cy="28.12" r="3.3"/><circle class="feat" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="33.12" cy="58.12" r="2.5"/><circle class="feat" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="123.12" cy="58.12" r="2.5"/><circle class="feat" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: верхняя плоскость заготовки. Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(1)'>Показать в 3D</button>
 <ul>
@@ -108,7 +108,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li>Проходов по Z ≈ 2; последний — чистовой 0.3 мм.</li>
 </ul>
 </details>
-<details><summary>Оп. 2. Черновая наружного контура, глубина 20.3 мм</summary>
+<details><summary>Оп. 2. Черновая наружного контура, глубина 20.3 мм · T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><path class="hl" fill-rule="evenodd" d="M15.12 15.12H141.12V101.12H15.12Z M18.12 18.12H138.12V98.12H18.12Z"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="hll" x="18.12" y="18.12" width="120" height="80"/><rect class="feat" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="feat" cx="28.12" cy="88.12" r="3.3"/><circle class="feat" cx="128.12" cy="88.12" r="3.3"/><circle class="feat" cx="28.12" cy="28.12" r="3.3"/><circle class="feat" cx="128.12" cy="28.12" r="3.3"/><circle class="feat" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="33.12" cy="58.12" r="2.5"/><circle class="feat" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="123.12" cy="58.12" r="2.5"/><circle class="feat" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: припуск вокруг наружного контура. Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(2)'>Показать в 3D</button>
 <ul>
@@ -128,7 +128,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 8952)</li>
 </ul>
 </details>
-<details><summary>Оп. 3. Черновая: карман 60×40×8</summary>
+<details><summary>Оп. 3. Черновая: карман 60×40×8 · T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="hl" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="feat" cx="28.12" cy="88.12" r="3.3"/><circle class="feat" cx="128.12" cy="88.12" r="3.3"/><circle class="feat" cx="28.12" cy="28.12" r="3.3"/><circle class="feat" cx="128.12" cy="28.12" r="3.3"/><circle class="feat" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="33.12" cy="58.12" r="2.5"/><circle class="feat" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="123.12" cy="58.12" r="2.5"/><circle class="feat" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: объём кармана. Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(3)'>Показать в 3D</button>
 <ul>
@@ -147,7 +147,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 8952)</li>
 </ul>
 </details>
-<details><summary>Оп. 4. Черновая: паз 30×8×5</summary>
+<details><summary>Оп. 4. Черновая: паз 30×8×5 · T3 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="feat" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="feat" cx="28.12" cy="88.12" r="3.3"/><circle class="feat" cx="128.12" cy="88.12" r="3.3"/><circle class="feat" cx="28.12" cy="28.12" r="3.3"/><circle class="feat" cx="128.12" cy="28.12" r="3.3"/><circle class="feat" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="33.12" cy="58.12" r="2.5"/><circle class="feat" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="123.12" cy="58.12" r="2.5"/><circle class="feat" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: паз. Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(4)'>Показать в 3D</button>
 <ul>
@@ -166,7 +166,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 23873)</li>
 </ul>
 </details>
-<details><summary>Оп. 5. Дообработка углов R5: карман 60×40×8</summary>
+<details><summary>Оп. 5. Дообработка углов R5: карман 60×40×8 · T4 — Фреза концевая ZCC AL-3E-D8.0 Ø8 z3 Lc20</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="hl" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="feat" cx="28.12" cy="88.12" r="3.3"/><circle class="feat" cx="128.12" cy="88.12" r="3.3"/><circle class="feat" cx="28.12" cy="28.12" r="3.3"/><circle class="feat" cx="128.12" cy="28.12" r="3.3"/><circle class="feat" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="33.12" cy="58.12" r="2.5"/><circle class="feat" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="123.12" cy="58.12" r="2.5"/><circle class="feat" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: остаток в углах кармана. Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(5)'>Показать в 3D</button>
 <ul>
@@ -186,7 +186,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 17905)</li>
 </ul>
 </details>
-<details><summary>Оп. 6. Центровка под Ø6.6</summary>
+<details><summary>Оп. 6. Центровка под Ø6.6 · T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="feat" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="hl" cx="28.12" cy="88.12" r="3.3"/><circle class="hl" cx="128.12" cy="88.12" r="3.3"/><circle class="hl" cx="28.12" cy="28.12" r="3.3"/><circle class="hl" cx="128.12" cy="28.12" r="3.3"/><circle class="feat" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="33.12" cy="58.12" r="2.5"/><circle class="feat" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="123.12" cy="58.12" r="2.5"/><circle class="feat" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="num" x="28.12" y="94.294" text-anchor="middle">1</text><text class="num" x="128.12" y="94.294" text-anchor="middle">2</text><text class="num" x="28.12" y="34.294" text-anchor="middle">3</text><text class="num" x="128.12" y="34.294" text-anchor="middle">4</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: отверстия (цифры — порядок обхода). Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(6)'>Показать в 3D</button>
 <ul>
@@ -202,7 +202,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li>центровка с фаской: Ø7 на входе</li>
 </ul>
 </details>
-<details><summary>Оп. 7. Центровка с фаской под M6</summary>
+<details><summary>Оп. 7. Центровка с фаской под M6 · T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="feat" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="feat" cx="28.12" cy="88.12" r="3.3"/><circle class="feat" cx="128.12" cy="88.12" r="3.3"/><circle class="feat" cx="28.12" cy="28.12" r="3.3"/><circle class="feat" cx="128.12" cy="28.12" r="3.3"/><circle class="hll" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="hl" cx="33.12" cy="58.12" r="2.5"/><circle class="hll" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="hl" cx="123.12" cy="58.12" r="2.5"/><circle class="feat" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="num" x="33.12" y="64.294" text-anchor="middle">1</text><text class="num" x="123.12" y="64.294" text-anchor="middle">2</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: отверстия (цифры — порядок обхода). Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(7)'>Показать в 3D</button>
 <ul>
@@ -218,7 +218,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li>центровка с фаской: Ø6.6 на входе</li>
 </ul>
 </details>
-<details><summary>Оп. 8. Центровка под Ø9.8</summary>
+<details><summary>Оп. 8. Центровка под Ø9.8 · T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="feat" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="feat" cx="28.12" cy="88.12" r="3.3"/><circle class="feat" cx="128.12" cy="88.12" r="3.3"/><circle class="feat" cx="28.12" cy="28.12" r="3.3"/><circle class="feat" cx="128.12" cy="28.12" r="3.3"/><circle class="feat" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="33.12" cy="58.12" r="2.5"/><circle class="feat" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="123.12" cy="58.12" r="2.5"/><circle class="hl" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="num" x="78.12" y="64.294" text-anchor="middle">1</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: отверстия (цифры — порядок обхода). Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(8)'>Показать в 3D</button>
 <ul>
@@ -234,7 +234,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li>центровка без фаски (отверстие больше центровки)</li>
 </ul>
 </details>
-<details><summary>Оп. 9. Сверление Ø6.6 (4 шт.)</summary>
+<details><summary>Оп. 9. Сверление Ø6.6 (4 шт.) · T6 — Сверло ZCC 1534SU03-0660 Ø6.6 3xD</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="feat" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="hl" cx="28.12" cy="88.12" r="3.3"/><circle class="hl" cx="128.12" cy="88.12" r="3.3"/><circle class="hl" cx="28.12" cy="28.12" r="3.3"/><circle class="hl" cx="128.12" cy="28.12" r="3.3"/><circle class="feat" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="33.12" cy="58.12" r="2.5"/><circle class="feat" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="123.12" cy="58.12" r="2.5"/><circle class="feat" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="num" x="28.12" y="94.294" text-anchor="middle">1</text><text class="num" x="128.12" y="94.294" text-anchor="middle">2</text><text class="num" x="28.12" y="34.294" text-anchor="middle">3</text><text class="num" x="128.12" y="34.294" text-anchor="middle">4</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: отверстия (цифры — порядок обхода). Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(9)'>Показать в 3D</button>
 <ul>
@@ -251,7 +251,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li><b>Режим:</b> S7234 F1194, мощность ≈ 0.48 кВт; СОЖ (эмульсия) поливом, M08</li>
 </ul>
 </details>
-<details><summary>Оп. 10. Сверление Ø5.1 под резьбу M6 (2 шт.)</summary>
+<details><summary>Оп. 10. Сверление Ø5.1 под резьбу M6 (2 шт.) · T7 — Сверло ZCC 1534SU03-0510 Ø5.1 3xD</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="feat" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="feat" cx="28.12" cy="88.12" r="3.3"/><circle class="feat" cx="128.12" cy="88.12" r="3.3"/><circle class="feat" cx="28.12" cy="28.12" r="3.3"/><circle class="feat" cx="128.12" cy="28.12" r="3.3"/><circle class="hll" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="hl" cx="33.12" cy="58.12" r="2.5"/><circle class="hll" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="hl" cx="123.12" cy="58.12" r="2.5"/><circle class="feat" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="num" x="33.12" y="64.294" text-anchor="middle">1</text><text class="num" x="123.12" y="64.294" text-anchor="middle">2</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: отверстия (цифры — порядок обхода). Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(10)'>Показать в 3D</button>
 <ul>
@@ -268,7 +268,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 9362)</li>
 </ul>
 </details>
-<details><summary>Оп. 11. Сверление Ø9.8 под развёртку Ø10H7</summary>
+<details><summary>Оп. 11. Сверление Ø9.8 под развёртку Ø10H7 · T8 — Сверло ZCC 1534SU03-0980 Ø9.8 3xD</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="feat" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="feat" cx="28.12" cy="88.12" r="3.3"/><circle class="feat" cx="128.12" cy="88.12" r="3.3"/><circle class="feat" cx="28.12" cy="28.12" r="3.3"/><circle class="feat" cx="128.12" cy="28.12" r="3.3"/><circle class="feat" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="33.12" cy="58.12" r="2.5"/><circle class="feat" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="123.12" cy="58.12" r="2.5"/><circle class="hl" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="num" x="78.12" y="64.294" text-anchor="middle">1</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: отверстия (цифры — порядок обхода). Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(11)'>Показать в 3D</button>
 <ul>
@@ -284,7 +284,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li><b>Режим:</b> S4872 F1194, мощность ≈ 1.05 кВт; СОЖ (эмульсия) поливом, M08</li>
 </ul>
 </details>
-<details><summary>Оп. 12. Чистовая наружного контура</summary>
+<details><summary>Оп. 12. Чистовая наружного контура · T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="hll" x="18.12" y="18.12" width="120" height="80"/><rect class="feat" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="feat" cx="28.12" cy="88.12" r="3.3"/><circle class="feat" cx="128.12" cy="88.12" r="3.3"/><circle class="feat" cx="28.12" cy="28.12" r="3.3"/><circle class="feat" cx="128.12" cy="28.12" r="3.3"/><circle class="feat" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="33.12" cy="58.12" r="2.5"/><circle class="feat" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="123.12" cy="58.12" r="2.5"/><circle class="feat" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: наружный контур (кромка). Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(12)'>Показать в 3D</button>
 <ul>
@@ -302,7 +302,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 9947)</li>
 </ul>
 </details>
-<details><summary>Оп. 13. Чистовая дна: карман 60×40×8</summary>
+<details><summary>Оп. 13. Чистовая дна: карман 60×40×8 · T4 — Фреза концевая ZCC AL-3E-D8.0 Ø8 z3 Lc20</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="hl" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="feat" cx="28.12" cy="88.12" r="3.3"/><circle class="feat" cx="128.12" cy="88.12" r="3.3"/><circle class="feat" cx="28.12" cy="28.12" r="3.3"/><circle class="feat" cx="128.12" cy="28.12" r="3.3"/><circle class="feat" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="33.12" cy="58.12" r="2.5"/><circle class="feat" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="123.12" cy="58.12" r="2.5"/><circle class="feat" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: дно кармана. Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(13)'>Показать в 3D</button>
 <ul>
@@ -318,7 +318,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 19894)</li>
 </ul>
 </details>
-<details><summary>Оп. 14. Чистовая стенок: карман 60×40×8</summary>
+<details><summary>Оп. 14. Чистовая стенок: карман 60×40×8 · T4 — Фреза концевая ZCC AL-3E-D8.0 Ø8 z3 Lc20</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="feat" x="48.12" y="38.12" width="60" height="40" rx="5"/><rect class="hll" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="feat" cx="28.12" cy="88.12" r="3.3"/><circle class="feat" cx="128.12" cy="88.12" r="3.3"/><circle class="feat" cx="28.12" cy="28.12" r="3.3"/><circle class="feat" cx="128.12" cy="28.12" r="3.3"/><circle class="feat" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="33.12" cy="58.12" r="2.5"/><circle class="feat" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="123.12" cy="58.12" r="2.5"/><circle class="feat" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: стенки кармана. Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(14)'>Показать в 3D</button>
 <ul>
@@ -336,7 +336,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 19894)</li>
 </ul>
 </details>
-<details><summary>Оп. 15. Чистовая стенок: паз 30×8×5</summary>
+<details><summary>Оп. 15. Чистовая стенок: паз 30×8×5 · T3 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="feat" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="feat" cx="28.12" cy="88.12" r="3.3"/><circle class="feat" cx="128.12" cy="88.12" r="3.3"/><circle class="feat" cx="28.12" cy="28.12" r="3.3"/><circle class="feat" cx="128.12" cy="28.12" r="3.3"/><circle class="feat" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="33.12" cy="58.12" r="2.5"/><circle class="feat" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="123.12" cy="58.12" r="2.5"/><circle class="feat" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: стенки паза. Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(15)'>Показать в 3D</button>
 <ul>
@@ -354,7 +354,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 26526)</li>
 </ul>
 </details>
-<details><summary>Оп. 16. Фаска 0.5×45° — наружный контур</summary>
+<details><summary>Оп. 16. Фаска 0.5×45° — наружный контур · T9 — Фасочная фреза 90° ZCC 5601R904FM-1000 Ø10</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="hll" x="18.12" y="18.12" width="120" height="80" stroke-dasharray="1.8 1.15"/><rect class="feat" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="feat" cx="28.12" cy="88.12" r="3.3"/><circle class="feat" cx="128.12" cy="88.12" r="3.3"/><circle class="feat" cx="28.12" cy="28.12" r="3.3"/><circle class="feat" cx="128.12" cy="28.12" r="3.3"/><circle class="feat" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="33.12" cy="58.12" r="2.5"/><circle class="feat" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="123.12" cy="58.12" r="2.5"/><circle class="feat" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: верхняя кромка контура. Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(16)'>Показать в 3D</button>
 <ul>
@@ -370,7 +370,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li><b>Ограничено:</b> обороты шпинделя 8100 (расчётные 19099)</li>
 </ul>
 </details>
-<details><summary>Оп. 17. Нарезание резьбы M6 (2 шт.)</summary>
+<details><summary>Оп. 17. Нарезание резьбы M6 (2 шт.) · T10 — Метчик ZCC 4701US-M6-6H (глухая, спираль 40° (C), DIN 371, HSS-E HG23)</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="feat" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="feat" cx="28.12" cy="88.12" r="3.3"/><circle class="feat" cx="128.12" cy="88.12" r="3.3"/><circle class="feat" cx="28.12" cy="28.12" r="3.3"/><circle class="feat" cx="128.12" cy="28.12" r="3.3"/><circle class="hll" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="hl" cx="33.12" cy="58.12" r="2.5"/><circle class="hll" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="hl" cx="123.12" cy="58.12" r="2.5"/><circle class="feat" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="num" x="33.12" y="64.294" text-anchor="middle">1</text><text class="num" x="123.12" y="64.294" text-anchor="middle">2</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: отверстия (цифры — порядок обхода). Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(17)'>Показать в 3D</button>
 <ul>
@@ -389,7 +389,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li>Только жёсткое (синхронное) нарезание, без компенсационного патрона.</li>
 </ul>
 </details>
-<details><summary>Оп. 18. Развёртывание Ø10H7</summary>
+<details><summary>Оп. 18. Развёртывание Ø10H7 · T11 — Развёртка ZCC 3112H7-1000 Ø10H7</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="feat" x="48.12" y="38.12" width="60" height="40" rx="5"/><circle class="feat" cx="28.12" cy="88.12" r="3.3"/><circle class="feat" cx="128.12" cy="88.12" r="3.3"/><circle class="feat" cx="28.12" cy="28.12" r="3.3"/><circle class="feat" cx="128.12" cy="28.12" r="3.3"/><circle class="feat" cx="33.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="33.12" cy="58.12" r="2.5"/><circle class="feat" cx="123.12" cy="58.12" r="3" fill="none" stroke-dasharray="1.8 1.15"/><circle class="feat" cx="123.12" cy="58.12" r="2.5"/><circle class="hl" cx="78.12" cy="58.12" r="5"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="108.12" y="36.797" text-anchor="end">F1</text><text x="32.743" y="84.82">F2</text><text x="37.443" y="55.12">F3</text><text x="84.443" y="53.12">F4</text><text class="num" x="78.12" y="64.294" text-anchor="middle">1</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G54</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: отверстия (цифры — порядок обхода). Без координат (не показаны): F5 (паз 30×8).</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(18)'>Показать в 3D</button>
 <ul>
@@ -417,11 +417,11 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li>Z0 — верх детали после торцовки: от верха параллелей + толщина 20 мм (сейчас сверху припуск 9 мм).</li>
 </ul>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 2 — низ (сторона B, переворот)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><circle class="ref" cx="28.12" cy="28.12" r="3.3" stroke-dasharray="1.8 1.15"/><circle class="ref" cx="128.12" cy="28.12" r="3.3" stroke-dasharray="1.8 1.15"/><circle class="ref" cx="28.12" cy="88.12" r="3.3" stroke-dasharray="1.8 1.15"/><circle class="ref" cx="128.12" cy="88.12" r="3.3" stroke-dasharray="1.8 1.15"/><circle class="ref" cx="78.12" cy="58.12" r="5" stroke-dasharray="1.8 1.15"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="32.743" y="24.82">F2</text><text x="84.443" y="53.12">F4</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G55</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 2, нуль G55. Деталь перевёрнута вокруг X: пунктир — сквозные элементы с верхней стороны.</figcaption></figure>
-<table><tr><th>Оп.</th><th>Операция</th><th>Стратегия HSMWorks</th><th>T</th><th>S, об/мин</th><th>F, мм/мин</th><th>ap, мм</th><th>ae, мм</th><th>Vc, м/мин</th><th>Подача</th></tr>
-<tr><td>19</td><td>Торцовка в размер по толщине 20 мм (снять 9 мм)</td><td>Face (торцевание)</td><td>T1</td><td>5093</td><td>3056</td><td>2</td><td>35</td><td>800</td><td>0.12 мм/зуб</td></tr>
-<tr><td>20</td><td>Фаска 0.5×45° — кромки низа</td><td>2D Contour — Chamfer (фаска)</td><td>T9</td><td>8100</td><td>1296</td><td>—</td><td>—</td><td>127</td><td>0.04 мм/зуб</td></tr>
+<table><tr><th>Оп.</th><th>Операция</th><th>Стратегия HSMWorks</th><th>Инструмент</th><th>S, об/мин</th><th>F, мм/мин</th><th>ap, мм</th><th>ae, мм</th><th>Vc, м/мин</th><th>Подача</th></tr>
+<tr><td>19</td><td>Торцовка в размер по толщине 20 мм (снять 9 мм)</td><td>Face (торцевание)</td><td>T1 — Торцевая фреза Ø50, 5 пластин (45°)</td><td>5093</td><td>3056</td><td>2</td><td>35</td><td>800</td><td>0.12 мм/зуб</td></tr>
+<tr><td>20</td><td>Фаска 0.5×45° — кромки низа</td><td>2D Contour — Chamfer (фаска)</td><td>T9 — Фасочная фреза 90° ZCC 5601R904FM-1000 Ø10</td><td>8100</td><td>1296</td><td>—</td><td>—</td><td>127</td><td>0.04 мм/зуб</td></tr>
 </table>
-<details><summary>Оп. 19. Торцовка в размер по толщине 20 мм (снять 9 мм)</summary>
+<details><summary>Оп. 19. Торцовка в размер по толщине 20 мм (снять 9 мм) · T1 — Торцевая фреза Ø50, 5 пластин (45°)</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 2 — низ (сторона B, переворот)"><rect class="hl" x="15.12" y="15.12" width="126" height="86"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><circle class="ref" cx="28.12" cy="28.12" r="3.3" stroke-dasharray="1.8 1.15"/><circle class="ref" cx="128.12" cy="28.12" r="3.3" stroke-dasharray="1.8 1.15"/><circle class="ref" cx="28.12" cy="88.12" r="3.3" stroke-dasharray="1.8 1.15"/><circle class="ref" cx="128.12" cy="88.12" r="3.3" stroke-dasharray="1.8 1.15"/><circle class="ref" cx="78.12" cy="58.12" r="5" stroke-dasharray="1.8 1.15"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="32.743" y="24.82">F2</text><text x="84.443" y="53.12">F4</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G55</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 2, нуль G55. Деталь перевёрнута вокруг X: пунктир — сквозные элементы с верхней стороны. Подсвечено: верхняя плоскость заготовки.</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(19)'>Показать в 3D</button>
 <ul>
@@ -439,7 +439,7 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <li>После торцовки замерить толщину микрометром; при необходимости — доп. проход с коррекцией Z.</li>
 </ul>
 </details>
-<details><summary>Оп. 20. Фаска 0.5×45° — кромки низа</summary>
+<details><summary>Оп. 20. Фаска 0.5×45° — кромки низа · T9 — Фасочная фреза 90° ZCC 5601R904FM-1000 Ø10</summary>
 <figure class="skf"><svg class="sk" viewBox="0 0 156.24 116.24" style="font-size:4.41px;--sw:0.49px" role="img" aria-label="Вид сверху, Установ 2 — низ (сторона B, переворот)"><rect class="stock" x="15.12" y="15.12" width="126" height="86" stroke-dasharray="1.8 1.15"/><rect class="part" x="18.12" y="18.12" width="120" height="80"/><rect class="hll" x="18.12" y="18.12" width="120" height="80" stroke-dasharray="1.8 1.15"/><circle class="ref" cx="28.12" cy="28.12" r="3.3" stroke-dasharray="1.8 1.15"/><circle class="ref" cx="128.12" cy="28.12" r="3.3" stroke-dasharray="1.8 1.15"/><circle class="ref" cx="28.12" cy="88.12" r="3.3" stroke-dasharray="1.8 1.15"/><circle class="ref" cx="128.12" cy="88.12" r="3.3" stroke-dasharray="1.8 1.15"/><circle class="ref" cx="78.12" cy="58.12" r="5" stroke-dasharray="1.8 1.15"/><path class="datum" d="M18.12 98.12h9.702M18.12 98.12v-9.702" fill="none"/><text x="32.743" y="24.82">F2</text><text x="84.443" y="53.12">F4</text><text class="datum-t" x="28.704" y="99.663">X</text><text class="datum-t" x="16.797" y="87.536">Y</text><text class="datum-t" x="16.356" y="103.853" text-anchor="end">G55</text><text x="78.12" y="108.176" text-anchor="middle">120</text></svg><figcaption>Вид сверху, установ 2, нуль G55. Деталь перевёрнута вокруг X: пунктир — сквозные элементы с верхней стороны. Подсвечено: верхняя кромка контура.</figcaption></figure>
 <button class='btn3d' onclick='nc3dShow(20)'>Показать в 3D</button>
 <ul>
@@ -470,415 +470,6 @@ border-radius:6px;cursor:pointer;margin:4px 0}
 <tr><td>T11 / H11 / D11</td><td>Развёртка ZCC 3112H7-1000 Ø10H7</td><td>3112H7-1000 (склад)</td><td>10</td><td>6</td><td>25</td><td>110</td><td>32</td><td>твердый сплав, KRG102</td><td>18</td></tr>
 </table>
 <blockquote>Режимы — стартовые для Haas VF-2. Первую деталь вести с коррекцией подачи 70–80 % и контролем нагрузки шпинделя. Траектории формирует HSMWorks; обязательна симуляция в HSMWorks перед выводом УП.</blockquote>
-<h2>Черновик УП</h2>
-<pre>%
-O1001 (KRONSHTEYN OP1)
-(NUMCRAFT DRAFT - FANUC - VERIFY IN HSMWORKS SIM)
-(MATERIAL ALYUMINIY 6061-T6)
-(STOCK 126X86X30)
-(SETUP 1 TOP - G54 - Z0 TOP OF PART)
-(T1 FACE MILL D50)
-(T2 END MILL D16 Z3 LC45)
-(T3 END MILL D6 Z3 LC18)
-(T4 END MILL D8 Z3 LC20)
-(T5 SPOT DRILL D10 90DEG)
-(T6 DRILL D6.6)
-(T7 DRILL D5.1)
-(T8 DRILL D9.8)
-(T9 CHAMFER MILL D10 90DEG)
-(T10 TAP M6)
-(T11 REAMER D10)
-G90 G17 G21 G40 G49 G80
-G91 G28 Z0.
-G90
-
-(OP 1 FACE - FACE MILL D50)
-T1 M06
-G00 G90 G54 X0. Y0.
-S5093 M03
-G43 H01 Z51. M08
-G00 Z11.
-(FACE PASS Z0.3)
-G00 X-33. Y-13.
-G00 Z2.3
-G01 Z0.3 F1528.
-G01 X153. F3056.
-G01 Y22.
-G01 X-33. F3056.
-G01 Y57.
-G01 X153. F3056.
-G01 Y92.
-G01 X-33. F3056.
-G00 Z11.
-(FACE PASS Z0.)
-G00 X-33. Y-13.
-G00 Z2.
-G01 Z0. F1528.
-G01 X153. F3056.
-G01 Y22.
-G01 X-33. F3056.
-G01 Y57.
-G01 X153. F3056.
-G01 Y92.
-G01 X-33. F3056.
-G00 Z11.
-
-(OP 2 2D ADAPTIVE - END MILL D16 Z3 LC45)
-M09
-M05
-G91 G28 Z0.
-G90
-M01
-T2 M06
-G00 G90 G54 X0. Y0.
-S8100 M03
-G43 H02 Z51. M08
-G00 Z11.
-(*** INSERT HSMWORKS TOOLPATH: 2D ADAPTIVE Z-20.3 ***)
-(S8100 F4355.)
-G00 Z11.
-
-(OP 3 2D ADAPTIVE - END MILL D16 Z3 LC45)
-S8100 M03
-(*** INSERT HSMWORKS TOOLPATH: 2D ADAPTIVE Z-8. ***)
-(S8100 F4355.)
-G00 Z11.
-
-(OP 4 2D ADAPTIVE - END MILL D6 Z3 LC18)
-M09
-M05
-G91 G28 Z0.
-G90
-M01
-T3 M06
-G00 G90 G54 X0. Y0.
-S8100 M03
-G43 H03 Z51. M08
-G00 Z11.
-(*** INSERT HSMWORKS TOOLPATH: 2D ADAPTIVE Z-5. ***)
-(S8100 F1633.)
-G00 Z11.
-
-(OP 5 2D ADAPTIVE - END MILL D8 Z3 LC20)
-M09
-M05
-G91 G28 Z0.
-G90
-M01
-T4 M06
-G00 G90 G54 X0. Y0.
-S8100 M03
-G43 H04 Z51. M08
-G00 Z11.
-(*** INSERT HSMWORKS TOOLPATH: 2D ADAPTIVE Z-8. ***)
-(S8100 F2178.)
-G00 Z11.
-
-(OP 6 DRILL - SPOT DRILL D10 90DEG)
-M09
-M05
-G91 G28 Z0.
-G90
-M01
-T5 M06
-G00 G90 G54 X10. Y10.
-S3183 M03
-G43 H05 Z51. M08
-G00 Z11.
-G00 X10. Y10.
-G98 G81 X10. Y10. Z-3.5 R2. F191.
-X110. Y10.
-X10. Y70.
-X110. Y70.
-G80
-G00 Z11.
-
-(OP 7 DRILL - SPOT DRILL D10 90DEG)
-S3183 M03
-G00 X15. Y40.
-G98 G81 X15. Y40. Z-3.3 R2. F191.
-X105. Y40.
-G80
-G00 Z11.
-
-(OP 8 DRILL - SPOT DRILL D10 90DEG)
-S3183 M03
-G00 X60. Y40.
-G98 G81 X60. Y40. Z-9.5 R-6. F191.
-G80
-G00 Z11.
-
-(OP 9 DRILL - DRILL D6.6)
-M09
-M05
-G91 G28 Z0.
-G90
-M01
-T6 M06
-G00 G90 G54 X10. Y10.
-S7234 M03
-G43 H06 Z51. M08
-G00 Z11.
-G00 X10. Y10.
-G98 G73 X10. Y10. Z-22.19 R2. Q9.9 F1194.
-X110. Y10.
-X10. Y70.
-X110. Y70.
-G80
-G00 Z11.
-
-(OP 10 DRILL - DRILL D5.1)
-M09
-M05
-G91 G28 Z0.
-G90
-M01
-T7 M06
-G00 G90 G54 X15. Y40.
-S8100 M03
-G43 H07 Z51. M08
-G00 Z11.
-G00 X15. Y40.
-G98 G73 X15. Y40. Z-15.92 R2. Q7.6 F1033.
-X105. Y40.
-G80
-G00 Z11.
-
-(OP 11 DRILL - DRILL D9.8)
-M09
-M05
-G91 G28 Z0.
-G90
-M01
-T8 M06
-G00 G90 G54 X60. Y40.
-S4872 M03
-G43 H08 Z51. M08
-G00 Z11.
-G00 X60. Y40.
-G98 G81 X60. Y40. Z-22.76 R-6. F1194.
-G80
-G00 Z11.
-
-(OP 12 2D CONTOUR - END MILL D16 Z3 LC45)
-M09
-M05
-G91 G28 Z0.
-G90
-M01
-T2 M06
-G00 G90 G54 X0. Y0.
-S8100 M03
-G43 H02 Z51. M08
-G00 Z11.
-(*** INSERT HSMWORKS TOOLPATH: 2D CONTOUR Z-20.3 ***)
-(S8100 F3235.)
-G00 Z11.
-
-(OP 13 2D POCKET - END MILL D8 Z3 LC20)
-M09
-M05
-G91 G28 Z0.
-G90
-M01
-T4 M06
-G00 G90 G54 X0. Y0.
-S8100 M03
-G43 H04 Z51. M08
-G00 Z11.
-(*** INSERT HSMWORKS TOOLPATH: 2D POCKET Z-8. ***)
-(S8100 F1244.)
-G00 Z11.
-
-(OP 14 2D CONTOUR - END MILL D8 Z3 LC20)
-S8100 M03
-(*** INSERT HSMWORKS TOOLPATH: 2D CONTOUR Z-8. ***)
-(S8100 F1617.)
-G00 Z11.
-
-(OP 15 2D CONTOUR - END MILL D6 Z3 LC18)
-M09
-M05
-G91 G28 Z0.
-G90
-M01
-T3 M06
-G00 G90 G54 X0. Y0.
-S8100 M03
-G43 H03 Z51. M08
-G00 Z11.
-(*** INSERT HSMWORKS TOOLPATH: 2D CONTOUR Z-5. ***)
-(S8100 F1213.)
-G00 Z11.
-
-(OP 16 CHAMFER - CHAMFER MILL D10 90DEG)
-M09
-M05
-G91 G28 Z0.
-G90
-M01
-T9 M06
-G00 G90 G54 X0. Y0.
-S8100 M03
-G43 H09 Z51. M08
-G00 Z11.
-(*** INSERT HSMWORKS TOOLPATH: CHAMFER Z-1. ***)
-(S8100 F1296.)
-G00 Z11.
-
-(OP 17 DRILL - TAP M6)
-M09
-M05
-G91 G28 Z0.
-G90
-M01
-T10 M06
-G00 G90 G54 X15. Y40.
-S796
-G43 H10 Z51. M08
-G00 Z11.
-G00 X15. Y40.
-M29 S796
-G98 G84 X15. Y40. Z-12. R5. F796.
-X105. Y40.
-G80
-G00 Z11.
-
-(OP 18 DRILL - REAMER D10)
-M09
-M05
-G91 G28 Z0.
-G90
-M01
-T11 M06
-G00 G90 G54 X60. Y40.
-S1273 M03
-G43 H11 Z51. M08
-G00 Z11.
-G00 X60. Y40.
-G98 G85 X60. Y40. Z-21.5 R-6. F382.
-G80
-G00 Z11.
-M09
-M05
-G91 G28 Z0.
-G90
-G91 G28 Y0.
-G90
-M30
-
-O1002 (KRONSHTEYN OP2)
-(NUMCRAFT DRAFT - FANUC - VERIFY IN HSMWORKS SIM)
-(MATERIAL ALYUMINIY 6061-T6)
-(STOCK 126X86X30)
-(SETUP 2 BOTTOM - G55 - Z0 TOP OF PART)
-(T1 FACE MILL D50)
-(T9 CHAMFER MILL D10 90DEG)
-G90 G17 G21 G40 G49 G80
-G91 G28 Z0.
-G90
-
-(OP 19 FACE - FACE MILL D50)
-T1 M06
-G00 G90 G55 X0. Y0.
-S5093 M03
-G43 H01 Z59. M08
-G00 Z19.
-(FACE PASS Z7.)
-G00 X-33. Y-13.
-G00 Z9.
-G01 Z7. F1528.
-G01 X153. F3056.
-G01 Y22.
-G01 X-33. F3056.
-G01 Y57.
-G01 X153. F3056.
-G01 Y92.
-G01 X-33. F3056.
-G00 Z19.
-(FACE PASS Z5.)
-G00 X-33. Y-13.
-G00 Z7.
-G01 Z5. F1528.
-G01 X153. F3056.
-G01 Y22.
-G01 X-33. F3056.
-G01 Y57.
-G01 X153. F3056.
-G01 Y92.
-G01 X-33. F3056.
-G00 Z19.
-(FACE PASS Z3.)
-G00 X-33. Y-13.
-G00 Z5.
-G01 Z3. F1528.
-G01 X153. F3056.
-G01 Y22.
-G01 X-33. F3056.
-G01 Y57.
-G01 X153. F3056.
-G01 Y92.
-G01 X-33. F3056.
-G00 Z19.
-(FACE PASS Z1.)
-G00 X-33. Y-13.
-G00 Z3.
-G01 Z1. F1528.
-G01 X153. F3056.
-G01 Y22.
-G01 X-33. F3056.
-G01 Y57.
-G01 X153. F3056.
-G01 Y92.
-G01 X-33. F3056.
-G00 Z19.
-(FACE PASS Z0.3)
-G00 X-33. Y-13.
-G00 Z2.3
-G01 Z0.3 F1528.
-G01 X153. F3056.
-G01 Y22.
-G01 X-33. F3056.
-G01 Y57.
-G01 X153. F3056.
-G01 Y92.
-G01 X-33. F3056.
-G00 Z19.
-(FACE PASS Z0.)
-G00 X-33. Y-13.
-G00 Z2.
-G01 Z0. F1528.
-G01 X153. F3056.
-G01 Y22.
-G01 X-33. F3056.
-G01 Y57.
-G01 X153. F3056.
-G01 Y92.
-G01 X-33. F3056.
-G00 Z19.
-
-(OP 20 CHAMFER - CHAMFER MILL D10 90DEG)
-M09
-M05
-G91 G28 Z0.
-G90
-M01
-T9 M06
-G00 G90 G55 X0. Y0.
-S8100 M03
-G43 H09 Z59. M08
-G00 Z19.
-(*** INSERT HSMWORKS TOOLPATH: CHAMFER Z-1. ***)
-(S8100 F1296.)
-G00 Z19.
-M09
-M05
-G91 G28 Z0.
-G90
-G91 G28 Y0.
-G90
-M30
-%</pre>
 </main>
 <aside><div class="v3d" id="v3d">
 <div class="bar"><b>3D-вид</b><span class="hint">по габариту и элементам (STEP не задан)</span></div>
@@ -889,9 +480,9 @@ M30
 <label><input type="checkbox" id="nc3d-flip" checked> как в установе</label></div>
 <div class="bar"><select id="nc3d-op"><option value="">— операция: без подсветки —</option></select></div>
 <div class="info" id="nc3d-info"></div>
-<div class="hint">ЛКМ — вращать · ПКМ или Shift — сдвиг · колесо — масштаб · двойной щелчок — сброс ·
+<div class="hint">ЛКМ — вращать в любую сторону · Ctrl/Alt + ЛКМ — повернуть в плоскости экрана · ПКМ или Shift — сдвиг · колесо — масштаб · двойной щелчок — сброс ·
 щелчок по строке операции в таблице — показать её здесь</div>
-<script type="application/json" id="nc3d-data">{"source":"model","size":[120.0,80.0,20.0],"datum":"corner","stock":[-3.0,-3.0,-29.0,123.0,83.0,1.0],"edges":[{"p":[[0,0,0],[120.0,0,0],[120.0,80.0,0],[0,80.0,0],[0,0,0]],"t":["outer","top"]},{"p":[[0,0,-20.0],[120.0,0,-20.0],[120.0,80.0,-20.0],[0,80.0,-20.0],[0,0,-20.0]],"t":["outer","bot"]},{"p":[[0,0,0],[0,0,-20.0]],"t":["outer"]},{"p":[[120.0,0,0],[120.0,0,-20.0]],"t":["outer"]},{"p":[[120.0,80.0,0],[120.0,80.0,-20.0]],"t":["outer"]},{"p":[[0,80.0,0],[0,80.0,-20.0]],"t":["outer"]},{"p":[[85.0,20.0,0],[85.98,20.1,0],[86.91,20.38,0],[87.78,20.84,0],[88.54,21.46,0],[89.16,22.22,0],[89.62,23.09,0],[89.9,24.02,0],[90.0,25.0,0],[90.0,55.0,0],[89.9,55.98,0],[89.62,56.91,0],[89.16,57.78,0],[88.54,58.54,0],[87.78,59.16,0],[86.91,59.62,0],[85.98,59.9,0],[85.0,60.0,0],[35.0,60.0,0],[34.02,59.9,0],[33.09,59.62,0],[32.22,59.16,0],[31.46,58.54,0],[30.84,57.78,0],[30.38,56.91,0],[30.1,55.98,0],[30.0,55.0,0],[30.0,25.0,0],[30.1,24.02,0],[30.38,23.09,0],[30.84,22.22,0],[31.46,21.46,0],[32.22,20.84,0],[33.09,20.38,0],[34.02,20.1,0],[35.0,20.0,0],[85.0,20.0,0]],"t":["F1","top"]},{"p":[[85.0,20.0,-8.0],[85.98,20.1,-8.0],[86.91,20.38,-8.0],[87.78,20.84,-8.0],[88.54,21.46,-8.0],[89.16,22.22,-8.0],[89.62,23.09,-8.0],[89.9,24.02,-8.0],[90.0,25.0,-8.0],[90.0,55.0,-8.0],[89.9,55.98,-8.0],[89.62,56.91,-8.0],[89.16,57.78,-8.0],[88.54,58.54,-8.0],[87.78,59.16,-8.0],[86.91,59.62,-8.0],[85.98,59.9,-8.0],[85.0,60.0,-8.0],[35.0,60.0,-8.0],[34.02,59.9,-8.0],[33.09,59.62,-8.0],[32.22,59.16,-8.0],[31.46,58.54,-8.0],[30.84,57.78,-8.0],[30.38,56.91,-8.0],[30.1,55.98,-8.0],[30.0,55.0,-8.0],[30.0,25.0,-8.0],[30.1,24.02,-8.0],[30.38,23.09,-8.0],[30.84,22.22,-8.0],[31.46,21.46,-8.0],[32.22,20.84,-8.0],[33.09,20.38,-8.0],[34.02,20.1,-8.0],[35.0,20.0,-8.0],[85.0,20.0,-8.0]],"t":["F1"]},{"p":[[35.0,20.0,0],[35.0,20.0,-8.0]],"t":["F1"]},{"p":[[85.0,20.0,0],[85.0,20.0,-8.0]],"t":["F1"]},{"p":[[90.0,25.0,0],[90.0,25.0,-8.0]],"t":["F1"]},{"p":[[90.0,55.0,0],[90.0,55.0,-8.0]],"t":["F1"]},{"p":[[85.0,60.0,0],[85.0,60.0,-8.0]],"t":["F1"]},{"p":[[35.0,60.0,0],[35.0,60.0,-8.0]],"t":["F1"]},{"p":[[30.0,55.0,0],[30.0,55.0,-8.0]],"t":["F1"]},{"p":[[30.0,25.0,0],[30.0,25.0,-8.0]],"t":["F1"]},{"p":[[13.3,10.0,0.0],[13.27,10.43,0.0],[13.19,10.85,0.0],[13.05,11.26,0.0],[12.86,11.65,0.0],[12.62,12.01,0.0],[12.33,12.33,0.0],[12.01,12.62,0.0],[11.65,12.86,0.0],[11.26,13.05,0.0],[10.85,13.19,0.0],[10.43,13.27,0.0],[10.0,13.3,0.0],[9.57,13.27,0.0],[9.15,13.19,0.0],[8.74,13.05,0.0],[8.35,12.86,0.0],[7.99,12.62,0.0],[7.67,12.33,0.0],[7.38,12.01,0.0],[7.14,11.65,0.0],[6.95,11.26,0.0],[6.81,10.85,0.0],[6.73,10.43,0.0],[6.7,10.0,0.0],[6.73,9.57,0.0],[6.81,9.15,0.0],[6.95,8.74,0.0],[7.14,8.35,0.0],[7.38,7.99,0.0],[7.67,7.67,0.0],[7.99,7.38,0.0],[8.35,7.14,0.0],[8.74,6.95,0.0],[9.15,6.81,0.0],[9.57,6.73,0.0],[10.0,6.7,0.0],[10.43,6.73,0.0],[10.85,6.81,0.0],[11.26,6.95,0.0],[11.65,7.14,0.0],[12.01,7.38,0.0],[12.33,7.67,0.0],[12.62,7.99,0.0],[12.86,8.35,0.0],[13.05,8.74,0.0],[13.19,9.15,0.0],[13.27,9.57,0.0],[13.3,10.0,0.0]],"t":["F2","top"]},{"p":[[13.3,10.0,-20.0],[13.27,10.43,-20.0],[13.19,10.85,-20.0],[13.05,11.26,-20.0],[12.86,11.65,-20.0],[12.62,12.01,-20.0],[12.33,12.33,-20.0],[12.01,12.62,-20.0],[11.65,12.86,-20.0],[11.26,13.05,-20.0],[10.85,13.19,-20.0],[10.43,13.27,-20.0],[10.0,13.3,-20.0],[9.57,13.27,-20.0],[9.15,13.19,-20.0],[8.74,13.05,-20.0],[8.35,12.86,-20.0],[7.99,12.62,-20.0],[7.67,12.33,-20.0],[7.38,12.01,-20.0],[7.14,11.65,-20.0],[6.95,11.26,-20.0],[6.81,10.85,-20.0],[6.73,10.43,-20.0],[6.7,10.0,-20.0],[6.73,9.57,-20.0],[6.81,9.15,-20.0],[6.95,8.74,-20.0],[7.14,8.35,-20.0],[7.38,7.99,-20.0],[7.67,7.67,-20.0],[7.99,7.38,-20.0],[8.35,7.14,-20.0],[8.74,6.95,-20.0],[9.15,6.81,-20.0],[9.57,6.73,-20.0],[10.0,6.7,-20.0],[10.43,6.73,-20.0],[10.85,6.81,-20.0],[11.26,6.95,-20.0],[11.65,7.14,-20.0],[12.01,7.38,-20.0],[12.33,7.67,-20.0],[12.62,7.99,-20.0],[12.86,8.35,-20.0],[13.05,8.74,-20.0],[13.19,9.15,-20.0],[13.27,9.57,-20.0],[13.3,10.0,-20.0]],"t":["F2"]},{"p":[[113.3,10.0,0.0],[113.27,10.43,0.0],[113.19,10.85,0.0],[113.05,11.26,0.0],[112.86,11.65,0.0],[112.62,12.01,0.0],[112.33,12.33,0.0],[112.01,12.62,0.0],[111.65,12.86,0.0],[111.26,13.05,0.0],[110.85,13.19,0.0],[110.43,13.27,0.0],[110.0,13.3,0.0],[109.57,13.27,0.0],[109.15,13.19,0.0],[108.74,13.05,0.0],[108.35,12.86,0.0],[107.99,12.62,0.0],[107.67,12.33,0.0],[107.38,12.01,0.0],[107.14,11.65,0.0],[106.95,11.26,0.0],[106.81,10.85,0.0],[106.73,10.43,0.0],[106.7,10.0,0.0],[106.73,9.57,0.0],[106.81,9.15,0.0],[106.95,8.74,0.0],[107.14,8.35,0.0],[107.38,7.99,0.0],[107.67,7.67,0.0],[107.99,7.38,0.0],[108.35,7.14,0.0],[108.74,6.95,0.0],[109.15,6.81,0.0],[109.57,6.73,0.0],[110.0,6.7,0.0],[110.43,6.73,0.0],[110.85,6.81,0.0],[111.26,6.95,0.0],[111.65,7.14,0.0],[112.01,7.38,0.0],[112.33,7.67,0.0],[112.62,7.99,0.0],[112.86,8.35,0.0],[113.05,8.74,0.0],[113.19,9.15,0.0],[113.27,9.57,0.0],[113.3,10.0,0.0]],"t":["F2","top"]},{"p":[[113.3,10.0,-20.0],[113.27,10.43,-20.0],[113.19,10.85,-20.0],[113.05,11.26,-20.0],[112.86,11.65,-20.0],[112.62,12.01,-20.0],[112.33,12.33,-20.0],[112.01,12.62,-20.0],[111.65,12.86,-20.0],[111.26,13.05,-20.0],[110.85,13.19,-20.0],[110.43,13.27,-20.0],[110.0,13.3,-20.0],[109.57,13.27,-20.0],[109.15,13.19,-20.0],[108.74,13.05,-20.0],[108.35,12.86,-20.0],[107.99,12.62,-20.0],[107.67,12.33,-20.0],[107.38,12.01,-20.0],[107.14,11.65,-20.0],[106.95,11.26,-20.0],[106.81,10.85,-20.0],[106.73,10.43,-20.0],[106.7,10.0,-20.0],[106.73,9.57,-20.0],[106.81,9.15,-20.0],[106.95,8.74,-20.0],[107.14,8.35,-20.0],[107.38,7.99,-20.0],[107.67,7.67,-20.0],[107.99,7.38,-20.0],[108.35,7.14,-20.0],[108.74,6.95,-20.0],[109.15,6.81,-20.0],[109.57,6.73,-20.0],[110.0,6.7,-20.0],[110.43,6.73,-20.0],[110.85,6.81,-20.0],[111.26,6.95,-20.0],[111.65,7.14,-20.0],[112.01,7.38,-20.0],[112.33,7.67,-20.0],[112.62,7.99,-20.0],[112.86,8.35,-20.0],[113.05,8.74,-20.0],[113.19,9.15,-20.0],[113.27,9.57,-20.0],[113.3,10.0,-20.0]],"t":["F2"]},{"p":[[13.3,70.0,0.0],[13.27,70.43,0.0],[13.19,70.85,0.0],[13.05,71.26,0.0],[12.86,71.65,0.0],[12.62,72.01,0.0],[12.33,72.33,0.0],[12.01,72.62,0.0],[11.65,72.86,0.0],[11.26,73.05,0.0],[10.85,73.19,0.0],[10.43,73.27,0.0],[10.0,73.3,0.0],[9.57,73.27,0.0],[9.15,73.19,0.0],[8.74,73.05,0.0],[8.35,72.86,0.0],[7.99,72.62,0.0],[7.67,72.33,0.0],[7.38,72.01,0.0],[7.14,71.65,0.0],[6.95,71.26,0.0],[6.81,70.85,0.0],[6.73,70.43,0.0],[6.7,70.0,0.0],[6.73,69.57,0.0],[6.81,69.15,0.0],[6.95,68.74,0.0],[7.14,68.35,0.0],[7.38,67.99,0.0],[7.67,67.67,0.0],[7.99,67.38,0.0],[8.35,67.14,0.0],[8.74,66.95,0.0],[9.15,66.81,0.0],[9.57,66.73,0.0],[10.0,66.7,0.0],[10.43,66.73,0.0],[10.85,66.81,0.0],[11.26,66.95,0.0],[11.65,67.14,0.0],[12.01,67.38,0.0],[12.33,67.67,0.0],[12.62,67.99,0.0],[12.86,68.35,0.0],[13.05,68.74,0.0],[13.19,69.15,0.0],[13.27,69.57,0.0],[13.3,70.0,0.0]],"t":["F2","top"]},{"p":[[13.3,70.0,-20.0],[13.27,70.43,-20.0],[13.19,70.85,-20.0],[13.05,71.26,-20.0],[12.86,71.65,-20.0],[12.62,72.01,-20.0],[12.33,72.33,-20.0],[12.01,72.62,-20.0],[11.65,72.86,-20.0],[11.26,73.05,-20.0],[10.85,73.19,-20.0],[10.43,73.27,-20.0],[10.0,73.3,-20.0],[9.57,73.27,-20.0],[9.15,73.19,-20.0],[8.74,73.05,-20.0],[8.35,72.86,-20.0],[7.99,72.62,-20.0],[7.67,72.33,-20.0],[7.38,72.01,-20.0],[7.14,71.65,-20.0],[6.95,71.26,-20.0],[6.81,70.85,-20.0],[6.73,70.43,-20.0],[6.7,70.0,-20.0],[6.73,69.57,-20.0],[6.81,69.15,-20.0],[6.95,68.74,-20.0],[7.14,68.35,-20.0],[7.38,67.99,-20.0],[7.67,67.67,-20.0],[7.99,67.38,-20.0],[8.35,67.14,-20.0],[8.74,66.95,-20.0],[9.15,66.81,-20.0],[9.57,66.73,-20.0],[10.0,66.7,-20.0],[10.43,66.73,-20.0],[10.85,66.81,-20.0],[11.26,66.95,-20.0],[11.65,67.14,-20.0],[12.01,67.38,-20.0],[12.33,67.67,-20.0],[12.62,67.99,-20.0],[12.86,68.35,-20.0],[13.05,68.74,-20.0],[13.19,69.15,-20.0],[13.27,69.57,-20.0],[13.3,70.0,-20.0]],"t":["F2"]},{"p":[[113.3,70.0,0.0],[113.27,70.43,0.0],[113.19,70.85,0.0],[113.05,71.26,0.0],[112.86,71.65,0.0],[112.62,72.01,0.0],[112.33,72.33,0.0],[112.01,72.62,0.0],[111.65,72.86,0.0],[111.26,73.05,0.0],[110.85,73.19,0.0],[110.43,73.27,0.0],[110.0,73.3,0.0],[109.57,73.27,0.0],[109.15,73.19,0.0],[108.74,73.05,0.0],[108.35,72.86,0.0],[107.99,72.62,0.0],[107.67,72.33,0.0],[107.38,72.01,0.0],[107.14,71.65,0.0],[106.95,71.26,0.0],[106.81,70.85,0.0],[106.73,70.43,0.0],[106.7,70.0,0.0],[106.73,69.57,0.0],[106.81,69.15,0.0],[106.95,68.74,0.0],[107.14,68.35,0.0],[107.38,67.99,0.0],[107.67,67.67,0.0],[107.99,67.38,0.0],[108.35,67.14,0.0],[108.74,66.95,0.0],[109.15,66.81,0.0],[109.57,66.73,0.0],[110.0,66.7,0.0],[110.43,66.73,0.0],[110.85,66.81,0.0],[111.26,66.95,0.0],[111.65,67.14,0.0],[112.01,67.38,0.0],[112.33,67.67,0.0],[112.62,67.99,0.0],[112.86,68.35,0.0],[113.05,68.74,0.0],[113.19,69.15,0.0],[113.27,69.57,0.0],[113.3,70.0,0.0]],"t":["F2","top"]},{"p":[[113.3,70.0,-20.0],[113.27,70.43,-20.0],[113.19,70.85,-20.0],[113.05,71.26,-20.0],[112.86,71.65,-20.0],[112.62,72.01,-20.0],[112.33,72.33,-20.0],[112.01,72.62,-20.0],[111.65,72.86,-20.0],[111.26,73.05,-20.0],[110.85,73.19,-20.0],[110.43,73.27,-20.0],[110.0,73.3,-20.0],[109.57,73.27,-20.0],[109.15,73.19,-20.0],[108.74,73.05,-20.0],[108.35,72.86,-20.0],[107.99,72.62,-20.0],[107.67,72.33,-20.0],[107.38,72.01,-20.0],[107.14,71.65,-20.0],[106.95,71.26,-20.0],[106.81,70.85,-20.0],[106.73,70.43,-20.0],[106.7,70.0,-20.0],[106.73,69.57,-20.0],[106.81,69.15,-20.0],[106.95,68.74,-20.0],[107.14,68.35,-20.0],[107.38,67.99,-20.0],[107.67,67.67,-20.0],[107.99,67.38,-20.0],[108.35,67.14,-20.0],[108.74,66.95,-20.0],[109.15,66.81,-20.0],[109.57,66.73,-20.0],[110.0,66.7,-20.0],[110.43,66.73,-20.0],[110.85,66.81,-20.0],[111.26,66.95,-20.0],[111.65,67.14,-20.0],[112.01,67.38,-20.0],[112.33,67.67,-20.0],[112.62,67.99,-20.0],[112.86,68.35,-20.0],[113.05,68.74,-20.0],[113.19,69.15,-20.0],[113.27,69.57,-20.0],[113.3,70.0,-20.0]],"t":["F2"]},{"p":[[17.5,40.0,0.0],[17.48,40.33,0.0],[17.41,40.65,0.0],[17.31,40.96,0.0],[17.17,41.25,0.0],[16.98,41.52,0.0],[16.77,41.77,0.0],[16.52,41.98,0.0],[16.25,42.17,0.0],[15.96,42.31,0.0],[15.65,42.41,0.0],[15.33,42.48,0.0],[15.0,42.5,0.0],[14.67,42.48,0.0],[14.35,42.41,0.0],[14.04,42.31,0.0],[13.75,42.17,0.0],[13.48,41.98,0.0],[13.23,41.77,0.0],[13.02,41.52,0.0],[12.83,41.25,0.0],[12.69,40.96,0.0],[12.59,40.65,0.0],[12.52,40.33,0.0],[12.5,40.0,0.0],[12.52,39.67,0.0],[12.59,39.35,0.0],[12.69,39.04,0.0],[12.83,38.75,0.0],[13.02,38.48,0.0],[13.23,38.23,0.0],[13.48,38.02,0.0],[13.75,37.83,0.0],[14.04,37.69,0.0],[14.35,37.59,0.0],[14.67,37.52,0.0],[15.0,37.5,0.0],[15.33,37.52,0.0],[15.65,37.59,0.0],[15.96,37.69,0.0],[16.25,37.83,0.0],[16.52,38.02,0.0],[16.77,38.23,0.0],[16.98,38.48,0.0],[17.17,38.75,0.0],[17.31,39.04,0.0],[17.41,39.35,0.0],[17.48,39.67,0.0],[17.5,40.0,0.0]],"t":["F3","top"]},{"p":[[17.5,40.0,-12.0],[17.48,40.33,-12.0],[17.41,40.65,-12.0],[17.31,40.96,-12.0],[17.17,41.25,-12.0],[16.98,41.52,-12.0],[16.77,41.77,-12.0],[16.52,41.98,-12.0],[16.25,42.17,-12.0],[15.96,42.31,-12.0],[15.65,42.41,-12.0],[15.33,42.48,-12.0],[15.0,42.5,-12.0],[14.67,42.48,-12.0],[14.35,42.41,-12.0],[14.04,42.31,-12.0],[13.75,42.17,-12.0],[13.48,41.98,-12.0],[13.23,41.77,-12.0],[13.02,41.52,-12.0],[12.83,41.25,-12.0],[12.69,40.96,-12.0],[12.59,40.65,-12.0],[12.52,40.33,-12.0],[12.5,40.0,-12.0],[12.52,39.67,-12.0],[12.59,39.35,-12.0],[12.69,39.04,-12.0],[12.83,38.75,-12.0],[13.02,38.48,-12.0],[13.23,38.23,-12.0],[13.48,38.02,-12.0],[13.75,37.83,-12.0],[14.04,37.69,-12.0],[14.35,37.59,-12.0],[14.67,37.52,-12.0],[15.0,37.5,-12.0],[15.33,37.52,-12.0],[15.65,37.59,-12.0],[15.96,37.69,-12.0],[16.25,37.83,-12.0],[16.52,38.02,-12.0],[16.77,38.23,-12.0],[16.98,38.48,-12.0],[17.17,38.75,-12.0],[17.31,39.04,-12.0],[17.41,39.35,-12.0],[17.48,39.67,-12.0],[17.5,40.0,-12.0]],"t":["F3"]},{"p":[[18.0,40.0,0.0],[17.97,40.39,0.0],[17.9,40.78,0.0],[17.77,41.15,0.0],[17.6,41.5,0.0],[17.38,41.83,0.0],[17.12,42.12,0.0],[16.83,42.38,0.0],[16.5,42.6,0.0],[16.15,42.77,0.0],[15.78,42.9,0.0],[15.39,42.97,0.0],[15.0,43.0,0.0],[14.61,42.97,0.0],[14.22,42.9,0.0],[13.85,42.77,0.0],[13.5,42.6,0.0],[13.17,42.38,0.0],[12.88,42.12,0.0],[12.62,41.83,0.0],[12.4,41.5,0.0],[12.23,41.15,0.0],[12.1,40.78,0.0],[12.03,40.39,0.0],[12.0,40.0,0.0],[12.03,39.61,0.0],[12.1,39.22,0.0],[12.23,38.85,0.0],[12.4,38.5,0.0],[12.62,38.17,0.0],[12.88,37.88,0.0],[13.17,37.62,0.0],[13.5,37.4,0.0],[13.85,37.23,0.0],[14.22,37.1,0.0],[14.61,37.03,0.0],[15.0,37.0,0.0],[15.39,37.03,0.0],[15.78,37.1,0.0],[16.15,37.23,0.0],[16.5,37.4,0.0],[16.83,37.62,0.0],[17.12,37.88,0.0],[17.38,38.17,0.0],[17.6,38.5,0.0],[17.77,38.85,0.0],[17.9,39.22,0.0],[17.97,39.61,0.0],[18.0,40.0,0.0]],"t":["F3"]},{"p":[[107.5,40.0,0.0],[107.48,40.33,0.0],[107.41,40.65,0.0],[107.31,40.96,0.0],[107.17,41.25,0.0],[106.98,41.52,0.0],[106.77,41.77,0.0],[106.52,41.98,0.0],[106.25,42.17,0.0],[105.96,42.31,0.0],[105.65,42.41,0.0],[105.33,42.48,0.0],[105.0,42.5,0.0],[104.67,42.48,0.0],[104.35,42.41,0.0],[104.04,42.31,0.0],[103.75,42.17,0.0],[103.48,41.98,0.0],[103.23,41.77,0.0],[103.02,41.52,0.0],[102.83,41.25,0.0],[102.69,40.96,0.0],[102.59,40.65,0.0],[102.52,40.33,0.0],[102.5,40.0,0.0],[102.52,39.67,0.0],[102.59,39.35,0.0],[102.69,39.04,0.0],[102.83,38.75,0.0],[103.02,38.48,0.0],[103.23,38.23,0.0],[103.48,38.02,0.0],[103.75,37.83,0.0],[104.04,37.69,0.0],[104.35,37.59,0.0],[104.67,37.52,0.0],[105.0,37.5,0.0],[105.33,37.52,0.0],[105.65,37.59,0.0],[105.96,37.69,0.0],[106.25,37.83,0.0],[106.52,38.02,0.0],[106.77,38.23,0.0],[106.98,38.48,0.0],[107.17,38.75,0.0],[107.31,39.04,0.0],[107.41,39.35,0.0],[107.48,39.67,0.0],[107.5,40.0,0.0]],"t":["F3","top"]},{"p":[[107.5,40.0,-12.0],[107.48,40.33,-12.0],[107.41,40.65,-12.0],[107.31,40.96,-12.0],[107.17,41.25,-12.0],[106.98,41.52,-12.0],[106.77,41.77,-12.0],[106.52,41.98,-12.0],[106.25,42.17,-12.0],[105.96,42.31,-12.0],[105.65,42.41,-12.0],[105.33,42.48,-12.0],[105.0,42.5,-12.0],[104.67,42.48,-12.0],[104.35,42.41,-12.0],[104.04,42.31,-12.0],[103.75,42.17,-12.0],[103.48,41.98,-12.0],[103.23,41.77,-12.0],[103.02,41.52,-12.0],[102.83,41.25,-12.0],[102.69,40.96,-12.0],[102.59,40.65,-12.0],[102.52,40.33,-12.0],[102.5,40.0,-12.0],[102.52,39.67,-12.0],[102.59,39.35,-12.0],[102.69,39.04,-12.0],[102.83,38.75,-12.0],[103.02,38.48,-12.0],[103.23,38.23,-12.0],[103.48,38.02,-12.0],[103.75,37.83,-12.0],[104.04,37.69,-12.0],[104.35,37.59,-12.0],[104.67,37.52,-12.0],[105.0,37.5,-12.0],[105.33,37.52,-12.0],[105.65,37.59,-12.0],[105.96,37.69,-12.0],[106.25,37.83,-12.0],[106.52,38.02,-12.0],[106.77,38.23,-12.0],[106.98,38.48,-12.0],[107.17,38.75,-12.0],[107.31,39.04,-12.0],[107.41,39.35,-12.0],[107.48,39.67,-12.0],[107.5,40.0,-12.0]],"t":["F3"]},{"p":[[108.0,40.0,0.0],[107.97,40.39,0.0],[107.9,40.78,0.0],[107.77,41.15,0.0],[107.6,41.5,0.0],[107.38,41.83,0.0],[107.12,42.12,0.0],[106.83,42.38,0.0],[106.5,42.6,0.0],[106.15,42.77,0.0],[105.78,42.9,0.0],[105.39,42.97,0.0],[105.0,43.0,0.0],[104.61,42.97,0.0],[104.22,42.9,0.0],[103.85,42.77,0.0],[103.5,42.6,0.0],[103.17,42.38,0.0],[102.88,42.12,0.0],[102.62,41.83,0.0],[102.4,41.5,0.0],[102.23,41.15,0.0],[102.1,40.78,0.0],[102.03,40.39,0.0],[102.0,40.0,0.0],[102.03,39.61,0.0],[102.1,39.22,0.0],[102.23,38.85,0.0],[102.4,38.5,0.0],[102.62,38.17,0.0],[102.88,37.88,0.0],[103.17,37.62,0.0],[103.5,37.4,0.0],[103.85,37.23,0.0],[104.22,37.1,0.0],[104.61,37.03,0.0],[105.0,37.0,0.0],[105.39,37.03,0.0],[105.78,37.1,0.0],[106.15,37.23,0.0],[106.5,37.4,0.0],[106.83,37.62,0.0],[107.12,37.88,0.0],[107.38,38.17,0.0],[107.6,38.5,0.0],[107.77,38.85,0.0],[107.9,39.22,0.0],[107.97,39.61,0.0],[108.0,40.0,0.0]],"t":["F3"]},{"p":[[65.0,40.0,-8.0],[64.96,40.65,-8.0],[64.83,41.29,-8.0],[64.62,41.91,-8.0],[64.33,42.5,-8.0],[63.97,43.04,-8.0],[63.54,43.54,-8.0],[63.04,43.97,-8.0],[62.5,44.33,-8.0],[61.91,44.62,-8.0],[61.29,44.83,-8.0],[60.65,44.96,-8.0],[60.0,45.0,-8.0],[59.35,44.96,-8.0],[58.71,44.83,-8.0],[58.09,44.62,-8.0],[57.5,44.33,-8.0],[56.96,43.97,-8.0],[56.46,43.54,-8.0],[56.03,43.04,-8.0],[55.67,42.5,-8.0],[55.38,41.91,-8.0],[55.17,41.29,-8.0],[55.04,40.65,-8.0],[55.0,40.0,-8.0],[55.04,39.35,-8.0],[55.17,38.71,-8.0],[55.38,38.09,-8.0],[55.67,37.5,-8.0],[56.03,36.96,-8.0],[56.46,36.46,-8.0],[56.96,36.03,-8.0],[57.5,35.67,-8.0],[58.09,35.38,-8.0],[58.71,35.17,-8.0],[59.35,35.04,-8.0],[60.0,35.0,-8.0],[60.65,35.04,-8.0],[61.29,35.17,-8.0],[61.91,35.38,-8.0],[62.5,35.67,-8.0],[63.04,36.03,-8.0],[63.54,36.46,-8.0],[63.97,36.96,-8.0],[64.33,37.5,-8.0],[64.62,38.09,-8.0],[64.83,38.71,-8.0],[64.96,39.35,-8.0],[65.0,40.0,-8.0]],"t":["F4"]},{"p":[[65.0,40.0,-20.0],[64.96,40.65,-20.0],[64.83,41.29,-20.0],[64.62,41.91,-20.0],[64.33,42.5,-20.0],[63.97,43.04,-20.0],[63.54,43.54,-20.0],[63.04,43.97,-20.0],[62.5,44.33,-20.0],[61.91,44.62,-20.0],[61.29,44.83,-20.0],[60.65,44.96,-20.0],[60.0,45.0,-20.0],[59.35,44.96,-20.0],[58.71,44.83,-20.0],[58.09,44.62,-20.0],[57.5,44.33,-20.0],[56.96,43.97,-20.0],[56.46,43.54,-20.0],[56.03,43.04,-20.0],[55.67,42.5,-20.0],[55.38,41.91,-20.0],[55.17,41.29,-20.0],[55.04,40.65,-20.0],[55.0,40.0,-20.0],[55.04,39.35,-20.0],[55.17,38.71,-20.0],[55.38,38.09,-20.0],[55.67,37.5,-20.0],[56.03,36.96,-20.0],[56.46,36.46,-20.0],[56.96,36.03,-20.0],[57.5,35.67,-20.0],[58.09,35.38,-20.0],[58.71,35.17,-20.0],[59.35,35.04,-20.0],[60.0,35.0,-20.0],[60.65,35.04,-20.0],[61.29,35.17,-20.0],[61.91,35.38,-20.0],[62.5,35.67,-20.0],[63.04,36.03,-20.0],[63.54,36.46,-20.0],[63.97,36.96,-20.0],[64.33,37.5,-20.0],[64.62,38.09,-20.0],[64.83,38.71,-20.0],[64.96,39.35,-20.0],[65.0,40.0,-20.0]],"t":["F4"]}],"ops":[{"n":1,"title":"Торцовка верха (снять 1 мм)","geom":"face","ids":["A"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":2,"title":"Черновая наружного контура, глубина 20.3 мм","geom":"outer_rough","ids":["K"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":3,"title":"Черновая: карман 60×40×8","geom":"pocket_area","ids":["F1"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":4,"title":"Черновая: паз 30×8×5","geom":"slot_area","ids":["F5"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":5,"title":"Дообработка углов R5: карман 60×40×8","geom":"pocket_corners","ids":["F1"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":6,"title":"Центровка под Ø6.6","geom":"holes","ids":["F2"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":7,"title":"Центровка с фаской под M6","geom":"holes","ids":["F3"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":8,"title":"Центровка под Ø9.8","geom":"holes","ids":["F4"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":9,"title":"Сверление Ø6.6 (4 шт.)","geom":"holes","ids":["F2"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":10,"title":"Сверление Ø5.1 под резьбу M6 (2 шт.)","geom":"holes","ids":["F3"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":11,"title":"Сверление Ø9.8 под развёртку Ø10H7","geom":"holes","ids":["F4"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":12,"title":"Чистовая наружного контура","geom":"outer_walls","ids":["K"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":13,"title":"Чистовая дна: карман 60×40×8","geom":"pocket_floor","ids":["F1"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":14,"title":"Чистовая стенок: карман 60×40×8","geom":"pocket_walls","ids":["F1"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":15,"title":"Чистовая стенок: паз 30×8×5","geom":"slot_walls","ids":["F5"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":16,"title":"Фаска 0.5×45° — наружный контур","geom":"chamfer_outer","ids":["F6"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":17,"title":"Нарезание резьбы M6 (2 шт.)","geom":"holes","ids":["F3"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":18,"title":"Развёртывание Ø10H7","geom":"holes","ids":["F4"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":19,"title":"Торцовка в размер по толщине 20 мм (снять 9 мм)","geom":"face","ids":["B"],"side":"bottom","setup":"Установ 2 — низ (сторона B, переворот)","wcs":"G55"},{"n":20,"title":"Фаска 0.5×45° — кромки низа","geom":"chamfer_outer","ids":["F6"],"side":"bottom","setup":"Установ 2 — низ (сторона B, переворот)","wcs":"G55"}],"pockets":["F1","F5"],"holes":["F2","F3","F4"]}</script>
+<script type="application/json" id="nc3d-data">{"source":"model","size":[120.0,80.0,20.0],"datum":"corner","stock":[-3.0,-3.0,-29.0,123.0,83.0,1.0],"edges":[{"p":[[0,0,0],[120.0,0,0],[120.0,80.0,0],[0,80.0,0],[0,0,0]],"t":["outer","top"]},{"p":[[0,0,-20.0],[120.0,0,-20.0],[120.0,80.0,-20.0],[0,80.0,-20.0],[0,0,-20.0]],"t":["outer","bot"]},{"p":[[0,0,0],[0,0,-20.0]],"t":["outer"]},{"p":[[120.0,0,0],[120.0,0,-20.0]],"t":["outer"]},{"p":[[120.0,80.0,0],[120.0,80.0,-20.0]],"t":["outer"]},{"p":[[0,80.0,0],[0,80.0,-20.0]],"t":["outer"]},{"p":[[85.0,20.0,0],[85.98,20.1,0],[86.91,20.38,0],[87.78,20.84,0],[88.54,21.46,0],[89.16,22.22,0],[89.62,23.09,0],[89.9,24.02,0],[90.0,25.0,0],[90.0,55.0,0],[89.9,55.98,0],[89.62,56.91,0],[89.16,57.78,0],[88.54,58.54,0],[87.78,59.16,0],[86.91,59.62,0],[85.98,59.9,0],[85.0,60.0,0],[35.0,60.0,0],[34.02,59.9,0],[33.09,59.62,0],[32.22,59.16,0],[31.46,58.54,0],[30.84,57.78,0],[30.38,56.91,0],[30.1,55.98,0],[30.0,55.0,0],[30.0,25.0,0],[30.1,24.02,0],[30.38,23.09,0],[30.84,22.22,0],[31.46,21.46,0],[32.22,20.84,0],[33.09,20.38,0],[34.02,20.1,0],[35.0,20.0,0],[85.0,20.0,0]],"t":["F1","top"]},{"p":[[85.0,20.0,-8.0],[85.98,20.1,-8.0],[86.91,20.38,-8.0],[87.78,20.84,-8.0],[88.54,21.46,-8.0],[89.16,22.22,-8.0],[89.62,23.09,-8.0],[89.9,24.02,-8.0],[90.0,25.0,-8.0],[90.0,55.0,-8.0],[89.9,55.98,-8.0],[89.62,56.91,-8.0],[89.16,57.78,-8.0],[88.54,58.54,-8.0],[87.78,59.16,-8.0],[86.91,59.62,-8.0],[85.98,59.9,-8.0],[85.0,60.0,-8.0],[35.0,60.0,-8.0],[34.02,59.9,-8.0],[33.09,59.62,-8.0],[32.22,59.16,-8.0],[31.46,58.54,-8.0],[30.84,57.78,-8.0],[30.38,56.91,-8.0],[30.1,55.98,-8.0],[30.0,55.0,-8.0],[30.0,25.0,-8.0],[30.1,24.02,-8.0],[30.38,23.09,-8.0],[30.84,22.22,-8.0],[31.46,21.46,-8.0],[32.22,20.84,-8.0],[33.09,20.38,-8.0],[34.02,20.1,-8.0],[35.0,20.0,-8.0],[85.0,20.0,-8.0]],"t":["F1"]},{"p":[[35.0,20.0,0],[35.0,20.0,-8.0]],"t":["F1"]},{"p":[[85.0,20.0,0],[85.0,20.0,-8.0]],"t":["F1"]},{"p":[[90.0,25.0,0],[90.0,25.0,-8.0]],"t":["F1"]},{"p":[[90.0,55.0,0],[90.0,55.0,-8.0]],"t":["F1"]},{"p":[[85.0,60.0,0],[85.0,60.0,-8.0]],"t":["F1"]},{"p":[[35.0,60.0,0],[35.0,60.0,-8.0]],"t":["F1"]},{"p":[[30.0,55.0,0],[30.0,55.0,-8.0]],"t":["F1"]},{"p":[[30.0,25.0,0],[30.0,25.0,-8.0]],"t":["F1"]},{"p":[[13.3,10.0,0.0],[13.27,10.43,0.0],[13.19,10.85,0.0],[13.05,11.26,0.0],[12.86,11.65,0.0],[12.62,12.01,0.0],[12.33,12.33,0.0],[12.01,12.62,0.0],[11.65,12.86,0.0],[11.26,13.05,0.0],[10.85,13.19,0.0],[10.43,13.27,0.0],[10.0,13.3,0.0],[9.57,13.27,0.0],[9.15,13.19,0.0],[8.74,13.05,0.0],[8.35,12.86,0.0],[7.99,12.62,0.0],[7.67,12.33,0.0],[7.38,12.01,0.0],[7.14,11.65,0.0],[6.95,11.26,0.0],[6.81,10.85,0.0],[6.73,10.43,0.0],[6.7,10.0,0.0],[6.73,9.57,0.0],[6.81,9.15,0.0],[6.95,8.74,0.0],[7.14,8.35,0.0],[7.38,7.99,0.0],[7.67,7.67,0.0],[7.99,7.38,0.0],[8.35,7.14,0.0],[8.74,6.95,0.0],[9.15,6.81,0.0],[9.57,6.73,0.0],[10.0,6.7,0.0],[10.43,6.73,0.0],[10.85,6.81,0.0],[11.26,6.95,0.0],[11.65,7.14,0.0],[12.01,7.38,0.0],[12.33,7.67,0.0],[12.62,7.99,0.0],[12.86,8.35,0.0],[13.05,8.74,0.0],[13.19,9.15,0.0],[13.27,9.57,0.0],[13.3,10.0,0.0]],"t":["F2","top"]},{"p":[[13.3,10.0,-20.0],[13.27,10.43,-20.0],[13.19,10.85,-20.0],[13.05,11.26,-20.0],[12.86,11.65,-20.0],[12.62,12.01,-20.0],[12.33,12.33,-20.0],[12.01,12.62,-20.0],[11.65,12.86,-20.0],[11.26,13.05,-20.0],[10.85,13.19,-20.0],[10.43,13.27,-20.0],[10.0,13.3,-20.0],[9.57,13.27,-20.0],[9.15,13.19,-20.0],[8.74,13.05,-20.0],[8.35,12.86,-20.0],[7.99,12.62,-20.0],[7.67,12.33,-20.0],[7.38,12.01,-20.0],[7.14,11.65,-20.0],[6.95,11.26,-20.0],[6.81,10.85,-20.0],[6.73,10.43,-20.0],[6.7,10.0,-20.0],[6.73,9.57,-20.0],[6.81,9.15,-20.0],[6.95,8.74,-20.0],[7.14,8.35,-20.0],[7.38,7.99,-20.0],[7.67,7.67,-20.0],[7.99,7.38,-20.0],[8.35,7.14,-20.0],[8.74,6.95,-20.0],[9.15,6.81,-20.0],[9.57,6.73,-20.0],[10.0,6.7,-20.0],[10.43,6.73,-20.0],[10.85,6.81,-20.0],[11.26,6.95,-20.0],[11.65,7.14,-20.0],[12.01,7.38,-20.0],[12.33,7.67,-20.0],[12.62,7.99,-20.0],[12.86,8.35,-20.0],[13.05,8.74,-20.0],[13.19,9.15,-20.0],[13.27,9.57,-20.0],[13.3,10.0,-20.0]],"t":["F2"]},{"p":[[113.3,10.0,0.0],[113.27,10.43,0.0],[113.19,10.85,0.0],[113.05,11.26,0.0],[112.86,11.65,0.0],[112.62,12.01,0.0],[112.33,12.33,0.0],[112.01,12.62,0.0],[111.65,12.86,0.0],[111.26,13.05,0.0],[110.85,13.19,0.0],[110.43,13.27,0.0],[110.0,13.3,0.0],[109.57,13.27,0.0],[109.15,13.19,0.0],[108.74,13.05,0.0],[108.35,12.86,0.0],[107.99,12.62,0.0],[107.67,12.33,0.0],[107.38,12.01,0.0],[107.14,11.65,0.0],[106.95,11.26,0.0],[106.81,10.85,0.0],[106.73,10.43,0.0],[106.7,10.0,0.0],[106.73,9.57,0.0],[106.81,9.15,0.0],[106.95,8.74,0.0],[107.14,8.35,0.0],[107.38,7.99,0.0],[107.67,7.67,0.0],[107.99,7.38,0.0],[108.35,7.14,0.0],[108.74,6.95,0.0],[109.15,6.81,0.0],[109.57,6.73,0.0],[110.0,6.7,0.0],[110.43,6.73,0.0],[110.85,6.81,0.0],[111.26,6.95,0.0],[111.65,7.14,0.0],[112.01,7.38,0.0],[112.33,7.67,0.0],[112.62,7.99,0.0],[112.86,8.35,0.0],[113.05,8.74,0.0],[113.19,9.15,0.0],[113.27,9.57,0.0],[113.3,10.0,0.0]],"t":["F2","top"]},{"p":[[113.3,10.0,-20.0],[113.27,10.43,-20.0],[113.19,10.85,-20.0],[113.05,11.26,-20.0],[112.86,11.65,-20.0],[112.62,12.01,-20.0],[112.33,12.33,-20.0],[112.01,12.62,-20.0],[111.65,12.86,-20.0],[111.26,13.05,-20.0],[110.85,13.19,-20.0],[110.43,13.27,-20.0],[110.0,13.3,-20.0],[109.57,13.27,-20.0],[109.15,13.19,-20.0],[108.74,13.05,-20.0],[108.35,12.86,-20.0],[107.99,12.62,-20.0],[107.67,12.33,-20.0],[107.38,12.01,-20.0],[107.14,11.65,-20.0],[106.95,11.26,-20.0],[106.81,10.85,-20.0],[106.73,10.43,-20.0],[106.7,10.0,-20.0],[106.73,9.57,-20.0],[106.81,9.15,-20.0],[106.95,8.74,-20.0],[107.14,8.35,-20.0],[107.38,7.99,-20.0],[107.67,7.67,-20.0],[107.99,7.38,-20.0],[108.35,7.14,-20.0],[108.74,6.95,-20.0],[109.15,6.81,-20.0],[109.57,6.73,-20.0],[110.0,6.7,-20.0],[110.43,6.73,-20.0],[110.85,6.81,-20.0],[111.26,6.95,-20.0],[111.65,7.14,-20.0],[112.01,7.38,-20.0],[112.33,7.67,-20.0],[112.62,7.99,-20.0],[112.86,8.35,-20.0],[113.05,8.74,-20.0],[113.19,9.15,-20.0],[113.27,9.57,-20.0],[113.3,10.0,-20.0]],"t":["F2"]},{"p":[[13.3,70.0,0.0],[13.27,70.43,0.0],[13.19,70.85,0.0],[13.05,71.26,0.0],[12.86,71.65,0.0],[12.62,72.01,0.0],[12.33,72.33,0.0],[12.01,72.62,0.0],[11.65,72.86,0.0],[11.26,73.05,0.0],[10.85,73.19,0.0],[10.43,73.27,0.0],[10.0,73.3,0.0],[9.57,73.27,0.0],[9.15,73.19,0.0],[8.74,73.05,0.0],[8.35,72.86,0.0],[7.99,72.62,0.0],[7.67,72.33,0.0],[7.38,72.01,0.0],[7.14,71.65,0.0],[6.95,71.26,0.0],[6.81,70.85,0.0],[6.73,70.43,0.0],[6.7,70.0,0.0],[6.73,69.57,0.0],[6.81,69.15,0.0],[6.95,68.74,0.0],[7.14,68.35,0.0],[7.38,67.99,0.0],[7.67,67.67,0.0],[7.99,67.38,0.0],[8.35,67.14,0.0],[8.74,66.95,0.0],[9.15,66.81,0.0],[9.57,66.73,0.0],[10.0,66.7,0.0],[10.43,66.73,0.0],[10.85,66.81,0.0],[11.26,66.95,0.0],[11.65,67.14,0.0],[12.01,67.38,0.0],[12.33,67.67,0.0],[12.62,67.99,0.0],[12.86,68.35,0.0],[13.05,68.74,0.0],[13.19,69.15,0.0],[13.27,69.57,0.0],[13.3,70.0,0.0]],"t":["F2","top"]},{"p":[[13.3,70.0,-20.0],[13.27,70.43,-20.0],[13.19,70.85,-20.0],[13.05,71.26,-20.0],[12.86,71.65,-20.0],[12.62,72.01,-20.0],[12.33,72.33,-20.0],[12.01,72.62,-20.0],[11.65,72.86,-20.0],[11.26,73.05,-20.0],[10.85,73.19,-20.0],[10.43,73.27,-20.0],[10.0,73.3,-20.0],[9.57,73.27,-20.0],[9.15,73.19,-20.0],[8.74,73.05,-20.0],[8.35,72.86,-20.0],[7.99,72.62,-20.0],[7.67,72.33,-20.0],[7.38,72.01,-20.0],[7.14,71.65,-20.0],[6.95,71.26,-20.0],[6.81,70.85,-20.0],[6.73,70.43,-20.0],[6.7,70.0,-20.0],[6.73,69.57,-20.0],[6.81,69.15,-20.0],[6.95,68.74,-20.0],[7.14,68.35,-20.0],[7.38,67.99,-20.0],[7.67,67.67,-20.0],[7.99,67.38,-20.0],[8.35,67.14,-20.0],[8.74,66.95,-20.0],[9.15,66.81,-20.0],[9.57,66.73,-20.0],[10.0,66.7,-20.0],[10.43,66.73,-20.0],[10.85,66.81,-20.0],[11.26,66.95,-20.0],[11.65,67.14,-20.0],[12.01,67.38,-20.0],[12.33,67.67,-20.0],[12.62,67.99,-20.0],[12.86,68.35,-20.0],[13.05,68.74,-20.0],[13.19,69.15,-20.0],[13.27,69.57,-20.0],[13.3,70.0,-20.0]],"t":["F2"]},{"p":[[113.3,70.0,0.0],[113.27,70.43,0.0],[113.19,70.85,0.0],[113.05,71.26,0.0],[112.86,71.65,0.0],[112.62,72.01,0.0],[112.33,72.33,0.0],[112.01,72.62,0.0],[111.65,72.86,0.0],[111.26,73.05,0.0],[110.85,73.19,0.0],[110.43,73.27,0.0],[110.0,73.3,0.0],[109.57,73.27,0.0],[109.15,73.19,0.0],[108.74,73.05,0.0],[108.35,72.86,0.0],[107.99,72.62,0.0],[107.67,72.33,0.0],[107.38,72.01,0.0],[107.14,71.65,0.0],[106.95,71.26,0.0],[106.81,70.85,0.0],[106.73,70.43,0.0],[106.7,70.0,0.0],[106.73,69.57,0.0],[106.81,69.15,0.0],[106.95,68.74,0.0],[107.14,68.35,0.0],[107.38,67.99,0.0],[107.67,67.67,0.0],[107.99,67.38,0.0],[108.35,67.14,0.0],[108.74,66.95,0.0],[109.15,66.81,0.0],[109.57,66.73,0.0],[110.0,66.7,0.0],[110.43,66.73,0.0],[110.85,66.81,0.0],[111.26,66.95,0.0],[111.65,67.14,0.0],[112.01,67.38,0.0],[112.33,67.67,0.0],[112.62,67.99,0.0],[112.86,68.35,0.0],[113.05,68.74,0.0],[113.19,69.15,0.0],[113.27,69.57,0.0],[113.3,70.0,0.0]],"t":["F2","top"]},{"p":[[113.3,70.0,-20.0],[113.27,70.43,-20.0],[113.19,70.85,-20.0],[113.05,71.26,-20.0],[112.86,71.65,-20.0],[112.62,72.01,-20.0],[112.33,72.33,-20.0],[112.01,72.62,-20.0],[111.65,72.86,-20.0],[111.26,73.05,-20.0],[110.85,73.19,-20.0],[110.43,73.27,-20.0],[110.0,73.3,-20.0],[109.57,73.27,-20.0],[109.15,73.19,-20.0],[108.74,73.05,-20.0],[108.35,72.86,-20.0],[107.99,72.62,-20.0],[107.67,72.33,-20.0],[107.38,72.01,-20.0],[107.14,71.65,-20.0],[106.95,71.26,-20.0],[106.81,70.85,-20.0],[106.73,70.43,-20.0],[106.7,70.0,-20.0],[106.73,69.57,-20.0],[106.81,69.15,-20.0],[106.95,68.74,-20.0],[107.14,68.35,-20.0],[107.38,67.99,-20.0],[107.67,67.67,-20.0],[107.99,67.38,-20.0],[108.35,67.14,-20.0],[108.74,66.95,-20.0],[109.15,66.81,-20.0],[109.57,66.73,-20.0],[110.0,66.7,-20.0],[110.43,66.73,-20.0],[110.85,66.81,-20.0],[111.26,66.95,-20.0],[111.65,67.14,-20.0],[112.01,67.38,-20.0],[112.33,67.67,-20.0],[112.62,67.99,-20.0],[112.86,68.35,-20.0],[113.05,68.74,-20.0],[113.19,69.15,-20.0],[113.27,69.57,-20.0],[113.3,70.0,-20.0]],"t":["F2"]},{"p":[[17.5,40.0,0.0],[17.48,40.33,0.0],[17.41,40.65,0.0],[17.31,40.96,0.0],[17.17,41.25,0.0],[16.98,41.52,0.0],[16.77,41.77,0.0],[16.52,41.98,0.0],[16.25,42.17,0.0],[15.96,42.31,0.0],[15.65,42.41,0.0],[15.33,42.48,0.0],[15.0,42.5,0.0],[14.67,42.48,0.0],[14.35,42.41,0.0],[14.04,42.31,0.0],[13.75,42.17,0.0],[13.48,41.98,0.0],[13.23,41.77,0.0],[13.02,41.52,0.0],[12.83,41.25,0.0],[12.69,40.96,0.0],[12.59,40.65,0.0],[12.52,40.33,0.0],[12.5,40.0,0.0],[12.52,39.67,0.0],[12.59,39.35,0.0],[12.69,39.04,0.0],[12.83,38.75,0.0],[13.02,38.48,0.0],[13.23,38.23,0.0],[13.48,38.02,0.0],[13.75,37.83,0.0],[14.04,37.69,0.0],[14.35,37.59,0.0],[14.67,37.52,0.0],[15.0,37.5,0.0],[15.33,37.52,0.0],[15.65,37.59,0.0],[15.96,37.69,0.0],[16.25,37.83,0.0],[16.52,38.02,0.0],[16.77,38.23,0.0],[16.98,38.48,0.0],[17.17,38.75,0.0],[17.31,39.04,0.0],[17.41,39.35,0.0],[17.48,39.67,0.0],[17.5,40.0,0.0]],"t":["F3","top"]},{"p":[[17.5,40.0,-12.0],[17.48,40.33,-12.0],[17.41,40.65,-12.0],[17.31,40.96,-12.0],[17.17,41.25,-12.0],[16.98,41.52,-12.0],[16.77,41.77,-12.0],[16.52,41.98,-12.0],[16.25,42.17,-12.0],[15.96,42.31,-12.0],[15.65,42.41,-12.0],[15.33,42.48,-12.0],[15.0,42.5,-12.0],[14.67,42.48,-12.0],[14.35,42.41,-12.0],[14.04,42.31,-12.0],[13.75,42.17,-12.0],[13.48,41.98,-12.0],[13.23,41.77,-12.0],[13.02,41.52,-12.0],[12.83,41.25,-12.0],[12.69,40.96,-12.0],[12.59,40.65,-12.0],[12.52,40.33,-12.0],[12.5,40.0,-12.0],[12.52,39.67,-12.0],[12.59,39.35,-12.0],[12.69,39.04,-12.0],[12.83,38.75,-12.0],[13.02,38.48,-12.0],[13.23,38.23,-12.0],[13.48,38.02,-12.0],[13.75,37.83,-12.0],[14.04,37.69,-12.0],[14.35,37.59,-12.0],[14.67,37.52,-12.0],[15.0,37.5,-12.0],[15.33,37.52,-12.0],[15.65,37.59,-12.0],[15.96,37.69,-12.0],[16.25,37.83,-12.0],[16.52,38.02,-12.0],[16.77,38.23,-12.0],[16.98,38.48,-12.0],[17.17,38.75,-12.0],[17.31,39.04,-12.0],[17.41,39.35,-12.0],[17.48,39.67,-12.0],[17.5,40.0,-12.0]],"t":["F3"]},{"p":[[18.0,40.0,0.0],[17.97,40.39,0.0],[17.9,40.78,0.0],[17.77,41.15,0.0],[17.6,41.5,0.0],[17.38,41.83,0.0],[17.12,42.12,0.0],[16.83,42.38,0.0],[16.5,42.6,0.0],[16.15,42.77,0.0],[15.78,42.9,0.0],[15.39,42.97,0.0],[15.0,43.0,0.0],[14.61,42.97,0.0],[14.22,42.9,0.0],[13.85,42.77,0.0],[13.5,42.6,0.0],[13.17,42.38,0.0],[12.88,42.12,0.0],[12.62,41.83,0.0],[12.4,41.5,0.0],[12.23,41.15,0.0],[12.1,40.78,0.0],[12.03,40.39,0.0],[12.0,40.0,0.0],[12.03,39.61,0.0],[12.1,39.22,0.0],[12.23,38.85,0.0],[12.4,38.5,0.0],[12.62,38.17,0.0],[12.88,37.88,0.0],[13.17,37.62,0.0],[13.5,37.4,0.0],[13.85,37.23,0.0],[14.22,37.1,0.0],[14.61,37.03,0.0],[15.0,37.0,0.0],[15.39,37.03,0.0],[15.78,37.1,0.0],[16.15,37.23,0.0],[16.5,37.4,0.0],[16.83,37.62,0.0],[17.12,37.88,0.0],[17.38,38.17,0.0],[17.6,38.5,0.0],[17.77,38.85,0.0],[17.9,39.22,0.0],[17.97,39.61,0.0],[18.0,40.0,0.0]],"t":["F3"]},{"p":[[107.5,40.0,0.0],[107.48,40.33,0.0],[107.41,40.65,0.0],[107.31,40.96,0.0],[107.17,41.25,0.0],[106.98,41.52,0.0],[106.77,41.77,0.0],[106.52,41.98,0.0],[106.25,42.17,0.0],[105.96,42.31,0.0],[105.65,42.41,0.0],[105.33,42.48,0.0],[105.0,42.5,0.0],[104.67,42.48,0.0],[104.35,42.41,0.0],[104.04,42.31,0.0],[103.75,42.17,0.0],[103.48,41.98,0.0],[103.23,41.77,0.0],[103.02,41.52,0.0],[102.83,41.25,0.0],[102.69,40.96,0.0],[102.59,40.65,0.0],[102.52,40.33,0.0],[102.5,40.0,0.0],[102.52,39.67,0.0],[102.59,39.35,0.0],[102.69,39.04,0.0],[102.83,38.75,0.0],[103.02,38.48,0.0],[103.23,38.23,0.0],[103.48,38.02,0.0],[103.75,37.83,0.0],[104.04,37.69,0.0],[104.35,37.59,0.0],[104.67,37.52,0.0],[105.0,37.5,0.0],[105.33,37.52,0.0],[105.65,37.59,0.0],[105.96,37.69,0.0],[106.25,37.83,0.0],[106.52,38.02,0.0],[106.77,38.23,0.0],[106.98,38.48,0.0],[107.17,38.75,0.0],[107.31,39.04,0.0],[107.41,39.35,0.0],[107.48,39.67,0.0],[107.5,40.0,0.0]],"t":["F3","top"]},{"p":[[107.5,40.0,-12.0],[107.48,40.33,-12.0],[107.41,40.65,-12.0],[107.31,40.96,-12.0],[107.17,41.25,-12.0],[106.98,41.52,-12.0],[106.77,41.77,-12.0],[106.52,41.98,-12.0],[106.25,42.17,-12.0],[105.96,42.31,-12.0],[105.65,42.41,-12.0],[105.33,42.48,-12.0],[105.0,42.5,-12.0],[104.67,42.48,-12.0],[104.35,42.41,-12.0],[104.04,42.31,-12.0],[103.75,42.17,-12.0],[103.48,41.98,-12.0],[103.23,41.77,-12.0],[103.02,41.52,-12.0],[102.83,41.25,-12.0],[102.69,40.96,-12.0],[102.59,40.65,-12.0],[102.52,40.33,-12.0],[102.5,40.0,-12.0],[102.52,39.67,-12.0],[102.59,39.35,-12.0],[102.69,39.04,-12.0],[102.83,38.75,-12.0],[103.02,38.48,-12.0],[103.23,38.23,-12.0],[103.48,38.02,-12.0],[103.75,37.83,-12.0],[104.04,37.69,-12.0],[104.35,37.59,-12.0],[104.67,37.52,-12.0],[105.0,37.5,-12.0],[105.33,37.52,-12.0],[105.65,37.59,-12.0],[105.96,37.69,-12.0],[106.25,37.83,-12.0],[106.52,38.02,-12.0],[106.77,38.23,-12.0],[106.98,38.48,-12.0],[107.17,38.75,-12.0],[107.31,39.04,-12.0],[107.41,39.35,-12.0],[107.48,39.67,-12.0],[107.5,40.0,-12.0]],"t":["F3"]},{"p":[[108.0,40.0,0.0],[107.97,40.39,0.0],[107.9,40.78,0.0],[107.77,41.15,0.0],[107.6,41.5,0.0],[107.38,41.83,0.0],[107.12,42.12,0.0],[106.83,42.38,0.0],[106.5,42.6,0.0],[106.15,42.77,0.0],[105.78,42.9,0.0],[105.39,42.97,0.0],[105.0,43.0,0.0],[104.61,42.97,0.0],[104.22,42.9,0.0],[103.85,42.77,0.0],[103.5,42.6,0.0],[103.17,42.38,0.0],[102.88,42.12,0.0],[102.62,41.83,0.0],[102.4,41.5,0.0],[102.23,41.15,0.0],[102.1,40.78,0.0],[102.03,40.39,0.0],[102.0,40.0,0.0],[102.03,39.61,0.0],[102.1,39.22,0.0],[102.23,38.85,0.0],[102.4,38.5,0.0],[102.62,38.17,0.0],[102.88,37.88,0.0],[103.17,37.62,0.0],[103.5,37.4,0.0],[103.85,37.23,0.0],[104.22,37.1,0.0],[104.61,37.03,0.0],[105.0,37.0,0.0],[105.39,37.03,0.0],[105.78,37.1,0.0],[106.15,37.23,0.0],[106.5,37.4,0.0],[106.83,37.62,0.0],[107.12,37.88,0.0],[107.38,38.17,0.0],[107.6,38.5,0.0],[107.77,38.85,0.0],[107.9,39.22,0.0],[107.97,39.61,0.0],[108.0,40.0,0.0]],"t":["F3"]},{"p":[[65.0,40.0,-8.0],[64.96,40.65,-8.0],[64.83,41.29,-8.0],[64.62,41.91,-8.0],[64.33,42.5,-8.0],[63.97,43.04,-8.0],[63.54,43.54,-8.0],[63.04,43.97,-8.0],[62.5,44.33,-8.0],[61.91,44.62,-8.0],[61.29,44.83,-8.0],[60.65,44.96,-8.0],[60.0,45.0,-8.0],[59.35,44.96,-8.0],[58.71,44.83,-8.0],[58.09,44.62,-8.0],[57.5,44.33,-8.0],[56.96,43.97,-8.0],[56.46,43.54,-8.0],[56.03,43.04,-8.0],[55.67,42.5,-8.0],[55.38,41.91,-8.0],[55.17,41.29,-8.0],[55.04,40.65,-8.0],[55.0,40.0,-8.0],[55.04,39.35,-8.0],[55.17,38.71,-8.0],[55.38,38.09,-8.0],[55.67,37.5,-8.0],[56.03,36.96,-8.0],[56.46,36.46,-8.0],[56.96,36.03,-8.0],[57.5,35.67,-8.0],[58.09,35.38,-8.0],[58.71,35.17,-8.0],[59.35,35.04,-8.0],[60.0,35.0,-8.0],[60.65,35.04,-8.0],[61.29,35.17,-8.0],[61.91,35.38,-8.0],[62.5,35.67,-8.0],[63.04,36.03,-8.0],[63.54,36.46,-8.0],[63.97,36.96,-8.0],[64.33,37.5,-8.0],[64.62,38.09,-8.0],[64.83,38.71,-8.0],[64.96,39.35,-8.0],[65.0,40.0,-8.0]],"t":["F4"]},{"p":[[65.0,40.0,-20.0],[64.96,40.65,-20.0],[64.83,41.29,-20.0],[64.62,41.91,-20.0],[64.33,42.5,-20.0],[63.97,43.04,-20.0],[63.54,43.54,-20.0],[63.04,43.97,-20.0],[62.5,44.33,-20.0],[61.91,44.62,-20.0],[61.29,44.83,-20.0],[60.65,44.96,-20.0],[60.0,45.0,-20.0],[59.35,44.96,-20.0],[58.71,44.83,-20.0],[58.09,44.62,-20.0],[57.5,44.33,-20.0],[56.96,43.97,-20.0],[56.46,43.54,-20.0],[56.03,43.04,-20.0],[55.67,42.5,-20.0],[55.38,41.91,-20.0],[55.17,41.29,-20.0],[55.04,40.65,-20.0],[55.0,40.0,-20.0],[55.04,39.35,-20.0],[55.17,38.71,-20.0],[55.38,38.09,-20.0],[55.67,37.5,-20.0],[56.03,36.96,-20.0],[56.46,36.46,-20.0],[56.96,36.03,-20.0],[57.5,35.67,-20.0],[58.09,35.38,-20.0],[58.71,35.17,-20.0],[59.35,35.04,-20.0],[60.0,35.0,-20.0],[60.65,35.04,-20.0],[61.29,35.17,-20.0],[61.91,35.38,-20.0],[62.5,35.67,-20.0],[63.04,36.03,-20.0],[63.54,36.46,-20.0],[63.97,36.96,-20.0],[64.33,37.5,-20.0],[64.62,38.09,-20.0],[64.83,38.71,-20.0],[64.96,39.35,-20.0],[65.0,40.0,-20.0]],"t":["F4"]}],"ops":[{"n":1,"title":"Торцовка верха (снять 1 мм)","tool":"T1 — Торцевая фреза Ø50, 5 пластин (45°)","geom":"face","ids":["A"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":2,"title":"Черновая наружного контура, глубина 20.3 мм","tool":"T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45","geom":"outer_rough","ids":["K"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":3,"title":"Черновая: карман 60×40×8","tool":"T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45","geom":"pocket_area","ids":["F1"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":4,"title":"Черновая: паз 30×8×5","tool":"T3 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18","geom":"slot_area","ids":["F5"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":5,"title":"Дообработка углов R5: карман 60×40×8","tool":"T4 — Фреза концевая ZCC AL-3E-D8.0 Ø8 z3 Lc20","geom":"pocket_corners","ids":["F1"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":6,"title":"Центровка под Ø6.6","tool":"T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10","geom":"holes","ids":["F2"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":7,"title":"Центровка с фаской под M6","tool":"T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10","geom":"holes","ids":["F3"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":8,"title":"Центровка под Ø9.8","tool":"T5 — Центровка NC 90° ZCC 1143SC90-1000 Ø10","geom":"holes","ids":["F4"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":9,"title":"Сверление Ø6.6 (4 шт.)","tool":"T6 — Сверло ZCC 1534SU03-0660 Ø6.6 3xD","geom":"holes","ids":["F2"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":10,"title":"Сверление Ø5.1 под резьбу M6 (2 шт.)","tool":"T7 — Сверло ZCC 1534SU03-0510 Ø5.1 3xD","geom":"holes","ids":["F3"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":11,"title":"Сверление Ø9.8 под развёртку Ø10H7","tool":"T8 — Сверло ZCC 1534SU03-0980 Ø9.8 3xD","geom":"holes","ids":["F4"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":12,"title":"Чистовая наружного контура","tool":"T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45","geom":"outer_walls","ids":["K"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":13,"title":"Чистовая дна: карман 60×40×8","tool":"T4 — Фреза концевая ZCC AL-3E-D8.0 Ø8 z3 Lc20","geom":"pocket_floor","ids":["F1"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":14,"title":"Чистовая стенок: карман 60×40×8","tool":"T4 — Фреза концевая ZCC AL-3E-D8.0 Ø8 z3 Lc20","geom":"pocket_walls","ids":["F1"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":15,"title":"Чистовая стенок: паз 30×8×5","tool":"T3 — Фреза концевая ZCC AL-3E-D6.0 Ø6 z3 Lc18","geom":"slot_walls","ids":["F5"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":16,"title":"Фаска 0.5×45° — наружный контур","tool":"T9 — Фасочная фреза 90° ZCC 5601R904FM-1000 Ø10","geom":"chamfer_outer","ids":["F6"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":17,"title":"Нарезание резьбы M6 (2 шт.)","tool":"T10 — Метчик ZCC 4701US-M6-6H (глухая, спираль 40° (C), DIN 371, HSS-E HG23)","geom":"holes","ids":["F3"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":18,"title":"Развёртывание Ø10H7","tool":"T11 — Развёртка ZCC 3112H7-1000 Ø10H7","geom":"holes","ids":["F4"],"side":"top","setup":"Установ 1 — верх (сторона A)","wcs":"G54"},{"n":19,"title":"Торцовка в размер по толщине 20 мм (снять 9 мм)","tool":"T1 — Торцевая фреза Ø50, 5 пластин (45°)","geom":"face","ids":["B"],"side":"bottom","setup":"Установ 2 — низ (сторона B, переворот)","wcs":"G55"},{"n":20,"title":"Фаска 0.5×45° — кромки низа","tool":"T9 — Фасочная фреза 90° ZCC 5601R904FM-1000 Ø10","geom":"chamfer_outer","ids":["F6"],"side":"bottom","setup":"Установ 2 — низ (сторона B, переворот)","wcs":"G55"}],"pockets":["F1","F5"],"holes":["F2","F3","F4"]}</script>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
 const M=JSON.parse(document.getElementById('nc3d-data').textContent);
@@ -899,7 +490,17 @@ const GEOM={"face": "верхняя плоскость заготовки", "out
 const cv=document.getElementById('nc3d'),ctx=cv.getContext('2d');
 const sel=document.getElementById('nc3d-op'),info=document.getElementById('nc3d-info');
 const flip=document.getElementById('nc3d-flip'),stockCb=document.getElementById('nc3d-stock');
-const [X,Y,Z]=M.size;let az=-0.62,el=0.6,zoom=1,panX=0,panY=0,cur=null;
+const [X,Y,Z]=M.size;let R=null,zoom=1,panX=0,panY=0,cur=null;
+// матрица вида: строки — оси экрана (вправо, вверх, к зрителю) в мировых координатах; вращение без ограничений
+function fromAzEl(a,e){const ca=Math.cos(a),sa=Math.sin(a),ce=Math.cos(e),se=Math.sin(e);
+ return [[ca,-sa,0],[sa*se,ca*se,ce],[-sa*ce,-ca*ce,se]];}
+function mul(A,B){return A.map(r=>[0,1,2].map(j=>r[0]*B[0][j]+r[1]*B[1][j]+r[2]*B[2][j]));}
+function ortho(M){const n=v=>{const l=Math.hypot(...v)||1;return v.map(x=>x/l);};const a=n(M[0]);let b=M[1];
+ const d=a[0]*b[0]+a[1]*b[1]+a[2]*b[2];b=n(b.map((x,i)=>x-d*a[i]));
+ const c=[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];return [a,b,c];}
+function turn(ay,ax){const cy=Math.cos(ay),sy=Math.sin(ay),cx=Math.cos(ax),sx=Math.sin(ax);
+ const Ry=[[cy,0,sy],[0,1,0],[-sy,0,cy]],Rx=[[1,0,0],[0,cx,-sx],[0,sx,cx]];R=ortho(mul(Rx,mul(Ry,R)));}
+R=fromAzEl(-0.62,0.6);
 const C=[X/2,Y/2,-Z/2];
 M.edges.forEach(e=>{e.ts=new Set(e.t);let lo=1e9,hi=-1e9;e.p.forEach(p=>{lo=Math.min(lo,p[2]);hi=Math.max(hi,p[2]);});e.lo=lo;e.hi=hi;});
 const fmin={};M.edges.forEach(e=>e.t.forEach(t=>{fmin[t]=Math.min(t in fmin?fmin[t]:1e9,e.lo);}));
@@ -907,8 +508,8 @@ const S=M.stock,sb=[[S[0],S[1],S[2]],[S[3],S[1],S[2]],[S[3],S[4],S[2]],[S[0],S[4
 const stockEdges=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]].map(([a,b])=>[sb[a],sb[b]]);
 function flipped(){return flip.checked&&cur&&cur.side==='bottom';}
 function tf(p){let x=p[0],y=p[1],z=p[2];if(flipped()){y=Y-y;z=-Z-z;}return [x,y,z];}
-function rot(x,y,z){x-=C[0];y-=C[1];z-=C[2];const ca=Math.cos(az),sa=Math.sin(az),x1=x*ca-y*sa,y1=x*sa+y*ca,
- ce=Math.cos(el),se=Math.sin(el);return [x1,y1*se+z*ce,y1*ce-z*se];}
+function rot(x,y,z){x-=C[0];y-=C[1];z-=C[2];const r=R;
+ return [r[0][0]*x+r[0][1]*y+r[0][2]*z,r[1][0]*x+r[1][1]*y+r[1][2]*z,-(r[2][0]*x+r[2][1]*y+r[2][2]*z)];}
 function hl(e){if(!cur)return false;const g=cur.geom,ids=cur.ids,face=cur.side==='bottom'?'bot':'top';
  if(g==='face')return e.ts.has(face);
  if(g==='outer_rough'||g==='outer_walls')return e.ts.has('outer');
@@ -939,12 +540,12 @@ function draw(){
  ctx.globalAlpha=1;
  // нуль установа
  const o=M.datum==='center'?[X/2,Y/2,0]:[0,0,0],L=diag*0.18,wcs=cur?cur.wcs:'G54';
- const R=p=>{const r=rot(p[0],p[1],p[2]);return [W/2+(r[0]+panX)*s,H/2-(r[1]+panY)*s];};
- const O=R(o);const ax=[[[o[0]+L,o[1],o[2]],'X','#e03131'],[[o[0],o[1]+L,o[2]],'Y','#2f9e44'],[[o[0],o[1],o[2]+L],'Z','#1971c2']];
- ctx.font='600 13px system-ui,sans-serif';ax.forEach(([p,t,c])=>{const q=R(p);ctx.strokeStyle=c;ctx.fillStyle=c;ctx.lineWidth=2.5;
+ const Q=p=>{const r=rot(p[0],p[1],p[2]);return [W/2+(r[0]+panX)*s,H/2-(r[1]+panY)*s];};
+ const O=Q(o);const ax=[[[o[0]+L,o[1],o[2]],'X','#e03131'],[[o[0],o[1]+L,o[2]],'Y','#2f9e44'],[[o[0],o[1],o[2]+L],'Z','#1971c2']];
+ ctx.font='600 13px system-ui,sans-serif';ax.forEach(([p,t,c])=>{const q=Q(p);ctx.strokeStyle=c;ctx.fillStyle=c;ctx.lineWidth=2.5;
   ctx.beginPath();ctx.moveTo(O[0],O[1]);ctx.lineTo(q[0],q[1]);ctx.stroke();ctx.fillText(t,q[0]+3,q[1]-3);});
  ctx.fillStyle=color('--datum');ctx.fillText(wcs,O[0]+4,O[1]+16);}
-function view(a,e){az=a;el=e;zoom=1;panX=panY=0;draw();}
+function view(a,e){R=fromAzEl(a,e);zoom=1;panX=panY=0;draw();}
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{const v=b.dataset.view;
  ({top:()=>view(0,Math.PI/2),front:()=>view(0,0),right:()=>view(-Math.PI/2,0),iso:()=>view(-0.62,0.6),bottom:()=>view(0,-Math.PI/2)})[v]();});
 let drag=null;const pts=new Map();
@@ -954,7 +555,8 @@ cv.addEventListener('pointermove',ev=>{if(!drag)return;const pr=pts.get(ev.point
  if(pts.size===2){const [a,b]=[...pts.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);if(drag.d)zoom*=d/drag.d;drag.d=d;draw();return;}
  const dx=ev.clientX-drag.x,dy=ev.clientY-drag.y;drag.x=ev.clientX;drag.y=ev.clientY;
  if(drag.pan){const W=cv.clientWidth,H=cv.clientHeight,s=0.82*Math.min(W,H)/Math.hypot(X,Y,Z)*zoom;panX+=dx/s;panY-=dy/s;}
- else{az+=dx*0.01;el=Math.max(-Math.PI/2,Math.min(Math.PI/2,el+dy*0.01));}draw();});
+ else if(ev.altKey||ev.ctrlKey){const a=dx*0.01;const c=Math.cos(a),s2=Math.sin(a);R=ortho(mul([[c,-s2,0],[s2,c,0],[0,0,1]],R));}
+ else{turn(dx*0.01,dy*0.01);}draw();});
 const up=ev=>{pts.delete(ev.pointerId);if(!pts.size)drag=null;else if(drag)drag.d=null;};
 cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
 cv.addEventListener('contextmenu',ev=>ev.preventDefault());
@@ -963,7 +565,7 @@ cv.addEventListener('dblclick',()=>view(-0.62,0.6));
 let g='';M.ops.forEach(op=>{if(op.setup!==g){g=op.setup;const og=document.createElement('optgroup');og.label=g;sel.appendChild(og);}
  const o=document.createElement('option');o.value=op.n;o.textContent='Оп. '+op.n+' — '+op.title;sel.lastChild.appendChild(o);});
 function setOp(n){cur=M.ops.find(o=>String(o.n)===String(n))||null;sel.value=cur?cur.n:'';
- info.textContent=cur?('Оп. '+cur.n+': '+(GEOM[cur.geom]||'')+(flipped()?' · деталь перевёрнута (установ 2)':'')):'Выберите операцию — обрабатываемые рёбра подсветятся.';
+ info.textContent=cur?('Оп. '+cur.n+' · '+cur.tool+' · '+(GEOM[cur.geom]||'')+(flipped()?' · деталь перевёрнута (установ 2)':'')):'Выберите операцию — обрабатываемые рёбра подсветятся.';
  document.querySelectorAll('tr.oprow').forEach(r=>r.classList.toggle('cur',cur&&r.dataset.op===String(cur.n)));draw();}
 sel.onchange=()=>setOp(sel.value);flip.onchange=()=>setOp(sel.value);stockCb.onchange=draw;
 window.nc3dShow=n=>{setOp(n);const a=document.getElementById('v3d');const r=a.getBoundingClientRect();

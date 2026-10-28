@@ -24,3 +24,19 @@ def test_step_without_material_asks(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr("sys.stdin.isatty", lambda: False)
     assert main(["plan", str(step)]) == 2
     assert "материал" in capsys.readouterr().err
+
+
+def test_manual_stock_callback():
+    from numcraft.models import Box
+    from numcraft.pipeline import Inputs, run
+
+    seen = {}
+
+    def ask(part, proposed):
+        seen["proposed"] = proposed
+        return Box(x=130, y=90, z=28)
+
+    res = run(Inputs(step_path=str(FIXTURES / "plate_pocket_holes.step"), material="6061"), ask_stock=ask)
+    assert seen["proposed"].x >= 120
+    assert (res.sheet.stock.x, res.sheet.stock.y, res.sheet.stock.z) == (130, 90, 28)
+    assert res.sheet.gcode is None

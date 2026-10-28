@@ -75,16 +75,17 @@ def to_markdown(sheet: TechSheet, details: bool = True) -> str:
         w("")
         w(f"<!--sk:s{s.number}-->")
         w("")
-        w("| Оп. | Операция | Стратегия HSMWorks | T | S, об/мин | F, мм/мин | ap, мм | ae, мм | Vc, м/мин | Подача |")
+        w("| Оп. | Операция | Стратегия HSMWorks | Инструмент | S, об/мин | F, мм/мин | ap, мм | ae, мм | Vc, м/мин | Подача |")
         w("|---|---|---|---|---|---|---|---|---|---|")
         for op in s.operations:
-            w(f"| {op.number} | {op.title} | {op.strategy}{' ' + op.cycle if op.cycle else ''} | T{op.tool.number} | "
+            w(f"| {op.number} | {op.title} | {op.strategy}{' ' + op.cycle if op.cycle else ''} | "
+              f"T{op.tool.number} — {op.tool.label()} | "
               f"{op.cutting.rpm} | {_feed(op)} | {_v(op.cutting.ap)} | {_v(op.cutting.ae)} | {_n(op.cutting.vc)} | "
               f"{_fz(op)} |")
         w("")
         if details:
             for op in s.operations:
-                w(f"### Оп. {op.number}. {op.title}")
+                w(f"### Оп. {op.number}. {op.title} · T{op.tool.number} — {op.tool.label()}")
                 w("")
                 w(f"<!--sk:o{op.number}-->")
                 w(f"- **Стратегия:** {op.strategy}")
