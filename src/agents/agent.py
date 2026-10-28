@@ -1,130 +1,128 @@
 """
-多智能体协作G代码生成系统 - Agent入口
+Чат-агент «Технолог» (Coze / OpenAI-совместимая модель).
+
+Агент уточняет недостающие данные, вызывает детерминированные инструменты numcraft и пересказывает
+результат. Режимы резания и глубины агент не придумывает — только из инструментов.
 """
-import os
 import json
+from pathlib import Path
 from typing import Annotated, List
+
 from langchain.agents import create_agent
-from langchain_openai import ChatOpenAI
+from langchain.tools import tool
+from langchain_core.messages import AnyMessage
 from langgraph.graph import MessagesState
 from langgraph.graph.message import add_messages
-from langchain_core.messages import AnyMessage
-from coze_coding_utils.runtime_ctx.context import default_headers
 
-# 导入所有工具
-from tools.process_planning_tools import (
-    recognize_features, 
-    generate_process_plan, 
-    validate_process_feasibility
-)
-from tools.tool_selection_tools import (
-    select_tools_for_features, 
-    optimize_cutting_parameters, 
-    check_tool_interference
-)
-from tools.path_planning_tools import (
-    generate_drilling_path, 
-    generate_milling_path, 
-    optimize_path_sequence
-)
-from tools.gcode_generation_tools import (
-    generate_gcode_program, 
-    optimize_gcode, 
-    convert_to_fanuc_gcode,
-    generate_gcode_documentation
-)
-from tools.validation_tools import (
-    validate_gcode_safety, 
-    check_tool_collision, 
-    analyze_machining_time,
-    validate_program_structure
-)
-from storage.memory.memory_saver import get_memory_saver
+from numcraft import cutting
+from numcraft.knowledge import tooling
+from numcraft.knowledge.machine import load_machine
+from numcraft.knowledge.materials import resolve_material
+from numcraft.llm import CONFIG, make_llm
+from numcraft.pipeline import InputError, Inputs, run
+from numcraft.techsheet import to_markdown
 
-
-LLM_CONFIG = "config/agent_llm_config.json"
-
-# 保留最近20轮对话
+# Последние 20 обменов
 MAX_MESSAGES = 40
 
 
 def _windowed_messages(old, new):
-    """滑动窗口: 只保留最近 MAX_MESSAGES 条消息"""
     return add_messages(old, new)[-MAX_MESSAGES:]
 
 
 class AgentState(MessagesState):
-    """Agent状态"""
     messages: Annotated[List[AnyMessage], _windowed_messages]
 
 
+@tool
+def plan_part(description: str = "", step_path: str = "", drawing_path: str = "", material: str = "",
+              stock: str = "", gcode: bool = False, dialect: str = "fanuc") -> str:
+    """Построить техкарту под Haas VF-2: установы, инструмент, режимы, стратегии HSMWorks, риски.
+
+    Args:
+        description: описание детали на русском (габарит Д×Ш×В, материал, карманы, отверстия, резьбы, фаски)
+        step_path: путь к STEP-модели (если есть)
+        drawing_path: путь к чертежу PDF/DXF (если есть)
+        material: 6061, 7075, сталь 45 или 1045 (если не указан в описании)
+        stock: заготовка «126x86x30» (если известна)
+        gcode: добавить черновик УП FANUC
+        dialect: fanuc или haas
+    """
+    st = [float(x) for x in stock.lower().replace("х", "x").split("x")] if stock else None
+    try:
+        res = run(Inputs(text=description or None, step_path=step_path or None, drawing_path=drawing_path or None,
+                         material=material or None, stock=st), gcode=gcode, dialect=dialect)
+    except InputError as e:
+        return "НЕ ХВАТАЕТ ДАННЫХ — спроси у пользователя: " + "; ".join(e.missing)
+    md = to_markdown(res.sheet)
+    if res.step_summary:
+        md += "\n## Анализ STEP\n```\n" + res.step_summary + "\n```\n"
+    return md
+
+
+@tool
+def analyze_step(step_path: str) -> str:
+    """Разобрать STEP: габарит, отверстия, карманы, радиусы, направления обработки."""
+    from numcraft.parsers.step import analyze_step_file, summary_ru
+
+    return summary_ru(analyze_step_file(step_path))
+
+
+@tool
+def analyze_drawing(drawing_path: str) -> str:
+    """Извлечь обозначения с чертежа (PDF/DXF): материал, квалитеты, резьбы, Ra, общие допуски."""
+    from numcraft.parsers.drawing import analyze_drawing as _an
+
+    info = _an(drawing_path)
+    return json.dumps({"material": info.material, "general_tolerance": info.general_tolerance, "fits": info.fits,
+                       "threads": info.threads, "ra": info.ra_values, "warnings": info.warnings},
+                      ensure_ascii=False)
+
+
+@tool
+def cutting_data(material: str, tool_kind: str = "end_mill", diameter: float = 10.0, operation: str = "adaptive",
+                 thread: str = "") -> str:
+    """Режимы резания для одного инструмента на Haas VF-2.
+
+    Args:
+        material: 6061, 7075, сталь 45, 1045
+        tool_kind: end_mill | drill | tap | reamer
+        diameter: диаметр, мм
+        operation: для фрез — adaptive | slot | pocket | finish_wall | finish_floor | contour | bore
+        thread: для метчика — «M8»
+    """
+    mat, machine = resolve_material(material), load_machine()
+    if tool_kind == "drill":
+        t = tooling.drill(diameter, diameter * 3)
+        cd = cutting.drilling(t, mat, machine)
+    elif tool_kind == "tap":
+        t = tooling.tap(thread or f"M{int(diameter)}", through=False)
+        cd = cutting.tapping(t, mat, machine)
+    elif tool_kind == "reamer":
+        t = tooling.reamer(diameter, "")
+        cd = cutting.reaming(t, mat, machine)
+    else:
+        t = tooling.pick_end_mill(mat.group, diameter, min_d=diameter)
+        if t is None:
+            return f"Нет фрезы Ø{diameter} в библиотеке"
+        cd = cutting.milling(t, mat, machine, operation)
+    return f"{mat.name}, {t.label()}: " + cd.model_dump_json(exclude_none=True)
+
+
 def build_agent(ctx=None):
-    """构建Agent实例"""
-    
-    workspace_path = os.getenv("COZE_WORKSPACE_PATH", "/workspace/projects")
-    config_path = os.path.join(workspace_path, LLM_CONFIG)
-    
-    # 读取配置
-    with open(config_path, 'r', encoding='utf-8') as f:
-        cfg = json.load(f)
-    
-    # 获取API配置
-    api_key = os.getenv("COZE_WORKLOAD_IDENTITY_API_KEY")
-    base_url = os.getenv("COZE_INTEGRATION_MODEL_BASE_URL")
-    
-    # 创建LLM
-    llm = ChatOpenAI(
-        model=cfg['config'].get("model"),
-        api_key=api_key,
-        base_url=base_url,
-        temperature=cfg['config'].get('temperature', 0.7),
-        streaming=True,
-        timeout=cfg['config'].get('timeout', 600),
-        extra_body={
-            "thinking": {
-                "type": cfg['config'].get('thinking', 'disabled')
-            }
-        },
-        default_headers=default_headers(ctx) if ctx else {}
-    )
-    
-    # 定义工具列表
-    tools = [
-        # 工艺规划工具
-        recognize_features,
-        generate_process_plan,
-        validate_process_feasibility,
-        
-        # 刀具选择工具
-        select_tools_for_features,
-        optimize_cutting_parameters,
-        check_tool_interference,
-        
-        # 路径规划工具
-        generate_drilling_path,
-        generate_milling_path,
-        optimize_path_sequence,
-        
-        # G代码生成工具
-        generate_gcode_program,
-        optimize_gcode,
-        convert_to_fanuc_gcode,
-        generate_gcode_documentation,
-        
-        # 验证工具
-        validate_gcode_safety,
-        check_tool_collision,
-        analyze_machining_time,
-        validate_program_structure,
-    ]
-    
-    # 创建Agent
-    agent = create_agent(
-        model=llm,
+    cfg = json.loads(Path(CONFIG).read_text(encoding="utf-8"))
+    try:
+        from storage.memory.memory_saver import get_memory_saver
+
+        checkpointer = get_memory_saver()
+    except ImportError:
+        from langgraph.checkpoint.memory import MemorySaver
+
+        checkpointer = MemorySaver()
+    return create_agent(
+        model=make_llm(ctx, streaming=True),
         system_prompt=cfg.get("sp"),
-        tools=tools,
-        checkpointer=get_memory_saver(),
+        tools=[plan_part, analyze_step, analyze_drawing, cutting_data],
+        checkpointer=checkpointer,
         state_schema=AgentState,
     )
-    
-    return agent

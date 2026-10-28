@@ -492,7 +492,7 @@ def parse_args():
 def parse_input(input_str: str) -> Dict[str, Any]:
     """Parse input string, support both JSON string and plain text"""
     if not input_str:
-        return {"text": "你好"}
+        return {"text": "Плита 100х60х15 сталь 45, 4 отв. Ø6.6 сквозные по углам 8"}
 
     # Try to parse as JSON first
     try:
@@ -528,13 +528,13 @@ if __name__ == "__main__":
                 {
                     "type": "query",
                     "session_id": "1",
-                    "message": "你好",
+                    "message": "Привет",
                     "content": {
                         "query": {
                             "prompt": [
                                 {
                                     "type": "text",
-                                    "content": {"text": "现在几点了？请调用工具获取当前时间"},
+                                    "content": {"text": "Плита 120х80х20 из 6061, карман 60х40 гл. 8 R5 в центре. Нужна техкарта."},
                                 }
                             ]
                         }

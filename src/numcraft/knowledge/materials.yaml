@@ -1,0 +1,114 @@
+# Режимы резания для твердосплавного инструмента. Стартовые значения для Haas VF-2 (CT40),
+# корректируйте под свой инструмент и каталог производителя.
+# vc — м/мин; fz_k — коэффициент подачи на зуб fz = fz_k * D (мм/зуб), с ограничениями fz_min/fz_max;
+# ae/ap — доли диаметра; f_k — подача на оборот сверла f = f_k * D (мм/об).
+
+_steel_medium: &steel_medium
+  group: steel
+  hardness: "HB 170–220 (нормализованная)"
+  kc: 2000
+  coolant: "СОЖ (эмульсия 6–8 %), M08"
+  milling:
+    vc: {adaptive: 160, slot: 90, pocket: 110, finish: 170, contour: 150}
+    fz_k: 0.005
+    fz_min: 0.012
+    fz_max: 0.10
+    adaptive_ae: 0.10
+    adaptive_ap: 2.0
+    slot_ap: 0.3
+    pocket_ae: 0.40
+    pocket_ap: 0.30
+    finish_ae_mm: 0.20
+    ramp_angle_deg: 2
+    leave_radial: 0.30
+    leave_axial: 0.15
+    chip_thinning_max: 1.6
+  face_mill: {vc: 220, fz: 0.15, ap: 1.5, ap_finish: 0.3}
+  drill: {vc: 90, f_k: 0.018, f_max: 0.30, vc_hss: 25}
+  spot_drill: {vc: 60, f_rev: 0.05}
+  tap: {vc: 10}
+  reamer: {vc: 20, f_k: 0.02}
+  chamfer_mill: {vc: 120, fz: 0.03}
+  thread_mill: {vc: 120, fz: 0.03}
+  ball_mill: {vc: 180, fz_k: 0.004}
+  notes:
+    - "Для улучшенной стали 45 (HRC 28–32) снизьте Vc на 20–25 %."
+    - "Метчики М3–М5 в стали — повышенный риск поломки: метчик HSS-E-PM с покрытием, либо резьбофреза."
+
+materials:
+  al6061:
+    name: "Алюминий 6061-T6"
+    aliases: ["6061", "6061-t6", "6061t6", "ад33", "алюминий 6061", "almg1sicu", "en aw-6061"]
+    group: aluminum
+    hardness: "HB 95"
+    kc: 700
+    coolant: "СОЖ (эмульсия) поливом, M08"
+    milling:
+      vc: {adaptive: 450, slot: 350, pocket: 400, finish: 500, contour: 450}
+      fz_k: 0.008
+      fz_min: 0.02
+      fz_max: 0.15
+      adaptive_ae: 0.15
+      adaptive_ap: 3.0
+      slot_ap: 0.5
+      pocket_ae: 0.50
+      pocket_ap: 1.0
+      finish_ae_mm: 0.25
+      ramp_angle_deg: 3
+      leave_radial: 0.30
+      leave_axial: 0.15
+      chip_thinning_max: 1.8
+    face_mill: {vc: 800, fz: 0.12, ap: 2.0, ap_finish: 0.3}
+    drill: {vc: 150, f_k: 0.025, f_max: 0.40, vc_hss: 60}
+    spot_drill: {vc: 100, f_rev: 0.06}
+    tap: {vc: 15}
+    reamer: {vc: 40, f_k: 0.03}
+    chamfer_mill: {vc: 300, fz: 0.04}
+    thread_mill: {vc: 250, fz: 0.04}
+    ball_mill: {vc: 450, fz_k: 0.006}
+    notes:
+      - "Фрезы для алюминия: 2–3 зуба, полированные, без покрытия или ZrN/DLC. Покрытие AlTiN в алюминии налипает."
+      - "На 8100 об/мин малые фрезы упираются в обороты, поэтому подачу держим через fz (не занижать — иначе наростообразование)."
+
+  al7075:
+    name: "Алюминий 7075-T6"
+    aliases: ["7075", "7075-t6", "7075t6", "в95", "в95т1", "алюминий 7075", "alzn5.5mgcu", "en aw-7075"]
+    group: aluminum
+    hardness: "HB 150"
+    kc: 850
+    coolant: "СОЖ (эмульсия) поливом, M08"
+    milling:
+      vc: {adaptive: 380, slot: 300, pocket: 350, finish: 420, contour: 380}
+      fz_k: 0.0075
+      fz_min: 0.02
+      fz_max: 0.14
+      adaptive_ae: 0.15
+      adaptive_ap: 3.0
+      slot_ap: 0.5
+      pocket_ae: 0.45
+      pocket_ap: 1.0
+      finish_ae_mm: 0.25
+      ramp_angle_deg: 3
+      leave_radial: 0.40
+      leave_axial: 0.20
+      chip_thinning_max: 1.8
+    face_mill: {vc: 700, fz: 0.12, ap: 2.0, ap_finish: 0.3}
+    drill: {vc: 120, f_k: 0.022, f_max: 0.35, vc_hss: 50}
+    spot_drill: {vc: 90, f_rev: 0.06}
+    tap: {vc: 12}
+    reamer: {vc: 35, f_k: 0.03}
+    chamfer_mill: {vc: 250, fz: 0.04}
+    thread_mill: {vc: 220, fz: 0.04}
+    ball_mill: {vc: 380, fz_k: 0.006}
+    notes:
+      - "7075-T6 склонен к короблению из-за остаточных напряжений: черновая с обеих сторон, затем отпустить зажим и сделать чистовую."
+
+  steel45:
+    <<: *steel_medium
+    name: "Сталь 45 (ГОСТ 1050)"
+    aliases: ["сталь 45", "ст45", "ст.45", "45", "c45", "ck45", "1.0503"]
+
+  aisi1045:
+    <<: *steel_medium
+    name: "Сталь AISI 1045"
+    aliases: ["1045", "aisi 1045", "aisi1045", "sae 1045"]

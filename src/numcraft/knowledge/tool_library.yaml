@@ -1,0 +1,39 @@
+# Библиотека инструмента цеха. Отредактируйте под фактический инструмент:
+# D — диаметр, z — зубья, lc — длина режущей части, oal — общая длина, r — радиус при вершине.
+# group: aluminum / steel / any — для какого материала предпочтителен.
+face_mills:
+  - {d: 50, z: 5, lc: 6, oal: 50, group: any, desc: "Торцевая фреза Ø50, 5 пластин (45°)"}
+end_mills:
+  # Алюминий: 3 зуба, полированные
+  - {d: 16, z: 3, lc: 32, oal: 92, group: aluminum}
+  - {d: 12, z: 3, lc: 26, oal: 83, group: aluminum}
+  - {d: 12, z: 3, lc: 45, oal: 100, group: aluminum, desc: "удлинённая"}
+  - {d: 10, z: 3, lc: 22, oal: 72, group: aluminum}
+  - {d: 8,  z: 3, lc: 19, oal: 63, group: aluminum}
+  - {d: 6,  z: 3, lc: 13, oal: 57, group: aluminum}
+  - {d: 6,  z: 3, lc: 25, oal: 75, group: aluminum, desc: "удлинённая"}
+  - {d: 4,  z: 3, lc: 11, oal: 50, group: aluminum}
+  - {d: 3,  z: 3, lc: 8,  oal: 38, group: aluminum}
+  - {d: 2,  z: 2, lc: 6,  oal: 38, group: aluminum}
+  # Сталь: 4–5 зубьев, AlTiN
+  - {d: 16, z: 5, lc: 32, oal: 92, group: steel}
+  - {d: 12, z: 5, lc: 26, oal: 83, group: steel}
+  - {d: 12, z: 4, lc: 45, oal: 100, group: steel, desc: "удлинённая"}
+  - {d: 10, z: 4, lc: 22, oal: 72, group: steel}
+  - {d: 8,  z: 4, lc: 19, oal: 63, group: steel}
+  - {d: 6,  z: 4, lc: 13, oal: 57, group: steel}
+  - {d: 6,  z: 4, lc: 25, oal: 75, group: steel, desc: "удлинённая"}
+  - {d: 4,  z: 4, lc: 11, oal: 50, group: steel}
+  - {d: 3,  z: 4, lc: 8,  oal: 38, group: steel}
+  - {d: 2,  z: 2, lc: 6,  oal: 38, group: steel}
+ball_mills:
+  - {d: 10, z: 2, lc: 20, oal: 72, group: any}
+  - {d: 6,  z: 2, lc: 12, oal: 57, group: any}
+  - {d: 4,  z: 2, lc: 8,  oal: 50, group: any}
+spot_drills:
+  - {d: 10, angle: 90, oal: 75, group: any, desc: "Центровка Ø10 90° (тв. сплав)"}
+chamfer_mills:
+  - {d: 10, angle: 90, z: 3, oal: 63, group: any, desc: "Фасочная фреза Ø10 90°"}
+thread_mills:
+  - {d: 9.5, z: 3, lc: 25, oal: 75, group: any, desc: "Резьбофреза однониточная Ø9.5 (для М12 и крупнее)"}
+  - {d: 4.7, z: 3, lc: 15, oal: 57, group: any, desc: "Резьбофреза однониточная Ø4.7 (для М6–М10)"}

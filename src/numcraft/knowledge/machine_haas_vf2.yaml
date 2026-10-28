@@ -1,0 +1,32 @@
+# Профиль станка Haas VF-2. Значения из паспортных данных Haas (VF-2, шпиндель 8100 об/мин, CT40/BT40).
+# Если на станке опция 12000 об/мин — поменяйте spindle.max_rpm (или передайте --rpm 12000 в CLI).
+name: "Haas VF-2"
+control: "FANUC-совместимый (Haas NGC)"
+travel_mm: {x: 762, y: 406, z: 508}
+table_mm: {x: 914, y: 356}
+spindle_nose_to_table_mm: {min: 102, max: 610}
+spindle:
+  taper: "CT40 / BT40"
+  max_rpm: 8100
+  min_rpm: 100
+  peak_power_kw: 22.4
+  # Номинальный момент; ниже base_rpm мощность падает пропорционально оборотам
+  peak_torque_nm: 122
+  base_rpm: 2000
+  # Доля пиковой мощности, которую разрешаем использовать в длительном резании
+  usable_power_ratio: 0.75
+max_cutting_feed_mm_min: 16500
+rapid_mm_min: 25400
+tool_changer:
+  pockets: 20
+  max_tool_diameter_mm: 89
+  max_tool_length_mm: 279
+  max_tool_weight_kg: 5.4
+coolant: "Поливная СОЖ (M08); TSC — опция"
+# Типовая оснастка
+vise:
+  name: "Тиски 6\" (Kurt DX6 / Haas)"
+  jaw_width_mm: 152
+  max_opening_mm: 229
+  min_grip_mm: 3
+  recommended_grip_mm: 5

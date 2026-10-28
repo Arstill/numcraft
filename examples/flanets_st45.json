@@ -1,0 +1,16 @@
+{
+  "name": "Фланец",
+  "material": "Сталь 45",
+  "size": {"x": 100, "y": 100, "z": 15},
+  "stock": {"x": 105, "y": 105, "z": 22},
+  "general_tolerance": "ISO 2768-m",
+  "features": [
+    {"type": "hole", "diameter": 9, "count": 4,
+     "positions": [[12, 12], [88, 12], [12, 88], [88, 88]],
+     "counterbore": {"diameter": 15, "depth": 9}},
+    {"type": "hole", "diameter": 40, "fit": "H7", "through": true, "positions": [[50, 50]]},
+    {"type": "thread", "size": "M8", "depth": 12, "side": "bottom", "count": 2,
+     "positions": [[50, 20], [50, 80]]},
+    {"type": "chamfer", "size": 0.5, "edges": "outer"}
+  ]
+}
