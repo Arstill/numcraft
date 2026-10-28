@@ -132,3 +132,85 @@ def to_markdown(sheet: TechSheet, details: bool = True) -> str:
 
 def to_json(sheet: TechSheet) -> str:
     return sheet.model_dump_json(indent=2)
+
+
+_CSS = """
+:root{--bg:#fff;--fg:#1d1d1f;--muted:#666;--line:#ddd;--head:#f3f4f6;--hi:#fde8e8;--mid:#fff6db;--code:#f6f8fa}
+@media (prefers-color-scheme:dark){:root{--bg:#16181c;--fg:#e8e8e8;--muted:#9aa;--line:#333;--head:#22252b;
+--hi:#4a1f1f;--mid:#3f3519;--code:#1e2127}}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+max-width:1200px;margin:0 auto;padding:16px}
+h1{font-size:24px}h2{margin-top:32px;border-bottom:1px solid var(--line);padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 4px}
+table{border-collapse:collapse;width:100%;margin:8px 0;font-size:14px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:4px 8px;text-align:left;vertical-align:top}th{background:var(--head)}
+tr.high td{background:var(--hi)}tr.mid td{background:var(--mid)}
+pre{background:var(--code);padding:12px;overflow-x:auto;font-size:13px}
+blockquote{color:var(--muted);border-left:3px solid var(--line);margin:16px 0;padding-left:12px}
+details{margin:4px 0}summary{cursor:pointer;color:var(--muted)}
+"""
+
+
+def to_html(md: str, title: str = "Техкарта") -> str:
+    """Минимальный Markdown → HTML для собственной разметки техкарты (заголовки, списки, таблицы, код)."""
+    import html
+    import re
+
+    def inline(t: str) -> str:
+        t = html.escape(t)
+        return re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
+
+    out = [f"<!doctype html><html lang='ru'><head><meta charset='utf-8'>"
+           f"<meta name='viewport' content='width=device-width,initial-scale=1'><title>{html.escape(title)}</title>"
+           f"<style>{_CSS}</style></head><body>"]
+    lines = md.splitlines()
+    i = 0
+    in_details = False
+    while i < len(lines):
+        ln = lines[i]
+        if ln.startswith("```"):
+            j = i + 1
+            while j < len(lines) and not lines[j].startswith("```"):
+                j += 1
+            out.append("<pre>" + html.escape("\n".join(lines[i + 1:j])) + "</pre>")
+            i = j + 1
+            continue
+        if ln.startswith("|"):
+            rows = []
+            while i < len(lines) and lines[i].startswith("|"):
+                rows.append([c.strip() for c in lines[i].strip().strip("|").split("|")])
+                i += 1
+            out.append("<table><tr>" + "".join(f"<th>{inline(c)}</th>" for c in rows[0]) + "</tr>")
+            for r in rows[2:]:
+                cls = " class='high'" if r and r[0] == "ВЫСОКИЙ" else " class='mid'" if r and r[0] == "средний" else ""
+                out.append(f"<tr{cls}>" + "".join(f"<td>{inline(c)}</td>" for c in r) + "</tr>")
+            out.append("</table>")
+            continue
+        if ln.startswith("- "):
+            out.append("<ul>")
+            while i < len(lines) and lines[i].startswith("- "):
+                out.append(f"<li>{inline(lines[i][2:])}</li>")
+                i += 1
+            out.append("</ul>")
+            continue
+        if ln.startswith("### "):
+            # подробности операции сворачиваем, чтобы таблицы установа читались целиком
+            if in_details:
+                out.append("</details>")
+            out.append(f"<details><summary>{inline(ln[4:])}</summary>")
+            in_details = True
+        elif ln.startswith("## ") or ln.startswith("# "):
+            if in_details:
+                out.append("</details>")
+                in_details = False
+            lvl = 1 if ln.startswith("# ") else 2
+            out.append(f"<h{lvl}>{inline(ln[lvl + 1:])}</h{lvl}>")
+        elif ln.startswith("> "):
+            out.append(f"<blockquote>{inline(ln[2:])}</blockquote>")
+        elif ln.strip():
+            out.append(f"<p>{inline(ln)}</p>")
+        i += 1
+    if in_details:
+        out.append("</details>")
+    out.append("</body></html>")
+    return "\n".join(out)

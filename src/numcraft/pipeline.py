@@ -69,7 +69,9 @@ def build_part(inp: Inputs) -> tuple[Part, List[str], Optional[str]]:
         mat = material or (pr.material if pr else None)
         if not mat:
             raise InputError(["материал (6061, 7075, сталь 45 или 1045) — в STEP его нет"])
-        part, n = stp.to_part(analysis, mat, name=inp.name)
+        prod = analysis.product
+        default_name = prod if prod and "translator" not in prod.lower() else Path(inp.step_path).stem
+        part, n = stp.to_part(analysis, mat, name=inp.name or default_name)
         notes += n
         if pr:
             # из текста берём то, чего геометрия не даёт: резьбы, фаски, 3D, контур с допуском

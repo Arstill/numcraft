@@ -26,37 +26,93 @@ def _stock(s: str):
     return [float(p.replace(",", ".")) for p in parts]
 
 
+FILE_KINDS = {".step": "step", ".stp": "step", ".pdf": "drawing", ".dxf": "drawing", ".json": "json"}
+
+
+def _route_files(a) -> list:
+    """Файлы в позиционных аргументах (перетаскивание на numcraft.bat) раскладываем по типу."""
+    words, files = [], []
+    for w in a.text or []:
+        kind = FILE_KINDS.get(Path(w).suffix.lower())
+        if kind and Path(w).is_file():
+            setattr(a, kind, getattr(a, kind) or w)
+            files.append(Path(w))
+        else:
+            words.append(w)
+    a.text = words
+    return files
+
+
+def _ask_material() -> str | None:
+    if not sys.stdin.isatty():
+        return None
+    try:
+        return input("Материал не найден в файлах. Введите (6061 / 7075 / 45 / 1045): ").strip() or None
+    except EOFError:
+        return None
+
+
 def cmd_plan(a) -> int:
     from numcraft.pipeline import InputError, Inputs, run
-    from numcraft.techsheet import to_json, to_markdown
+    from numcraft.techsheet import to_html, to_json, to_markdown
 
+    files = _route_files(a)
     text = " ".join(a.text) if a.text else None
     if text == "-":
         text = sys.stdin.read()
-    try:
-        res = run(Inputs(text=text, step_path=a.step, drawing_path=a.drawing, part_json=a.json,
-                         material=a.material, name=a.name, stock=a.stock),
-                  gcode=a.gcode, dialect=a.dialect, max_rpm=a.rpm)
-    except InputError as e:
-        print("Не хватает данных для техкарты:", file=sys.stderr)
-        for m in e.missing:
-            print(f"  • {m}", file=sys.stderr)
-        return 2
+    material = a.material
+    for _ in range(2):
+        try:
+            res = run(Inputs(text=text, step_path=a.step, drawing_path=a.drawing, part_json=a.json,
+                             material=material, name=a.name, stock=a.stock),
+                      gcode=a.gcode, dialect=a.dialect, max_rpm=a.rpm)
+            break
+        except InputError as e:
+            if not material and any("материал" in m.lower() for m in e.missing) and (material := _ask_material()):
+                continue
+            print("Не хватает данных для техкарты:", file=sys.stderr)
+            for m in e.missing:
+                print(f"  • {m}", file=sys.stderr)
+            if a.drawing and not a.step and not text:
+                print("  • по одному PDF геометрию не получить — добавьте STEP-модель детали", file=sys.stderr)
+            return 2
     md = to_markdown(res.sheet, details=not a.brief)
     if res.step_summary and not a.brief:
         md = md.replace("\n## ", "\n## Анализ STEP\n\n```\n" + res.step_summary + "\n```\n\n## ", 1)
-    if a.out:
-        Path(a.out).write_text(md, encoding="utf-8")
-        print(f"Техкарта: {a.out}")
-    else:
+    out, html_out, nc = a.out, a.html, a.nc
+    if files and not (out or html_out):
+        # результат — рядом с моделью: корпус.step → корпус_техкарта.html / .md / .nc
+        base = files[0].with_name(files[0].stem + "_техкарта")
+        out, html_out = str(base) + ".md", str(base) + ".html"
+        if res.sheet.gcode and not nc:
+            nc = str(files[0].with_suffix(".nc"))
+    if out:
+        Path(out).write_text(md, encoding="utf-8")
+        print(f"Техкарта: {out}")
+    if html_out:
+        Path(html_out).write_text(to_html(md, res.sheet.part.name), encoding="utf-8")
+        print(f"Техкарта (браузер): {html_out}")
+    if not (out or html_out):
         print(md)
     if a.json_out:
         Path(a.json_out).write_text(to_json(res.sheet), encoding="utf-8")
         print(f"JSON: {a.json_out}")
-    if a.nc and res.sheet.gcode:
-        Path(a.nc).write_text(res.sheet.gcode, encoding="utf-8")
-        print(f"УП: {a.nc}")
+    if nc and res.sheet.gcode:
+        Path(nc).write_text(res.sheet.gcode, encoding="utf-8")
+        print(f"УП: {nc}")
+    if a.open and (html_out or out):
+        _open(html_out or out)
     return 0
+
+
+def _open(path: str) -> None:
+    import os
+    import webbrowser
+
+    if hasattr(os, "startfile"):
+        os.startfile(path)  # type: ignore[attr-defined]
+    else:
+        webbrowser.open(Path(path).resolve().as_uri())
 
 
 def cmd_step(a) -> int:
@@ -125,7 +181,7 @@ def main(argv=None) -> int:
     sub = p.add_subparsers(dest="cmd", required=True)
 
     pp = sub.add_parser("plan", help="техкарта по описанию / STEP / чертежу / JSON")
-    pp.add_argument("text", nargs="*", help="описание детали на русском («-» — читать из stdin)")
+    pp.add_argument("text", nargs="*", help="файлы STEP/PDF/DXF/JSON и/или описание детали («-» — из stdin)")
     pp.add_argument("--step", help="STEP-модель (.step/.stp)")
     pp.add_argument("--drawing", help="чертёж (.pdf с текстом, .dxf, .txt)")
     pp.add_argument("--json", help="деталь в формате Part (JSON-файл или строка)")
@@ -136,6 +192,8 @@ def main(argv=None) -> int:
     pp.add_argument("--dialect", choices=["fanuc", "haas"], default="fanuc")
     pp.add_argument("--rpm", type=int, help="макс. обороты шпинделя (опция 12000)")
     pp.add_argument("-o", "--out", help="сохранить техкарту .md")
+    pp.add_argument("--html", help="сохранить техкарту .html (для браузера)")
+    pp.add_argument("--open", action="store_true", help="открыть техкарту после расчёта")
     pp.add_argument("--json-out", help="сохранить техкарту .json")
     pp.add_argument("--nc", help="сохранить УП .nc")
     pp.add_argument("--brief", action="store_true", help="только таблицы, без параметров стратегий")
