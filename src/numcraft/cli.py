@@ -193,6 +193,49 @@ def cmd_catalog(a) -> int:
     return 0
 
 
+def _split_dropped(line: str) -> list:
+    """Строка после перетаскивания файлов в окно: пути в кавычках или без, через пробел."""
+    import shlex
+
+    parts = shlex.split(line, posix=False)
+    return [p.strip('"') for p in parts if p.strip('"')]
+
+
+def cmd_drop(a) -> int:
+    """Режим для numcraft.bat: файлы из аргументов или перетаскиванием в окно, техкарта открывается сама."""
+    def run_files(files: list) -> int:
+        return main(["plan", *files, "--gcode", "--open"])
+
+    if a.files:
+        return run_files(a.files)
+    while True:
+        print()
+        print("=" * 64)
+        print(" Перетащите в это окно STEP-модель и/или PDF чертежа детали,")
+        print(" затем нажмите Enter. Пустой Enter — выход.")
+        print("=" * 64)
+        try:
+            line = input("Файлы: ").strip()
+        except EOFError:
+            return 0
+        if not line:
+            return 0
+        run_files(_split_dropped(line))
+
+
+def cmd_catalog_drop(a) -> int:
+    """Режим для catalog_text.bat: PDF каталога из аргумента или перетаскиванием в окно."""
+    path = a.file
+    if not path:
+        try:
+            path = " ".join(_split_dropped(input("Перетащите в окно PDF каталога ZCC и нажмите Enter: ")))
+        except EOFError:
+            return 0
+    if not path:
+        return 0
+    return main(["catalog", "text", path, "-o", str(Path(path).with_suffix(".txt"))])
+
+
 def cmd_materials(_a) -> int:
     for m in all_materials().values():
         print(f"{m.name}: {m.hardness}; псевдонимы: {', '.join(m.aliases)}")
@@ -250,13 +293,21 @@ def main(argv=None) -> int:
     pk.add_argument("--pages", help="страницы, напр. 120-380 (для text)")
     pk.set_defaults(fn=cmd_catalog)
 
+    pdrop = sub.add_parser("drop", help="режим перетаскивания файлов (numcraft.bat)")
+    pdrop.add_argument("files", nargs="*")
+    pdrop.set_defaults(fn=cmd_drop)
+
+    pcd = sub.add_parser("catalog-drop", help="выгрузка текста каталога перетаскиванием (catalog_text.bat)")
+    pcd.add_argument("file", nargs="?")
+    pcd.set_defaults(fn=cmd_catalog_drop)
+
     pm = sub.add_parser("materials", help="поддерживаемые материалы")
     pm.set_defaults(fn=cmd_materials)
 
     a = p.parse_args(argv)
     try:
         return a.fn(a)
-    except (UnknownMaterial, ValueError, FileNotFoundError) as e:
+    except (UnknownMaterial, ValueError, FileNotFoundError, RuntimeError) as e:
         print(f"Ошибка: {e}", file=sys.stderr)
         return 2
 

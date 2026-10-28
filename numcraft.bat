@@ -1,52 +1,34 @@
+rem NumCraft: drag STEP and/or PDF drawing onto this file,
+rem or double-click it and drag the files into the window.
 @echo off
-rem Два способа:
-rem  1) перетащить STEP и/или PDF на значок numcraft.bat;
-rem  2) открыть numcraft.bat двойным щелчком, перетащить файлы в окно и нажать Enter.
-chcp 65001 >nul
+setlocal
 set PYTHONUTF8=1
+set PYTHONIOENCODING=utf-8
 
-rem Ищем Python: сначала python, затем лаунчер py
+rem --- find Python: "python" or the "py" launcher
 set "PY="
 python --version >nul 2>&1 && set "PY=python"
 if not defined PY py --version >nul 2>&1 && set "PY=py"
 if not defined PY (
-  echo Python не найден.
-  echo Установите его с https://www.python.org/downloads/
-  echo В первом окне установщика отметьте "Add python.exe to PATH".
+  echo Python not found. Install it from https://www.python.org/downloads/
+  echo and tick "Add python.exe to PATH" in the first installer window.
   pause
   exit /b 1
 )
 
-rem При первом запуске ставим библиотеки
-%PY% -c "import pydantic, yaml, pypdf" >nul 2>&1
+rem --- first run: install libraries
+%PY% -c "import pydantic, yaml, pypdf, cryptography" >nul 2>&1
 if errorlevel 1 (
-  echo Первый запуск: устанавливаю библиотеки pydantic, pyyaml, pypdf...
-  %PY% -m pip install --user pydantic pyyaml pypdf
+  echo First run: installing pydantic, pyyaml, pypdf, cryptography ...
+  %PY% -m pip install --user pydantic pyyaml pypdf cryptography
   if errorlevel 1 (
-    echo Не удалось установить библиотеки. Проверьте интернет и повторите.
+    echo Could not install libraries. Check the internet connection and try again.
     pause
     exit /b 1
   )
 )
 
 cd /d "%~dp0src"
-
-if not "%~1"=="" (
-  %PY% -m numcraft plan %* --gcode --open
-  echo.
-  pause
-  exit /b
-)
-
-:ask
+%PY% -m numcraft drop %*
 echo.
-echo ============================================================
-echo  Перетащите в это окно STEP-модель и/или PDF чертежа детали
-echo  (можно по очереди), затем нажмите Enter.
-echo  Пустой Enter - выход.
-echo ============================================================
-set "FILES="
-set /p FILES=Файлы: 
-if not defined FILES exit /b
-%PY% -m numcraft plan %FILES% --gcode --open
-goto ask
+pause

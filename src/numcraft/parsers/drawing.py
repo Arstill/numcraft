@@ -41,10 +41,20 @@ def _f(s: str) -> float:
     return float(s.replace(",", "."))
 
 
-def read_pdf_text(path: str) -> str:
+def open_pdf(path: str):
+    """PdfReader с понятной ошибкой для PDF с защитой (AES): нужен пакет cryptography."""
     from pypdf import PdfReader
+    from pypdf.errors import DependencyError
 
-    reader = PdfReader(path)
+    try:
+        return PdfReader(path)
+    except DependencyError:
+        raise RuntimeError("PDF защищён (шифрование AES). Установите пакет и повторите: "
+                           "py -m pip install cryptography") from None
+
+
+def read_pdf_text(path: str) -> str:
+    reader = open_pdf(path)
     return "\n".join((page.extract_text() or "") for page in reader.pages)
 
 

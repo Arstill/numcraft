@@ -52,9 +52,9 @@ def parse_pages(pages: Iterable[str]) -> List[dict]:
 
 
 def parse_taps_pdf(path: str) -> List[dict]:
-    from pypdf import PdfReader
+    from numcraft.parsers.drawing import open_pdf
 
-    return parse_pages(p.extract_text() or "" for p in PdfReader(path).pages)
+    return parse_pages(p.extract_text() or "" for p in open_pdf(path).pages)
 
 
 def _page_range(spec: Optional[str], n: int) -> List[int]:
@@ -70,14 +70,18 @@ def _page_range(spec: Optional[str], n: int) -> List[int]:
 
 def dump_text(path: str, out_path: str, pages: Optional[str] = None) -> int:
     """Текст выбранных страниц PDF в файл; возвращает число страниц."""
-    from pypdf import PdfReader
+    from numcraft.parsers.drawing import open_pdf
 
-    reader = PdfReader(path)
+    reader = open_pdf(path)
     idx = _page_range(pages, len(reader.pages))
+    print(f"  страниц: {len(idx)} из {len(reader.pages)}", flush=True)
     with open(out_path, "w", encoding="utf-8") as f:
         for i in idx:
             f.write(f"\n===== PAGE {i + 1} =====\n")
-            f.write(reader.pages[i].extract_text() or "")
+            try:
+                f.write(reader.pages[i].extract_text() or "")
+            except Exception as e:  # битая страница не должна останавливать выгрузку всего каталога
+                f.write(f"[не удалось извлечь текст: {e}]")
             if (i + 1) % 50 == 0:
                 print(f"  … {i + 1} стр.", flush=True)
     return len(idx)

@@ -1,23 +1,34 @@
+rem Drag a ZCC catalogue PDF onto this file: a .txt with the catalogue text
+rem appears next to it (much smaller than the PDF, can be sent for import).
 @echo off
-rem Перетащите на этот файл PDF каталога ZCC - рядом появится .txt с текстом каталога.
-rem Этот .txt (он намного меньше PDF) можно отправить, чтобы подключить фрезы и свёрла из каталога.
-chcp 65001 >nul
+setlocal
 set PYTHONUTF8=1
+set PYTHONIOENCODING=utf-8
+
+rem --- find Python: "python" or the "py" launcher
 set "PY="
 python --version >nul 2>&1 && set "PY=python"
 if not defined PY py --version >nul 2>&1 && set "PY=py"
 if not defined PY (
-  echo Python не найден. Установите с https://www.python.org/downloads/ ^(галочка "Add python.exe to PATH"^).
+  echo Python not found. Install it from https://www.python.org/downloads/
+  echo and tick "Add python.exe to PATH" in the first installer window.
   pause
   exit /b 1
 )
-%PY% -c "import pypdf" >nul 2>&1 || %PY% -m pip install --user pypdf
-if "%~1"=="" (
-  echo Перетащите на этот файл PDF каталога ZCC.
-  pause
-  exit /b
+
+rem --- first run: install libraries
+%PY% -c "import pydantic, yaml, pypdf, cryptography" >nul 2>&1
+if errorlevel 1 (
+  echo First run: installing pydantic, pyyaml, pypdf, cryptography ...
+  %PY% -m pip install --user pydantic pyyaml pypdf cryptography
+  if errorlevel 1 (
+    echo Could not install libraries. Check the internet connection and try again.
+    pause
+    exit /b 1
+  )
 )
+
 cd /d "%~dp0src"
-%PY% -m numcraft catalog text "%~1" -o "%~dpn1.txt"
+%PY% -m numcraft catalog-drop %*
 echo.
 pause
