@@ -57,6 +57,25 @@ def assess(sheet: TechSheet, mat: Material, machine: Machine) -> List[Risk]:
         add("средний", "Коробление 7075", "Плоская деталь из 7075-T6: возможен увод от остаточных напряжений.",
             "Черновая с припуском 0.5–1 мм с обеих сторон, отпустить тиски, затем чистовая.")
 
+    # --- отверстие на стенке кармана/паза (окружность пересекает границу)
+    from numcraft.sketch import _feature_box
+
+    for h in part.features:
+        if not isinstance(h, (HoleFeature, ThreadFeature)) or not h.positions:
+            continue
+        r = h.diameter / 2 if isinstance(h, HoleFeature) else _thread_d(h.size) / 2
+        for pk in part.features:
+            box = _feature_box(pk)
+            if box is None or pk.side != h.side:
+                continue
+            for x, y in h.positions:
+                over_x = box[0] - r < x < box[2] + r and box[1] - r < y < box[3] + r
+                inside = box[0] + r <= x <= box[2] - r and box[1] + r <= y <= box[3] - r
+                if over_x and not inside:
+                    add("высокий", "Геометрия", f"{h.id}: отверстие ({_n(x)}; {_n(y)}) пересекает стенку {pk.id}.",
+                        "Проверить координаты по чертежу: сверло уйдёт в стенку, возможна поломка.")
+                    break
+
     # --- геометрия
     for f in part.features:
         if isinstance(f, PocketFeature):
@@ -157,3 +176,9 @@ def assess(sheet: TechSheet, mat: Material, machine: Machine) -> List[Risk]:
     for r in risks:
         uniq.setdefault((r.topic, r.message), r)
     return sorted(uniq.values(), key=lambda r: order[r.level])
+
+
+def _thread_d(size: str) -> float:
+    from numcraft.knowledge.tooling import parse_thread
+
+    return parse_thread(size)[0]

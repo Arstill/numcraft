@@ -45,6 +45,8 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 - G54: X0 Y0 — левый передний угол детали (щуп по заготовке, затем сместить на припуск +3 мм внутрь)
 - Z0 — верх готовой детали; заготовка выше на 1 мм (торцовка в ноль).
 
+<!--sk:s1-->
+
 | Оп. | Операция | Стратегия HSMWorks | T | S, об/мин | F, мм/мин | ap, мм | ae, мм | Vc, м/мин | Подача |
 |---|---|---|---|---|---|---|---|---|---|
 | 1 | Торцовка верха (снять 1 мм) | Face (торцевание) | T1 | 5093 | 3056 | 1 | 35 | 800 | 0.12 мм/зуб |
@@ -65,7 +67,9 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 
 ### Оп. 1. Торцовка верха (снять 1 мм)
 
+<!--sk:o1-->
 - **Стратегия:** Face (торцевание)
+- **Что выбрать в HSMWorks:** Geometry: ничего не выбирать — берётся габарит заготовки (Setup → Stock). Heights → Bottom: Model top.
 - **Инструмент:** T1 — Торцевая фреза Ø50, 5 пластин (45°)
 - **Глубина:** Z0
 - Max stepover (макс. шаг): 35 мм (70 % D)
@@ -78,7 +82,9 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 
 ### Оп. 2. Черновая наружного контура, глубина 20.3 мм
 
+<!--sk:o2-->
 - **Стратегия:** 2D Adaptive Clearing (адаптивная выборка)
+- **Что выбрать в HSMWorks:** Pockets/Contours: нижняя кромка наружного контура детали (цепочкой). Stock contours: вкл. Heights → Bottom: Model top, offset −20.3 мм.
 - **Инструмент:** T2 — Фреза концевая Ø16 z3 Lc32
 - **Глубина:** Z-20.3
 - Optimal load (оптимальная нагрузка): 2.4 мм (15 % D)
@@ -94,7 +100,9 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 
 ### Оп. 3. Черновая: карман 60×40×8
 
+<!--sk:o3-->
 - **Стратегия:** 2D Adaptive Clearing (адаптивная выборка)
+- **Что выбрать в HSMWorks:** Pockets: грань дна кармана (один щелчок — контур и глубина берутся автоматически).
 - **Инструмент:** T2 — Фреза концевая Ø16 z3 Lc32
 - **Глубина:** Z-8
 - Optimal load (оптимальная нагрузка): 2.4 мм (15 % D)
@@ -109,7 +117,9 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 
 ### Оп. 4. Дообработка углов R5: карман 60×40×8
 
+<!--sk:o4-->
 - **Стратегия:** 2D Adaptive Clearing (адаптивная выборка)
+- **Что выбрать в HSMWorks:** Pockets: грань дна кармана. Rest machining: from previous operation(s).
 - **Инструмент:** T3 — Фреза концевая Ø8 z3 Lc19
 - **Глубина:** Z-8
 - Optimal load (оптимальная нагрузка): 1.2 мм (15 % D)
@@ -125,7 +135,9 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 
 ### Оп. 5. Центровка под Ø6.6
 
+<!--sk:o5-->
 - **Стратегия:** Drill (сверление)
+- **Что выбрать в HSMWorks:** Holes: цилиндрическая грань отверстия Ø6.6 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.
 - **Инструмент:** T4 — Центровка Ø10 90° (тв. сплав)
 - **Глубина:** Z-3.5
 - **Точки (X; Y):** (10; 10), (110; 10), (10; 70), (110; 70)
@@ -137,7 +149,9 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 
 ### Оп. 6. Центровка с фаской под M6
 
+<!--sk:o6-->
 - **Стратегия:** Drill (сверление)
+- **Что выбрать в HSMWorks:** Holes: цилиндрическая грань отверстия Ø6 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.
 - **Инструмент:** T4 — Центровка Ø10 90° (тв. сплав)
 - **Глубина:** Z-3.3
 - **Точки (X; Y):** (15; 40), (105; 40)
@@ -149,7 +163,9 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 
 ### Оп. 7. Центровка под Ø9.8
 
+<!--sk:o7-->
 - **Стратегия:** Drill (сверление)
+- **Что выбрать в HSMWorks:** Holes: цилиндрическая грань отверстия Ø9.8 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.
 - **Инструмент:** T4 — Центровка Ø10 90° (тв. сплав)
 - **Глубина:** Z-9.5
 - **Точки (X; Y):** (60; 40)
@@ -161,7 +177,9 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 
 ### Оп. 8. Сверление Ø6.6 (4 шт.)
 
+<!--sk:o8-->
 - **Стратегия:** Drill (сверление)
+- **Что выбрать в HSMWorks:** Holes: цилиндрическая грань отверстия Ø6.6 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.
 - **Инструмент:** T5 — Сверло Ø6.6 5xD тв. сплав 140°
 - **Глубина:** Z-22.19
 - **Точки (X; Y):** (10; 10), (110; 10), (10; 70), (110; 70)
@@ -174,7 +192,9 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 
 ### Оп. 9. Сверление Ø5 под резьбу M6 (2 шт.)
 
+<!--sk:o9-->
 - **Стратегия:** Drill (сверление)
+- **Что выбрать в HSMWorks:** Holes: цилиндрическая грань отверстия Ø5 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.
 - **Инструмент:** T6 — Сверло Ø5 5xD тв. сплав 140°
 - **Глубина:** Z-15.9
 - **Точки (X; Y):** (15; 40), (105; 40)
@@ -187,7 +207,9 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 
 ### Оп. 10. Сверление Ø9.8 под развёртку Ø10H7
 
+<!--sk:o10-->
 - **Стратегия:** Drill (сверление)
+- **Что выбрать в HSMWorks:** Holes: цилиндрическая грань отверстия Ø9.8 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.
 - **Инструмент:** T7 — Сверло Ø9.8 5xD тв. сплав 140°
 - **Глубина:** Z-22.76
 - **Точки (X; Y):** (60; 40)
@@ -199,7 +221,9 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 
 ### Оп. 11. Чистовая наружного контура
 
+<!--sk:o11-->
 - **Стратегия:** 2D Contour (контур)
+- **Что выбрать в HSMWorks:** Contour selection: нижняя кромка наружного контура (цепочкой), сторона — снаружи. Heights → Bottom: Model top, offset −20.3 мм.
 - **Инструмент:** T2 — Фреза концевая Ø16 z3 Lc32
 - **Глубина:** Z-20.3
 - Stock to leave (припуск): 0
@@ -213,7 +237,9 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 
 ### Оп. 12. Чистовая дна: карман 60×40×8
 
+<!--sk:o12-->
 - **Стратегия:** 2D Pocket (карман)
+- **Что выбрать в HSMWorks:** Pockets: грань дна кармана.
 - **Инструмент:** T3 — Фреза концевая Ø8 z3 Lc19
 - **Глубина:** Z-8
 - Maximum stepover (шаг): 4.8 мм
@@ -225,7 +251,9 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 
 ### Оп. 13. Чистовая стенок: карман 60×40×8
 
+<!--sk:o13-->
 - **Стратегия:** 2D Contour (контур)
+- **Что выбрать в HSMWorks:** Contour selection: кромка между дном и стенками кармана (цепочкой), сторона — внутри.
 - **Инструмент:** T3 — Фреза концевая Ø8 z3 Lc19
 - **Глубина:** Z-8
 - Stock to leave (припуск): 0
@@ -239,7 +267,9 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 
 ### Оп. 14. Нарезание резьбы M6 (2 шт.)
 
+<!--sk:o14-->
 - **Стратегия:** Drill (сверление)
+- **Что выбрать в HSMWorks:** Holes: цилиндрическая грань отверстия Ø5 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.
 - **Инструмент:** T8 — Метчик машинный M6 спиральная (глухая), HSS-E
 - **Глубина:** Z-12
 - **Точки (X; Y):** (15; 40), (105; 40)
@@ -252,7 +282,9 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 
 ### Оп. 15. Развёртывание Ø10H7
 
+<!--sk:o15-->
 - **Стратегия:** Drill (сверление)
+- **Что выбрать в HSMWorks:** Holes: цилиндрическая грань отверстия Ø10 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.
 - **Инструмент:** T9 — Развёртка Ø10H7 тв. сплав
 - **Глубина:** Z-21.5
 - **Точки (X; Y):** (60; 40)
@@ -272,13 +304,17 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 - G55: X0 Y0 — левый передний угол детали по обработанному контуру
 - Z0 — верх детали после торцовки: от верха параллелей + толщина 20 мм (сейчас сверху припуск 9 мм).
 
+<!--sk:s2-->
+
 | Оп. | Операция | Стратегия HSMWorks | T | S, об/мин | F, мм/мин | ap, мм | ae, мм | Vc, м/мин | Подача |
 |---|---|---|---|---|---|---|---|---|---|
 | 16 | Торцовка в размер по толщине 20 мм (снять 9 мм) | Face (торцевание) | T1 | 5093 | 3056 | 2 | 35 | 800 | 0.12 мм/зуб |
 
 ### Оп. 16. Торцовка в размер по толщине 20 мм (снять 9 мм)
 
+<!--sk:o16-->
 - **Стратегия:** Face (торцевание)
+- **Что выбрать в HSMWorks:** Geometry: ничего не выбирать — берётся габарит заготовки (Setup → Stock). Heights → Bottom: Model top.
 - **Инструмент:** T1 — Торцевая фреза Ø50, 5 пластин (45°)
 - **Глубина:** Z0
 - Max stepover (макс. шаг): 35 мм (70 % D)

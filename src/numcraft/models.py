@@ -59,6 +59,7 @@ class PocketFeature(_FeatureBase):
     open_side: bool = False
     count: int = 1
     center: Optional[Point2D] = None
+    along: Literal["x", "y"] = "x"  # вдоль какой оси длинная сторона
     tolerance: Optional[float] = None
     ra: Optional[float] = None
 
@@ -71,6 +72,8 @@ class SlotFeature(_FeatureBase):
     through: bool = False
     open_ends: bool = False
     count: int = 1
+    center: Optional[Point2D] = None
+    along: Literal["x", "y"] = "x"
     tolerance: Optional[float] = None
     ra: Optional[float] = None
 
@@ -216,6 +219,8 @@ class Operation(BaseModel):
     peck: Optional[float] = None
     notes: List[str] = Field(default_factory=list)
     stage: int = 0  # порядок сортировки внутри установа
+    geom: str = ""  # что обрабатывается (для схемы): face, outer_rough, pocket_walls, holes…
+    selection: str = ""  # что выбрать в HSMWorks
 
 
 class Setup(BaseModel):

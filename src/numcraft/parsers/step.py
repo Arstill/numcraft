@@ -471,9 +471,7 @@ def to_part(a: StepAnalysis, material: str, name: Optional[str] = None) -> Tuple
         depth = round(z_top - fl.z, 3)
         feats.append(PocketFeature(length=max(L, W), width=min(L, W), depth=depth, corner_radius=r_min,
                                    open_side=fl.open_side, center=(round(cx, 3), round(cy, 3)),
-                                   note="из STEP: пол на Z" + _n(-depth)))
-        if L < W:
-            notes.append(f"Карман на Z{_n(-depth)}: длинная сторона вдоль Y — проверьте ориентацию.")
+                                   along="x" if L >= W else "y", note="из STEP: пол на Z" + _n(-depth)))
     if a.is_3d:
         feats.append(SurfaceFeature(description="поверхности свободной формы из STEP",
                                     min_concave_radius=r_min or None))

@@ -1,0 +1,654 @@
+<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Техкарта: Фланец</title><style>
+:root{--bg:#fff;--fg:#1d1d1f;--muted:#666;--line:#ddd;--head:#f3f4f6;--hi:#fde8e8;--mid:#fff6db;--code:#f6f8fa;
+--partfill:#e9edf2;--hl:#d9480f;--hlfill:rgba(217,72,15,.30);--datum:#1971c2}
+@media (prefers-color-scheme:dark){:root{--bg:#16181c;--fg:#e8e8e8;--muted:#9aa;--line:#333;--head:#22252b;
+--hi:#4a1f1f;--mid:#3f3519;--code:#1e2127;--partfill:#262b33;--hl:#ff8a4c;--hlfill:rgba(255,138,76,.32);
+--datum:#5fa8ff}}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+max-width:1200px;margin:0 auto;padding:16px}
+h1{font-size:24px}h2{margin-top:32px;border-bottom:1px solid var(--line);padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 4px}
+table{border-collapse:collapse;width:100%;margin:8px 0;font-size:14px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:4px 8px;text-align:left;vertical-align:top}th{background:var(--head)}
+tr.high td{background:var(--hi)}tr.mid td{background:var(--mid)}
+pre{background:var(--code);padding:12px;overflow-x:auto;font-size:13px}
+blockquote{color:var(--muted);border-left:3px solid var(--line);margin:16px 0;padding-left:12px}
+details{margin:4px 0}summary{cursor:pointer;color:var(--muted)}
+details[open]{border-left:3px solid var(--hl);padding:0 0 4px 10px}
+.tools button{font:inherit;padding:4px 10px;border:1px solid var(--line);background:var(--head);color:var(--fg);
+border-radius:6px;cursor:pointer}
+figure.skf{margin:8px 0}figcaption{color:var(--muted);font-size:13px}.sk-note{color:var(--muted)}
+svg.sk{display:block;width:100%;max-width:520px;height:auto}
+.sk .stock{fill:none;stroke:var(--muted);stroke-width:calc(var(--sw)*1.2)}
+.sk .part{fill:var(--partfill);stroke:var(--fg);stroke-width:calc(var(--sw)*1.6)}
+.sk .feat{fill:var(--bg);stroke:var(--muted);stroke-width:var(--sw)}
+.sk .ref{fill:none;stroke:var(--muted);stroke-width:var(--sw)}
+.sk .hl{fill:var(--hlfill);stroke:var(--hl);stroke-width:calc(var(--sw)*2)}
+.sk .hll{fill:none;stroke:var(--hl);stroke-width:calc(var(--sw)*4)}
+.sk .datum{stroke:var(--datum);stroke-width:calc(var(--sw)*2.5)}
+.sk text{fill:var(--muted);font-family:system-ui,sans-serif}.sk .num{fill:var(--hl);font-weight:700}
+.sk .datum-t{fill:var(--datum);font-weight:600}
+</style></head><body>
+<p class='tools'><button onclick="document.querySelectorAll('details').forEach(d=>d.open=true)">Развернуть все операции</button> <button onclick="document.querySelectorAll('details').forEach(d=>d.open=false)">Свернуть</button></p>
+<h1>Техкарта: Фланец</h1>
+<ul>
+<li><b>Станок:</b> Haas VF-2, FANUC-совместимая стойка</li>
+<li><b>Материал:</b> Сталь 45 (ГОСТ 1050)</li>
+<li><b>Деталь:</b> 100×100×15 мм; <b>заготовка:</b> 105×105×22 мм; <b>кол-во:</b> 1 шт.</li>
+<li><b>Общие допуски:</b> ISO 2768-m</li>
+<li><b>Установов:</b> 2, <b>операций:</b> 14, <b>инструментов:</b> 8</li>
+</ul>
+<h2>Риски и замечания</h2>
+<table><tr><th>Уровень</th><th>Тема</th><th>Что не так</th><th>Что делать</th></tr>
+<tr class='mid'><td>средний</td><td>Точное отверстие</td><td>F2: Ø40H7 — спиральной расточкой на VF-2 держать сложно.</td><td>Расточная головка (Ø40) или калибр-пробка с подгонкой износа D.</td></tr>
+</table>
+<h2>Допущения</h2>
+<ul>
+<li>Наружный контур (габарит детали) обрабатывается из заготовки.</li>
+</ul>
+<h2>Установ 1 — верх (сторона A)</h2>
+<p><b>Крепление:</b></p>
+<ul>
+<li>Тиски 6&quot; (Kurt DX6 / Haas): зажим по стороне 105 мм, захват 4.7 мм по высоте, заготовка на параллелях; над губками ≈ 17.3 мм.</li>
+<li>Губки рифлёные или гладкие стальные; заготовку осадить на параллели (киянкой), проверить щупом 0.02 мм.</li>
+</ul>
+<p><b>Нуль детали:</b></p>
+<ul>
+<li>G54: X0 Y0 — левый передний угол детали (щуп по заготовке, затем сместить на припуск +3 мм внутрь)</li>
+<li>Z0 — верх готовой детали; заготовка выше на 1 мм (торцовка в ноль).</li>
+</ul>
+<figure class="skf"><svg class="sk" viewBox="0 0 130.2 130.2" style="font-size:3.68px;--sw:0.408px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="12.6" y="12.6" width="105" height="105" stroke-dasharray="1.5 0.95"/><rect class="part" x="15.1" y="15.1" width="100" height="100"/><circle class="feat" cx="27.1" cy="103.1" r="7.5" fill="none"/><circle class="feat" cx="27.1" cy="103.1" r="4.5"/><circle class="feat" cx="103.1" cy="103.1" r="7.5" fill="none"/><circle class="feat" cx="103.1" cy="103.1" r="4.5"/><circle class="feat" cx="27.1" cy="27.1" r="7.5" fill="none"/><circle class="feat" cx="27.1" cy="27.1" r="4.5"/><circle class="feat" cx="103.1" cy="27.1" r="7.5" fill="none"/><circle class="feat" cx="103.1" cy="27.1" r="4.5"/><circle class="feat" cx="65.1" cy="65.1" r="20"/><path class="datum" d="M15.1 115.1h8.085M15.1 115.1v-8.085" fill="none"/><text x="35.703" y="95.6">F1</text><text x="86.203" y="45.1">F2</text><text class="datum-t" x="23.92" y="116.386">X</text><text class="datum-t" x="13.997" y="106.28">Y</text><text class="datum-t" x="13.63" y="119.877" text-anchor="end">G54</text><text x="65.1" y="123.48" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 1, нуль G54.</figcaption></figure>
+<table><tr><th>Оп.</th><th>Операция</th><th>Стратегия HSMWorks</th><th>T</th><th>S, об/мин</th><th>F, мм/мин</th><th>ap, мм</th><th>ae, мм</th><th>Vc, м/мин</th><th>Подача</th></tr>
+<tr><td>1</td><td>Торцовка верха (снять 1 мм)</td><td>Face (торцевание)</td><td>T1</td><td>1401</td><td>1051</td><td>1</td><td>35</td><td>220</td><td>0.15 мм/зуб</td></tr>
+<tr><td>2</td><td>Черновая наружного контура, глубина 15.3 мм</td><td>2D Adaptive Clearing (адаптивная выборка)</td><td>T2</td><td>3183</td><td>2037</td><td>15.3</td><td>1.6</td><td>160</td><td>0.128 мм/зуб</td></tr>
+<tr><td>3</td><td>Черновая выборка отверстия Ø40</td><td>2D Adaptive Clearing (адаптивная выборка)</td><td>T2</td><td>3183</td><td>2037</td><td>15.3</td><td>1.6</td><td>160</td><td>0.128 мм/зуб</td></tr>
+<tr><td>4</td><td>Центровка под Ø9</td><td>Drill (сверление) G81</td><td>T3</td><td>1910</td><td>96</td><td>—</td><td>—</td><td>60</td><td>0.05 мм/об</td></tr>
+<tr><td>5</td><td>Сверление Ø9 (4 шт.)</td><td>Drill (сверление) G81</td><td>T4</td><td>3183</td><td>516</td><td>—</td><td>—</td><td>90</td><td>0.162 мм/об</td></tr>
+<tr><td>6</td><td>Чистовая наружного контура</td><td>2D Contour (контур)</td><td>T2</td><td>3382</td><td>1407</td><td>15.3</td><td>0.2</td><td>170</td><td>0.083 мм/зуб</td></tr>
+<tr><td>7</td><td>Цековка Ø15×9 (4 шт.)</td><td>Bore (спиральная расточка)</td><td>T5</td><td>2918</td><td>613</td><td>—</td><td>—</td><td>110</td><td>0.042 мм/зуб</td></tr>
+<tr><td>8</td><td>Спиральная расточка Ø40H7</td><td>Bore (спиральная расточка)</td><td>T2</td><td>2188</td><td>613</td><td>—</td><td>—</td><td>110</td><td>0.056 мм/зуб</td></tr>
+<tr><td>9</td><td>Фаска 0.5×45° — наружный контур</td><td>2D Contour — Chamfer (фаска)</td><td>T6</td><td>7639</td><td>688</td><td>—</td><td>—</td><td>120</td><td>0.03 мм/зуб</td></tr>
+</table>
+<details><summary>Оп. 1. Торцовка верха (снять 1 мм)</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 130.2 130.2" style="font-size:3.68px;--sw:0.408px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="hl" x="12.6" y="12.6" width="105" height="105"/><rect class="part" x="15.1" y="15.1" width="100" height="100"/><circle class="feat" cx="27.1" cy="103.1" r="7.5" fill="none"/><circle class="feat" cx="27.1" cy="103.1" r="4.5"/><circle class="feat" cx="103.1" cy="103.1" r="7.5" fill="none"/><circle class="feat" cx="103.1" cy="103.1" r="4.5"/><circle class="feat" cx="27.1" cy="27.1" r="7.5" fill="none"/><circle class="feat" cx="27.1" cy="27.1" r="4.5"/><circle class="feat" cx="103.1" cy="27.1" r="7.5" fill="none"/><circle class="feat" cx="103.1" cy="27.1" r="4.5"/><circle class="feat" cx="65.1" cy="65.1" r="20"/><path class="datum" d="M15.1 115.1h8.085M15.1 115.1v-8.085" fill="none"/><text x="35.703" y="95.6">F1</text><text x="86.203" y="45.1">F2</text><text class="datum-t" x="23.92" y="116.386">X</text><text class="datum-t" x="13.997" y="106.28">Y</text><text class="datum-t" x="13.63" y="119.877" text-anchor="end">G54</text><text x="65.1" y="123.48" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: верхняя плоскость заготовки.</figcaption></figure>
+<ul>
+<li><b>Стратегия:</b> Face (торцевание)</li>
+<li><b>Что выбрать в HSMWorks:</b> Geometry: ничего не выбирать — берётся габарит заготовки (Setup → Stock). Heights → Bottom: Model top.</li>
+<li><b>Инструмент:</b> T1 — Торцевая фреза Ø50, 5 пластин (45°)</li>
+<li><b>Глубина:</b> Z0</li>
+<li>Max stepover (макс. шаг): 35 мм (70 % D)</li>
+<li>Stock offset (выход за заготовку): 28 мм</li>
+<li>Direction: Climb (попутное)</li>
+<li>Multiple depths (несколько проходов): вкл.: Max stepdown 0.7 мм, Finishing stepdown 0.3 мм</li>
+<li>Stock to leave (припуск): 0</li>
+<li><b>Режим:</b> S1401 F1051, мощность ≈ 1.23 кВт; СОЖ (эмульсия 6–8 %), M08</li>
+<li>Проходов по Z ≈ 2; последний — чистовой 0.3 мм.</li>
+</ul>
+</details>
+<details><summary>Оп. 2. Черновая наружного контура, глубина 15.3 мм</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 130.2 130.2" style="font-size:3.68px;--sw:0.408px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="12.6" y="12.6" width="105" height="105" stroke-dasharray="1.5 0.95"/><path class="hl" fill-rule="evenodd" d="M12.6 12.6H117.6V117.6H12.6Z M15.1 15.1H115.1V115.1H15.1Z"/><rect class="part" x="15.1" y="15.1" width="100" height="100"/><rect class="hll" x="15.1" y="15.1" width="100" height="100"/><circle class="feat" cx="27.1" cy="103.1" r="7.5" fill="none"/><circle class="feat" cx="27.1" cy="103.1" r="4.5"/><circle class="feat" cx="103.1" cy="103.1" r="7.5" fill="none"/><circle class="feat" cx="103.1" cy="103.1" r="4.5"/><circle class="feat" cx="27.1" cy="27.1" r="7.5" fill="none"/><circle class="feat" cx="27.1" cy="27.1" r="4.5"/><circle class="feat" cx="103.1" cy="27.1" r="7.5" fill="none"/><circle class="feat" cx="103.1" cy="27.1" r="4.5"/><circle class="feat" cx="65.1" cy="65.1" r="20"/><path class="datum" d="M15.1 115.1h8.085M15.1 115.1v-8.085" fill="none"/><text x="35.703" y="95.6">F1</text><text x="86.203" y="45.1">F2</text><text class="datum-t" x="23.92" y="116.386">X</text><text class="datum-t" x="13.997" y="106.28">Y</text><text class="datum-t" x="13.63" y="119.877" text-anchor="end">G54</text><text x="65.1" y="123.48" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: припуск вокруг наружного контура.</figcaption></figure>
+<ul>
+<li><b>Стратегия:</b> 2D Adaptive Clearing (адаптивная выборка)</li>
+<li><b>Что выбрать в HSMWorks:</b> Pockets/Contours: нижняя кромка наружного контура детали (цепочкой). Stock contours: вкл. Heights → Bottom: Model top, offset −15.3 мм.</li>
+<li><b>Инструмент:</b> T2 — Фреза концевая Ø16 z5 Lc32</li>
+<li><b>Глубина:</b> Z-15.3</li>
+<li>Optimal load (оптимальная нагрузка): 1.6 мм (10 % D)</li>
+<li>Maximum roughing stepdown (шаг по Z): 15.3 мм</li>
+<li>Fine stepdown (промежуточные слои): 3.8 мм</li>
+<li>Stock to leave (припуск): радиальный 0.3 / осевой 0.15 мм</li>
+<li>Ramp type (врезание): Helix, угол 2°, диаметр ≈ 14.4 мм</li>
+<li>Minimum cutting radius: 1.6 мм</li>
+<li>Feed optimization: вкл., снижение в углах 0.7</li>
+<li>Stock contours (контур заготовки): выбрать контур заготовки — врезание снаружи, без спирали</li>
+<li><b>Режим:</b> S3183 F2037, врезание 1019 мм/мин, мощность ≈ 1.66 кВт; СОЖ (эмульсия 6–8 %), M08</li>
+</ul>
+</details>
+<details><summary>Оп. 3. Черновая выборка отверстия Ø40</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 130.2 130.2" style="font-size:3.68px;--sw:0.408px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="12.6" y="12.6" width="105" height="105" stroke-dasharray="1.5 0.95"/><rect class="part" x="15.1" y="15.1" width="100" height="100"/><circle class="feat" cx="27.1" cy="103.1" r="7.5" fill="none"/><circle class="feat" cx="27.1" cy="103.1" r="4.5"/><circle class="feat" cx="103.1" cy="103.1" r="7.5" fill="none"/><circle class="feat" cx="103.1" cy="103.1" r="4.5"/><circle class="feat" cx="27.1" cy="27.1" r="7.5" fill="none"/><circle class="feat" cx="27.1" cy="27.1" r="4.5"/><circle class="feat" cx="103.1" cy="27.1" r="7.5" fill="none"/><circle class="feat" cx="103.1" cy="27.1" r="4.5"/><circle class="hl" cx="65.1" cy="65.1" r="20"/><path class="datum" d="M15.1 115.1h8.085M15.1 115.1v-8.085" fill="none"/><text x="35.703" y="95.6">F1</text><text x="86.203" y="45.1">F2</text><text class="num" x="65.1" y="70.245" text-anchor="middle">1</text><text class="datum-t" x="23.92" y="116.386">X</text><text class="datum-t" x="13.997" y="106.28">Y</text><text class="datum-t" x="13.63" y="119.877" text-anchor="end">G54</text><text x="65.1" y="123.48" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: выборка отверстия.</figcaption></figure>
+<ul>
+<li><b>Стратегия:</b> 2D Adaptive Clearing (адаптивная выборка)</li>
+<li><b>Что выбрать в HSMWorks:</b> Pockets: нижняя кромка отверстия Ø40 (или дно, если глухое).</li>
+<li><b>Инструмент:</b> T2 — Фреза концевая Ø16 z5 Lc32</li>
+<li><b>Глубина:</b> Z-15.3</li>
+<li><b>Точки (X; Y):</b> (50; 50)</li>
+<li>Optimal load (оптимальная нагрузка): 1.6 мм (10 % D)</li>
+<li>Maximum roughing stepdown (шаг по Z): 15.3 мм</li>
+<li>Fine stepdown (промежуточные слои): 3.8 мм</li>
+<li>Stock to leave (припуск): радиальный 0.3 / осевой 0.15 мм</li>
+<li>Ramp type (врезание): Helix, угол 2°, диаметр ≈ 14.4 мм</li>
+<li>Minimum cutting radius: 1.6 мм</li>
+<li>Feed optimization: вкл., снижение в углах 0.7</li>
+<li><b>Режим:</b> S3183 F2037, врезание 1019 мм/мин, мощность ≈ 1.66 кВт; СОЖ (эмульсия 6–8 %), M08</li>
+</ul>
+</details>
+<details><summary>Оп. 4. Центровка под Ø9</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 130.2 130.2" style="font-size:3.68px;--sw:0.408px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="12.6" y="12.6" width="105" height="105" stroke-dasharray="1.5 0.95"/><rect class="part" x="15.1" y="15.1" width="100" height="100"/><circle class="hll" cx="27.1" cy="103.1" r="7.5" fill="none"/><circle class="hl" cx="27.1" cy="103.1" r="4.5"/><circle class="hll" cx="103.1" cy="103.1" r="7.5" fill="none"/><circle class="hl" cx="103.1" cy="103.1" r="4.5"/><circle class="hll" cx="27.1" cy="27.1" r="7.5" fill="none"/><circle class="hl" cx="27.1" cy="27.1" r="4.5"/><circle class="hll" cx="103.1" cy="27.1" r="7.5" fill="none"/><circle class="hl" cx="103.1" cy="27.1" r="4.5"/><circle class="feat" cx="65.1" cy="65.1" r="20"/><path class="datum" d="M15.1 115.1h8.085M15.1 115.1v-8.085" fill="none"/><text x="35.703" y="95.6">F1</text><text x="86.203" y="45.1">F2</text><text class="num" x="27.1" y="108.245" text-anchor="middle">1</text><text class="num" x="103.1" y="108.245" text-anchor="middle">2</text><text class="num" x="27.1" y="32.245" text-anchor="middle">3</text><text class="num" x="103.1" y="32.245" text-anchor="middle">4</text><text class="datum-t" x="23.92" y="116.386">X</text><text class="datum-t" x="13.997" y="106.28">Y</text><text class="datum-t" x="13.63" y="119.877" text-anchor="end">G54</text><text x="65.1" y="123.48" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: отверстия (цифры — порядок обхода).</figcaption></figure>
+<ul>
+<li><b>Стратегия:</b> Drill (сверление)</li>
+<li><b>Что выбрать в HSMWorks:</b> Holes: цилиндрическая грань отверстия Ø9 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.</li>
+<li><b>Инструмент:</b> T3 — Центровка Ø10 90° (тв. сплав)</li>
+<li><b>Глубина:</b> Z-4.7</li>
+<li><b>Точки (X; Y):</b> (12; 12), (88; 12), (12; 88), (88; 88)</li>
+<li>Cycle type (цикл): Drilling – rapid out (G81)</li>
+<li>Bottom height: 4.7 мм от поверхности входа</li>
+<li>Retract height (R): Z+2 мм от верха</li>
+<li><b>Режим:</b> S1910 F96; СОЖ (эмульсия 6–8 %), M08</li>
+<li>центровка с фаской: Ø9.4 на входе</li>
+</ul>
+</details>
+<details><summary>Оп. 5. Сверление Ø9 (4 шт.)</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 130.2 130.2" style="font-size:3.68px;--sw:0.408px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="12.6" y="12.6" width="105" height="105" stroke-dasharray="1.5 0.95"/><rect class="part" x="15.1" y="15.1" width="100" height="100"/><circle class="hll" cx="27.1" cy="103.1" r="7.5" fill="none"/><circle class="hl" cx="27.1" cy="103.1" r="4.5"/><circle class="hll" cx="103.1" cy="103.1" r="7.5" fill="none"/><circle class="hl" cx="103.1" cy="103.1" r="4.5"/><circle class="hll" cx="27.1" cy="27.1" r="7.5" fill="none"/><circle class="hl" cx="27.1" cy="27.1" r="4.5"/><circle class="hll" cx="103.1" cy="27.1" r="7.5" fill="none"/><circle class="hl" cx="103.1" cy="27.1" r="4.5"/><circle class="feat" cx="65.1" cy="65.1" r="20"/><path class="datum" d="M15.1 115.1h8.085M15.1 115.1v-8.085" fill="none"/><text x="35.703" y="95.6">F1</text><text x="86.203" y="45.1">F2</text><text class="num" x="27.1" y="108.245" text-anchor="middle">1</text><text class="num" x="103.1" y="108.245" text-anchor="middle">2</text><text class="num" x="27.1" y="32.245" text-anchor="middle">3</text><text class="num" x="103.1" y="32.245" text-anchor="middle">4</text><text class="datum-t" x="23.92" y="116.386">X</text><text class="datum-t" x="13.997" y="106.28">Y</text><text class="datum-t" x="13.63" y="119.877" text-anchor="end">G54</text><text x="65.1" y="123.48" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: отверстия (цифры — порядок обхода).</figcaption></figure>
+<ul>
+<li><b>Стратегия:</b> Drill (сверление)</li>
+<li><b>Что выбрать в HSMWorks:</b> Holes: цилиндрическая грань отверстия Ø9 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.</li>
+<li><b>Инструмент:</b> T4 — Сверло Ø9 5xD тв. сплав 140°</li>
+<li><b>Глубина:</b> Z-17.62</li>
+<li><b>Точки (X; Y):</b> (12; 12), (88; 12), (12; 88), (88; 88)</li>
+<li>Cycle type (цикл): Drilling – rapid out (G81)</li>
+<li>Bottom height: 17.62 мм (сквозь, с выходом вершины)</li>
+<li>Retract height (R): Z+2 мм от верха</li>
+<li>Drill tip through bottom: вкл., Break-through depth 1 мм</li>
+<li><b>Режим:</b> S3183 F516, мощность ≈ 1.09 кВт; СОЖ (эмульсия 6–8 %), M08</li>
+</ul>
+</details>
+<details><summary>Оп. 6. Чистовая наружного контура</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 130.2 130.2" style="font-size:3.68px;--sw:0.408px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="12.6" y="12.6" width="105" height="105" stroke-dasharray="1.5 0.95"/><rect class="part" x="15.1" y="15.1" width="100" height="100"/><rect class="hll" x="15.1" y="15.1" width="100" height="100"/><circle class="feat" cx="27.1" cy="103.1" r="7.5" fill="none"/><circle class="feat" cx="27.1" cy="103.1" r="4.5"/><circle class="feat" cx="103.1" cy="103.1" r="7.5" fill="none"/><circle class="feat" cx="103.1" cy="103.1" r="4.5"/><circle class="feat" cx="27.1" cy="27.1" r="7.5" fill="none"/><circle class="feat" cx="27.1" cy="27.1" r="4.5"/><circle class="feat" cx="103.1" cy="27.1" r="7.5" fill="none"/><circle class="feat" cx="103.1" cy="27.1" r="4.5"/><circle class="feat" cx="65.1" cy="65.1" r="20"/><path class="datum" d="M15.1 115.1h8.085M15.1 115.1v-8.085" fill="none"/><text x="35.703" y="95.6">F1</text><text x="86.203" y="45.1">F2</text><text class="datum-t" x="23.92" y="116.386">X</text><text class="datum-t" x="13.997" y="106.28">Y</text><text class="datum-t" x="13.63" y="119.877" text-anchor="end">G54</text><text x="65.1" y="123.48" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: наружный контур (кромка).</figcaption></figure>
+<ul>
+<li><b>Стратегия:</b> 2D Contour (контур)</li>
+<li><b>Что выбрать в HSMWorks:</b> Contour selection: нижняя кромка наружного контура (цепочкой), сторона — снаружи. Heights → Bottom: Model top, offset −15.3 мм.</li>
+<li><b>Инструмент:</b> T2 — Фреза концевая Ø16 z5 Lc32</li>
+<li><b>Глубина:</b> Z-15.3</li>
+<li>Stock to leave (припуск): 0</li>
+<li>Finishing passes: 1</li>
+<li>Compensation type (коррекция): In computer</li>
+<li>Lead-in / Lead-out: дуга R4.8 мм, касательный вход</li>
+<li>Direction: Climb (попутное)</li>
+<li>Multiple depths: выкл. — вся высота стенки за проход</li>
+<li><b>Режим:</b> S3382 F1407, врезание 422 мм/мин, мощность ≈ 0.14 кВт; СОЖ (эмульсия 6–8 %), M08</li>
+</ul>
+</details>
+<details><summary>Оп. 7. Цековка Ø15×9 (4 шт.)</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 130.2 130.2" style="font-size:3.68px;--sw:0.408px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="12.6" y="12.6" width="105" height="105" stroke-dasharray="1.5 0.95"/><rect class="part" x="15.1" y="15.1" width="100" height="100"/><circle class="hll" cx="27.1" cy="103.1" r="7.5" fill="none"/><circle class="hl" cx="27.1" cy="103.1" r="4.5"/><circle class="hll" cx="103.1" cy="103.1" r="7.5" fill="none"/><circle class="hl" cx="103.1" cy="103.1" r="4.5"/><circle class="hll" cx="27.1" cy="27.1" r="7.5" fill="none"/><circle class="hl" cx="27.1" cy="27.1" r="4.5"/><circle class="hll" cx="103.1" cy="27.1" r="7.5" fill="none"/><circle class="hl" cx="103.1" cy="27.1" r="4.5"/><circle class="feat" cx="65.1" cy="65.1" r="20"/><path class="datum" d="M15.1 115.1h8.085M15.1 115.1v-8.085" fill="none"/><text x="35.703" y="95.6">F1</text><text x="86.203" y="45.1">F2</text><text class="num" x="27.1" y="108.245" text-anchor="middle">1</text><text class="num" x="103.1" y="108.245" text-anchor="middle">2</text><text class="num" x="27.1" y="32.245" text-anchor="middle">3</text><text class="num" x="103.1" y="32.245" text-anchor="middle">4</text><text class="datum-t" x="23.92" y="116.386">X</text><text class="datum-t" x="13.997" y="106.28">Y</text><text class="datum-t" x="13.63" y="119.877" text-anchor="end">G54</text><text x="65.1" y="123.48" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: стенка отверстия.</figcaption></figure>
+<ul>
+<li><b>Стратегия:</b> Bore (спиральная расточка)</li>
+<li><b>Что выбрать в HSMWorks:</b> Holes / Circular: цилиндрическая грань Ø15.</li>
+<li><b>Инструмент:</b> T5 — Фреза концевая Ø12 z5 Lc26</li>
+<li><b>Глубина:</b> Z-9</li>
+<li><b>Точки (X; Y):</b> (12; 12), (88; 12), (12; 88), (88; 88)</li>
+<li>Pitch (шаг спирали): 0.48 мм/виток</li>
+<li>Finishing passes: вкл., Spring pass</li>
+<li>Stock to leave: 0</li>
+<li>Compensation: Wear (по износу)</li>
+<li>Диаметр отверстия: Ø15</li>
+<li><b>Режим:</b> S2918 F613, врезание 184 мм/мин; СОЖ (эмульсия 6–8 %), M08</li>
+</ul>
+</details>
+<details><summary>Оп. 8. Спиральная расточка Ø40H7</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 130.2 130.2" style="font-size:3.68px;--sw:0.408px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="12.6" y="12.6" width="105" height="105" stroke-dasharray="1.5 0.95"/><rect class="part" x="15.1" y="15.1" width="100" height="100"/><circle class="feat" cx="27.1" cy="103.1" r="7.5" fill="none"/><circle class="feat" cx="27.1" cy="103.1" r="4.5"/><circle class="feat" cx="103.1" cy="103.1" r="7.5" fill="none"/><circle class="feat" cx="103.1" cy="103.1" r="4.5"/><circle class="feat" cx="27.1" cy="27.1" r="7.5" fill="none"/><circle class="feat" cx="27.1" cy="27.1" r="4.5"/><circle class="feat" cx="103.1" cy="27.1" r="7.5" fill="none"/><circle class="feat" cx="103.1" cy="27.1" r="4.5"/><circle class="hl" cx="65.1" cy="65.1" r="20"/><path class="datum" d="M15.1 115.1h8.085M15.1 115.1v-8.085" fill="none"/><text x="35.703" y="95.6">F1</text><text x="86.203" y="45.1">F2</text><text class="num" x="65.1" y="70.245" text-anchor="middle">1</text><text class="datum-t" x="23.92" y="116.386">X</text><text class="datum-t" x="13.997" y="106.28">Y</text><text class="datum-t" x="13.63" y="119.877" text-anchor="end">G54</text><text x="65.1" y="123.48" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: стенка отверстия.</figcaption></figure>
+<ul>
+<li><b>Стратегия:</b> Bore (спиральная расточка)</li>
+<li><b>Что выбрать в HSMWorks:</b> Holes / Circular: цилиндрическая грань Ø40.</li>
+<li><b>Инструмент:</b> T2 — Фреза концевая Ø16 z5 Lc32</li>
+<li><b>Глубина:</b> Z-15.3</li>
+<li><b>Точки (X; Y):</b> (50; 50)</li>
+<li>Pitch (шаг спирали): 0.64 мм/виток</li>
+<li>Finishing passes: вкл., Spring pass</li>
+<li>Stock to leave: 0</li>
+<li>Compensation: Wear (по износу)</li>
+<li>Диаметр отверстия: Ø40</li>
+<li><b>Режим:</b> S2188 F613, врезание 184 мм/мин; СОЖ (эмульсия 6–8 %), M08</li>
+<li>Квалитет H7 спиральной расточкой — на грани; для серий — расточная головка.</li>
+</ul>
+</details>
+<details><summary>Оп. 9. Фаска 0.5×45° — наружный контур</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 130.2 130.2" style="font-size:3.68px;--sw:0.408px" role="img" aria-label="Вид сверху, Установ 1 — верх (сторона A)"><rect class="stock" x="12.6" y="12.6" width="105" height="105" stroke-dasharray="1.5 0.95"/><rect class="part" x="15.1" y="15.1" width="100" height="100"/><rect class="hll" x="15.1" y="15.1" width="100" height="100" stroke-dasharray="1.5 0.95"/><circle class="feat" cx="27.1" cy="103.1" r="7.5" fill="none"/><circle class="feat" cx="27.1" cy="103.1" r="4.5"/><circle class="feat" cx="103.1" cy="103.1" r="7.5" fill="none"/><circle class="feat" cx="103.1" cy="103.1" r="4.5"/><circle class="feat" cx="27.1" cy="27.1" r="7.5" fill="none"/><circle class="feat" cx="27.1" cy="27.1" r="4.5"/><circle class="feat" cx="103.1" cy="27.1" r="7.5" fill="none"/><circle class="feat" cx="103.1" cy="27.1" r="4.5"/><circle class="feat" cx="65.1" cy="65.1" r="20"/><path class="datum" d="M15.1 115.1h8.085M15.1 115.1v-8.085" fill="none"/><text x="35.703" y="95.6">F1</text><text x="86.203" y="45.1">F2</text><text class="datum-t" x="23.92" y="116.386">X</text><text class="datum-t" x="13.997" y="106.28">Y</text><text class="datum-t" x="13.63" y="119.877" text-anchor="end">G54</text><text x="65.1" y="123.48" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 1, нуль G54. Подсвечено: верхняя кромка контура.</figcaption></figure>
+<ul>
+<li><b>Стратегия:</b> 2D Contour — Chamfer (фаска)</li>
+<li><b>Что выбрать в HSMWorks:</b> Contour selection: верхняя кромка наружного контура (цепочкой).</li>
+<li><b>Инструмент:</b> T6 — Фасочная фреза Ø10 90°</li>
+<li><b>Глубина:</b> Z-1</li>
+<li>Chamfer width (ширина фаски): 0.5 мм</li>
+<li>Chamfer tip offset (смещение вершины): 0.5 мм</li>
+<li>Chamfer clearance: 0.5 мм</li>
+<li>Tool: фасочная Ø10 90°</li>
+<li><b>Режим:</b> S7639 F688, врезание 206 мм/мин; СОЖ (эмульсия 6–8 %), M08</li>
+</ul>
+</details>
+<h2>Установ 2 — низ (сторона B, переворот)</h2>
+<p><b>Крепление:</b></p>
+<ul>
+<li>Переворот вокруг оси X (передняя грань уходит назад).</li>
+<li>Тиски 6&quot; (Kurt DX6 / Haas): зажим по обработанным боковым граням, гладкие или мягкие губки; под обработанный верх — чистые параллели.</li>
+<li>Захват ≥ 3 мм; деталь выступает над губками на 8 мм и больше (торцовка не должна задеть губки).</li>
+</ul>
+<p><b>Нуль детали:</b></p>
+<ul>
+<li>G55: X0 Y0 — левый передний угол детали по обработанному контуру</li>
+<li>Z0 — верх детали после торцовки: от верха параллелей + толщина 15 мм (сейчас сверху припуск 6 мм).</li>
+</ul>
+<figure class="skf"><svg class="sk" viewBox="0 0 130.2 130.2" style="font-size:3.68px;--sw:0.408px" role="img" aria-label="Вид сверху, Установ 2 — низ (сторона B, переворот)"><rect class="stock" x="12.6" y="12.6" width="105" height="105" stroke-dasharray="1.5 0.95"/><rect class="part" x="15.1" y="15.1" width="100" height="100"/><circle class="ref" cx="27.1" cy="27.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="103.1" cy="27.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="27.1" cy="103.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="103.1" cy="103.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="65.1" cy="65.1" r="20" stroke-dasharray="1.5 0.95"/><circle class="feat" cx="65.1" cy="35.1" r="4" fill="none" stroke-dasharray="1.5 0.95"/><circle class="feat" cx="65.1" cy="35.1" r="3.4"/><circle class="feat" cx="65.1" cy="95.1" r="4" fill="none" stroke-dasharray="1.5 0.95"/><circle class="feat" cx="65.1" cy="95.1" r="3.4"/><path class="datum" d="M15.1 115.1h8.085M15.1 115.1v-8.085" fill="none"/><text x="35.703" y="19.6">F1</text><text x="86.203" y="45.1">F2</text><text x="70.203" y="31.1">F3</text><text class="datum-t" x="23.92" y="116.386">X</text><text class="datum-t" x="13.997" y="106.28">Y</text><text class="datum-t" x="13.63" y="119.877" text-anchor="end">G55</text><text x="65.1" y="123.48" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 2, нуль G55. Деталь перевёрнута вокруг X: пунктир — сквозные элементы с верхней стороны.</figcaption></figure>
+<table><tr><th>Оп.</th><th>Операция</th><th>Стратегия HSMWorks</th><th>T</th><th>S, об/мин</th><th>F, мм/мин</th><th>ap, мм</th><th>ae, мм</th><th>Vc, м/мин</th><th>Подача</th></tr>
+<tr><td>10</td><td>Торцовка в размер по толщине 15 мм (снять 6 мм)</td><td>Face (торцевание)</td><td>T1</td><td>1401</td><td>1051</td><td>1.5</td><td>35</td><td>220</td><td>0.15 мм/зуб</td></tr>
+<tr><td>11</td><td>Центровка с фаской под M8</td><td>Drill (сверление) G81</td><td>T3</td><td>1910</td><td>96</td><td>—</td><td>—</td><td>60</td><td>0.05 мм/об</td></tr>
+<tr><td>12</td><td>Сверление Ø6.8 под резьбу M8 (2 шт.)</td><td>Drill (сверление) G81</td><td>T7</td><td>4213</td><td>516</td><td>—</td><td>—</td><td>90</td><td>0.122 мм/об</td></tr>
+<tr><td>13</td><td>Фаска 0.5×45° — кромки низа</td><td>2D Contour — Chamfer (фаска)</td><td>T6</td><td>7639</td><td>688</td><td>—</td><td>—</td><td>120</td><td>0.03 мм/зуб</td></tr>
+<tr><td>14</td><td>Нарезание резьбы M8 (2 шт.)</td><td>Drill (сверление) G84</td><td>T8</td><td>398</td><td>497.5</td><td>—</td><td>—</td><td>10</td><td>1.25 мм/об</td></tr>
+</table>
+<details><summary>Оп. 10. Торцовка в размер по толщине 15 мм (снять 6 мм)</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 130.2 130.2" style="font-size:3.68px;--sw:0.408px" role="img" aria-label="Вид сверху, Установ 2 — низ (сторона B, переворот)"><rect class="hl" x="12.6" y="12.6" width="105" height="105"/><rect class="part" x="15.1" y="15.1" width="100" height="100"/><circle class="ref" cx="27.1" cy="27.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="103.1" cy="27.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="27.1" cy="103.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="103.1" cy="103.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="65.1" cy="65.1" r="20" stroke-dasharray="1.5 0.95"/><circle class="feat" cx="65.1" cy="35.1" r="4" fill="none" stroke-dasharray="1.5 0.95"/><circle class="feat" cx="65.1" cy="35.1" r="3.4"/><circle class="feat" cx="65.1" cy="95.1" r="4" fill="none" stroke-dasharray="1.5 0.95"/><circle class="feat" cx="65.1" cy="95.1" r="3.4"/><path class="datum" d="M15.1 115.1h8.085M15.1 115.1v-8.085" fill="none"/><text x="35.703" y="19.6">F1</text><text x="86.203" y="45.1">F2</text><text x="70.203" y="31.1">F3</text><text class="datum-t" x="23.92" y="116.386">X</text><text class="datum-t" x="13.997" y="106.28">Y</text><text class="datum-t" x="13.63" y="119.877" text-anchor="end">G55</text><text x="65.1" y="123.48" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 2, нуль G55. Деталь перевёрнута вокруг X: пунктир — сквозные элементы с верхней стороны. Подсвечено: верхняя плоскость заготовки.</figcaption></figure>
+<ul>
+<li><b>Стратегия:</b> Face (торцевание)</li>
+<li><b>Что выбрать в HSMWorks:</b> Geometry: ничего не выбирать — берётся габарит заготовки (Setup → Stock). Heights → Bottom: Model top.</li>
+<li><b>Инструмент:</b> T1 — Торцевая фреза Ø50, 5 пластин (45°)</li>
+<li><b>Глубина:</b> Z0</li>
+<li>Max stepover (макс. шаг): 35 мм (70 % D)</li>
+<li>Stock offset (выход за заготовку): 28 мм</li>
+<li>Direction: Climb (попутное)</li>
+<li>Multiple depths (несколько проходов): вкл.: Max stepdown 1.5 мм, Finishing stepdown 0.3 мм</li>
+<li>Stock to leave (припуск): 0</li>
+<li><b>Режим:</b> S1401 F1051, мощность ≈ 1.84 кВт; СОЖ (эмульсия 6–8 %), M08</li>
+<li>Проходов по Z ≈ 5; последний — чистовой 0.3 мм.</li>
+<li>После торцовки замерить толщину микрометром; при необходимости — доп. проход с коррекцией Z.</li>
+</ul>
+</details>
+<details><summary>Оп. 11. Центровка с фаской под M8</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 130.2 130.2" style="font-size:3.68px;--sw:0.408px" role="img" aria-label="Вид сверху, Установ 2 — низ (сторона B, переворот)"><rect class="stock" x="12.6" y="12.6" width="105" height="105" stroke-dasharray="1.5 0.95"/><rect class="part" x="15.1" y="15.1" width="100" height="100"/><circle class="ref" cx="27.1" cy="27.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="103.1" cy="27.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="27.1" cy="103.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="103.1" cy="103.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="65.1" cy="65.1" r="20" stroke-dasharray="1.5 0.95"/><circle class="hll" cx="65.1" cy="35.1" r="4" fill="none" stroke-dasharray="1.5 0.95"/><circle class="hl" cx="65.1" cy="35.1" r="3.4"/><circle class="hll" cx="65.1" cy="95.1" r="4" fill="none" stroke-dasharray="1.5 0.95"/><circle class="hl" cx="65.1" cy="95.1" r="3.4"/><path class="datum" d="M15.1 115.1h8.085M15.1 115.1v-8.085" fill="none"/><text x="35.703" y="19.6">F1</text><text x="86.203" y="45.1">F2</text><text x="70.203" y="31.1">F3</text><text class="num" x="65.1" y="40.245" text-anchor="middle">1</text><text class="num" x="65.1" y="100.245" text-anchor="middle">2</text><text class="datum-t" x="23.92" y="116.386">X</text><text class="datum-t" x="13.997" y="106.28">Y</text><text class="datum-t" x="13.63" y="119.877" text-anchor="end">G55</text><text x="65.1" y="123.48" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 2, нуль G55. Деталь перевёрнута вокруг X: пунктир — сквозные элементы с верхней стороны. Подсвечено: отверстия (цифры — порядок обхода).</figcaption></figure>
+<ul>
+<li><b>Стратегия:</b> Drill (сверление)</li>
+<li><b>Что выбрать в HSMWorks:</b> Holes: цилиндрическая грань отверстия Ø8 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.</li>
+<li><b>Инструмент:</b> T3 — Центровка Ø10 90° (тв. сплав)</li>
+<li><b>Глубина:</b> Z-4.3</li>
+<li><b>Точки (X; Y):</b> (50; 80), (50; 20)</li>
+<li>Cycle type (цикл): Drilling – rapid out (G81)</li>
+<li>Bottom height: 4.3 мм от поверхности входа</li>
+<li>Retract height (R): Z+2 мм от верха</li>
+<li><b>Режим:</b> S1910 F96; СОЖ (эмульсия 6–8 %), M08</li>
+<li>центровка с фаской: Ø8.6 на входе</li>
+</ul>
+</details>
+<details><summary>Оп. 12. Сверление Ø6.8 под резьбу M8 (2 шт.)</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 130.2 130.2" style="font-size:3.68px;--sw:0.408px" role="img" aria-label="Вид сверху, Установ 2 — низ (сторона B, переворот)"><rect class="stock" x="12.6" y="12.6" width="105" height="105" stroke-dasharray="1.5 0.95"/><rect class="part" x="15.1" y="15.1" width="100" height="100"/><circle class="ref" cx="27.1" cy="27.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="103.1" cy="27.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="27.1" cy="103.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="103.1" cy="103.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="65.1" cy="65.1" r="20" stroke-dasharray="1.5 0.95"/><circle class="hll" cx="65.1" cy="35.1" r="4" fill="none" stroke-dasharray="1.5 0.95"/><circle class="hl" cx="65.1" cy="35.1" r="3.4"/><circle class="hll" cx="65.1" cy="95.1" r="4" fill="none" stroke-dasharray="1.5 0.95"/><circle class="hl" cx="65.1" cy="95.1" r="3.4"/><path class="datum" d="M15.1 115.1h8.085M15.1 115.1v-8.085" fill="none"/><text x="35.703" y="19.6">F1</text><text x="86.203" y="45.1">F2</text><text x="70.203" y="31.1">F3</text><text class="num" x="65.1" y="40.245" text-anchor="middle">1</text><text class="num" x="65.1" y="100.245" text-anchor="middle">2</text><text class="datum-t" x="23.92" y="116.386">X</text><text class="datum-t" x="13.997" y="106.28">Y</text><text class="datum-t" x="13.63" y="119.877" text-anchor="end">G55</text><text x="65.1" y="123.48" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 2, нуль G55. Деталь перевёрнута вокруг X: пунктир — сквозные элементы с верхней стороны. Подсвечено: отверстия (цифры — порядок обхода).</figcaption></figure>
+<ul>
+<li><b>Стратегия:</b> Drill (сверление)</li>
+<li><b>Что выбрать в HSMWorks:</b> Holes: цилиндрическая грань отверстия Ø6.8 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.</li>
+<li><b>Инструмент:</b> T7 — Сверло Ø6.8 5xD тв. сплав 140°</li>
+<li><b>Глубина:</b> Z-16.97</li>
+<li><b>Точки (X; Y):</b> (50; 80), (50; 20)</li>
+<li>Cycle type (цикл): Drilling – rapid out (G81)</li>
+<li>Bottom height: 16.97 мм (по вершине сверла)</li>
+<li>Retract height (R): Z+2 мм от верха</li>
+<li><b>Режим:</b> S4213 F516, мощность ≈ 0.62 кВт; СОЖ (эмульсия 6–8 %), M08</li>
+</ul>
+</details>
+<details><summary>Оп. 13. Фаска 0.5×45° — кромки низа</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 130.2 130.2" style="font-size:3.68px;--sw:0.408px" role="img" aria-label="Вид сверху, Установ 2 — низ (сторона B, переворот)"><rect class="stock" x="12.6" y="12.6" width="105" height="105" stroke-dasharray="1.5 0.95"/><rect class="part" x="15.1" y="15.1" width="100" height="100"/><rect class="hll" x="15.1" y="15.1" width="100" height="100" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="27.1" cy="27.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="103.1" cy="27.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="27.1" cy="103.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="103.1" cy="103.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="65.1" cy="65.1" r="20" stroke-dasharray="1.5 0.95"/><circle class="feat" cx="65.1" cy="35.1" r="4" fill="none" stroke-dasharray="1.5 0.95"/><circle class="feat" cx="65.1" cy="35.1" r="3.4"/><circle class="feat" cx="65.1" cy="95.1" r="4" fill="none" stroke-dasharray="1.5 0.95"/><circle class="feat" cx="65.1" cy="95.1" r="3.4"/><path class="datum" d="M15.1 115.1h8.085M15.1 115.1v-8.085" fill="none"/><text x="35.703" y="19.6">F1</text><text x="86.203" y="45.1">F2</text><text x="70.203" y="31.1">F3</text><text class="datum-t" x="23.92" y="116.386">X</text><text class="datum-t" x="13.997" y="106.28">Y</text><text class="datum-t" x="13.63" y="119.877" text-anchor="end">G55</text><text x="65.1" y="123.48" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 2, нуль G55. Деталь перевёрнута вокруг X: пунктир — сквозные элементы с верхней стороны. Подсвечено: верхняя кромка контура.</figcaption></figure>
+<ul>
+<li><b>Стратегия:</b> 2D Contour — Chamfer (фаска)</li>
+<li><b>Что выбрать в HSMWorks:</b> Contour selection: верхняя кромка наружного контура (цепочкой).</li>
+<li><b>Инструмент:</b> T6 — Фасочная фреза Ø10 90°</li>
+<li><b>Глубина:</b> Z-1</li>
+<li>Chamfer width (ширина фаски): 0.5 мм</li>
+<li>Chamfer tip offset (смещение вершины): 0.5 мм</li>
+<li>Chamfer clearance: 0.5 мм</li>
+<li>Tool: фасочная Ø10 90°</li>
+<li><b>Режим:</b> S7639 F688, врезание 206 мм/мин; СОЖ (эмульсия 6–8 %), M08</li>
+</ul>
+</details>
+<details><summary>Оп. 14. Нарезание резьбы M8 (2 шт.)</summary>
+<figure class="skf"><svg class="sk" viewBox="0 0 130.2 130.2" style="font-size:3.68px;--sw:0.408px" role="img" aria-label="Вид сверху, Установ 2 — низ (сторона B, переворот)"><rect class="stock" x="12.6" y="12.6" width="105" height="105" stroke-dasharray="1.5 0.95"/><rect class="part" x="15.1" y="15.1" width="100" height="100"/><circle class="ref" cx="27.1" cy="27.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="103.1" cy="27.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="27.1" cy="103.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="103.1" cy="103.1" r="4.5" stroke-dasharray="1.5 0.95"/><circle class="ref" cx="65.1" cy="65.1" r="20" stroke-dasharray="1.5 0.95"/><circle class="hll" cx="65.1" cy="35.1" r="4" fill="none" stroke-dasharray="1.5 0.95"/><circle class="hl" cx="65.1" cy="35.1" r="3.4"/><circle class="hll" cx="65.1" cy="95.1" r="4" fill="none" stroke-dasharray="1.5 0.95"/><circle class="hl" cx="65.1" cy="95.1" r="3.4"/><path class="datum" d="M15.1 115.1h8.085M15.1 115.1v-8.085" fill="none"/><text x="35.703" y="19.6">F1</text><text x="86.203" y="45.1">F2</text><text x="70.203" y="31.1">F3</text><text class="num" x="65.1" y="40.245" text-anchor="middle">1</text><text class="num" x="65.1" y="100.245" text-anchor="middle">2</text><text class="datum-t" x="23.92" y="116.386">X</text><text class="datum-t" x="13.997" y="106.28">Y</text><text class="datum-t" x="13.63" y="119.877" text-anchor="end">G55</text><text x="65.1" y="123.48" text-anchor="middle">100</text></svg><figcaption>Вид сверху, установ 2, нуль G55. Деталь перевёрнута вокруг X: пунктир — сквозные элементы с верхней стороны. Подсвечено: отверстия (цифры — порядок обхода).</figcaption></figure>
+<ul>
+<li><b>Стратегия:</b> Drill (сверление)</li>
+<li><b>Что выбрать в HSMWorks:</b> Holes: цилиндрическая грань отверстия Ø6.8 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.</li>
+<li><b>Инструмент:</b> T8 — Метчик машинный M8 спиральная (глухая), HSS-E</li>
+<li><b>Глубина:</b> Z-12</li>
+<li><b>Точки (X; Y):</b> (50; 80), (50; 20)</li>
+<li>Cycle type (цикл): Tapping (G84), жёсткое нарезание</li>
+<li>Pitch (шаг): 1.25 мм</li>
+<li>Bottom height: 12 мм</li>
+<li>Retract height (R): Z+5 мм (≥ 3 шагов над поверхностью)</li>
+<li><b>Режим:</b> S398 F497.5; СОЖ (эмульсия 6–8 %), M08; для стали — масляная эмульсия/паста</li>
+<li>Запас под стружку и заборный конус: сверление на 3.75 мм глубже резьбы.</li>
+</ul>
+</details>
+<h2>Инструментальная карта</h2>
+<table><tr><th>T / H / D</th><th>Инструмент</th><th>Ø, мм</th><th>z</th><th>Lc, мм</th><th>Вылет, мм</th><th>Материал</th><th>Операции</th></tr>
+<tr><td>T1 / H1 / D1</td><td>Торцевая фреза Ø50, 5 пластин (45°)</td><td>50</td><td>5</td><td>6</td><td>—</td><td>твердый сплав, пластины для Al / стали</td><td>1, 10</td></tr>
+<tr><td>T2 / H2 / D2</td><td>Фреза концевая Ø16 z5 Lc32</td><td>16</td><td>5</td><td>32</td><td>37</td><td>твердый сплав, AlTiN</td><td>2, 3, 6, 8</td></tr>
+<tr><td>T3 / H3 / D3</td><td>Центровка Ø10 90° (тв. сплав)</td><td>10</td><td>2</td><td>—</td><td>20</td><td>твердый сплав</td><td>4, 11</td></tr>
+<tr><td>T4 / H4 / D4</td><td>Сверло Ø9 5xD тв. сплав 140°</td><td>9</td><td>2</td><td>54</td><td>28</td><td>твердый сплав, TiAlN</td><td>5</td></tr>
+<tr><td>T5 / H5 / D5</td><td>Фреза концевая Ø12 z5 Lc26</td><td>12</td><td>5</td><td>26</td><td>31</td><td>твердый сплав, AlTiN</td><td>7</td></tr>
+<tr><td>T6 / H6 / D6</td><td>Фасочная фреза Ø10 90°</td><td>10</td><td>3</td><td>—</td><td>16</td><td>твердый сплав</td><td>9, 13</td></tr>
+<tr><td>T7 / H7 / D7</td><td>Сверло Ø6.8 5xD тв. сплав 140°</td><td>6.8</td><td>2</td><td>40.8</td><td>27</td><td>твердый сплав, TiAlN</td><td>12</td></tr>
+<tr><td>T8 / H8 / D8</td><td>Метчик машинный M8 спиральная (глухая), HSS-E</td><td>8</td><td>3</td><td>—</td><td>22</td><td>HSS-E, TiN/TiCN</td><td>14</td></tr>
+</table>
+<blockquote>Режимы — стартовые для Haas VF-2. Первую деталь вести с коррекцией подачи 70–80 % и контролем нагрузки шпинделя. Траектории формирует HSMWorks; обязательна симуляция в HSMWorks перед выводом УП.</blockquote>
+<h2>Черновик УП</h2>
+<pre>%
+O1001 (FLANETS OP1)
+(NUMCRAFT DRAFT - FANUC - VERIFY IN HSMWORKS SIM)
+(MATERIAL STAL 45 GOST 1050)
+(STOCK 105X105X22)
+(SETUP 1 TOP - G54 - Z0 TOP OF PART)
+(T1 FACE MILL D50)
+(T2 END MILL D16 Z5 LC32)
+(T3 SPOT DRILL D10 90DEG)
+(T4 DRILL D9)
+(T5 END MILL D12 Z5 LC26)
+(T6 CHAMFER MILL D10 90DEG)
+G90 G17 G21 G40 G49 G80
+G91 G28 Z0.
+G90
+
+(OP 1 FACE - FACE MILL D50)
+T1 M06
+G00 G90 G54 X0. Y0.
+S1401 M03
+G43 H01 Z51. M08
+G00 Z11.
+(FACE PASS Z0.3)
+G00 X-32.5 Y-12.5
+G00 Z2.3
+G01 Z0.3 F526.
+G01 X132.5 F1051.
+G01 Y22.5
+G01 X-32.5 F1051.
+G01 Y57.5
+G01 X132.5 F1051.
+G01 Y92.5
+G01 X-32.5 F1051.
+G00 Z11.
+(FACE PASS Z0.)
+G00 X-32.5 Y-12.5
+G00 Z2.
+G01 Z0. F526.
+G01 X132.5 F1051.
+G01 Y22.5
+G01 X-32.5 F1051.
+G01 Y57.5
+G01 X132.5 F1051.
+G01 Y92.5
+G01 X-32.5 F1051.
+G00 Z11.
+
+(OP 2 2D ADAPTIVE - END MILL D16 Z5 LC32)
+M09
+M05
+G91 G28 Z0.
+G90
+M01
+T2 M06
+G00 G90 G54 X0. Y0.
+S3183 M03
+G43 H02 Z51. M08
+G00 Z11.
+(*** INSERT HSMWORKS TOOLPATH: 2D ADAPTIVE Z-15.3 ***)
+(S3183 F2037.)
+G00 Z11.
+
+(OP 3 2D ADAPTIVE - END MILL D16 Z5 LC32)
+S3183 M03
+(*** INSERT HSMWORKS TOOLPATH: 2D ADAPTIVE Z-15.3 ***)
+(S3183 F2037.)
+G00 Z11.
+
+(OP 4 DRILL - SPOT DRILL D10 90DEG)
+M09
+M05
+G91 G28 Z0.
+G90
+M01
+T3 M06
+G00 G90 G54 X12. Y12.
+S1910 M03
+G43 H03 Z51. M08
+G00 Z11.
+G00 X12. Y12.
+G98 G81 X12. Y12. Z-4.7 R2. F96.
+X88. Y12.
+X12. Y88.
+X88. Y88.
+G80
+G00 Z11.
+
+(OP 5 DRILL - DRILL D9)
+M09
+M05
+G91 G28 Z0.
+G90
+M01
+T4 M06
+G00 G90 G54 X12. Y12.
+S3183 M03
+G43 H04 Z51. M08
+G00 Z11.
+G00 X12. Y12.
+G98 G81 X12. Y12. Z-17.62 R2. F516.
+X88. Y12.
+X12. Y88.
+X88. Y88.
+G80
+G00 Z11.
+
+(OP 6 2D CONTOUR - END MILL D16 Z5 LC32)
+M09
+M05
+G91 G28 Z0.
+G90
+M01
+T2 M06
+G00 G90 G54 X0. Y0.
+S3382 M03
+G43 H02 Z51. M08
+G00 Z11.
+(*** INSERT HSMWORKS TOOLPATH: 2D CONTOUR Z-15.3 ***)
+(S3382 F1407.)
+G00 Z11.
+
+(OP 7 BORE - END MILL D12 Z5 LC26)
+M09
+M05
+G91 G28 Z0.
+G90
+M01
+T5 M06
+G00 G90 G54 X12. Y12.
+S2918 M03
+G43 H05 Z51. M08
+G00 Z11.
+(*** INSERT HSMWORKS TOOLPATH: BORE Z-9. ***)
+(S2918 F613.)
+G00 Z11.
+
+(OP 8 BORE - END MILL D16 Z5 LC32)
+M09
+M05
+G91 G28 Z0.
+G90
+M01
+T2 M06
+G00 G90 G54 X50. Y50.
+S2188 M03
+G43 H02 Z51. M08
+G00 Z11.
+(*** INSERT HSMWORKS TOOLPATH: BORE Z-15.3 ***)
+(S2188 F613.)
+G00 Z11.
+
+(OP 9 CHAMFER - CHAMFER MILL D10 90DEG)
+M09
+M05
+G91 G28 Z0.
+G90
+M01
+T6 M06
+G00 G90 G54 X0. Y0.
+S7639 M03
+G43 H06 Z51. M08
+G00 Z11.
+(*** INSERT HSMWORKS TOOLPATH: CHAMFER Z-1. ***)
+(S7639 F688.)
+G00 Z11.
+M09
+M05
+G91 G28 Z0.
+G90
+G91 G28 Y0.
+G90
+M30
+
+O1002 (FLANETS OP2)
+(NUMCRAFT DRAFT - FANUC - VERIFY IN HSMWORKS SIM)
+(MATERIAL STAL 45 GOST 1050)
+(STOCK 105X105X22)
+(SETUP 2 BOTTOM - G55 - Z0 TOP OF PART)
+(T1 FACE MILL D50)
+(T3 SPOT DRILL D10 90DEG)
+(T7 DRILL D6.8)
+(T6 CHAMFER MILL D10 90DEG)
+(T8 TAP M8)
+G90 G17 G21 G40 G49 G80
+G91 G28 Z0.
+G90
+
+(OP 10 FACE - FACE MILL D50)
+T1 M06
+G00 G90 G55 X0. Y0.
+S1401 M03
+G43 H01 Z56. M08
+G00 Z16.
+(FACE PASS Z4.5)
+G00 X-32.5 Y-12.5
+G00 Z6.5
+G01 Z4.5 F526.
+G01 X132.5 F1051.
+G01 Y22.5
+G01 X-32.5 F1051.
+G01 Y57.5
+G01 X132.5 F1051.
+G01 Y92.5
+G01 X-32.5 F1051.
+G00 Z16.
+(FACE PASS Z3.)
+G00 X-32.5 Y-12.5
+G00 Z5.
+G01 Z3. F526.
+G01 X132.5 F1051.
+G01 Y22.5
+G01 X-32.5 F1051.
+G01 Y57.5
+G01 X132.5 F1051.
+G01 Y92.5
+G01 X-32.5 F1051.
+G00 Z16.
+(FACE PASS Z1.5)
+G00 X-32.5 Y-12.5
+G00 Z3.5
+G01 Z1.5 F526.
+G01 X132.5 F1051.
+G01 Y22.5
+G01 X-32.5 F1051.
+G01 Y57.5
+G01 X132.5 F1051.
+G01 Y92.5
+G01 X-32.5 F1051.
+G00 Z16.
+(FACE PASS Z0.3)
+G00 X-32.5 Y-12.5
+G00 Z2.3
+G01 Z0.3 F526.
+G01 X132.5 F1051.
+G01 Y22.5
+G01 X-32.5 F1051.
+G01 Y57.5
+G01 X132.5 F1051.
+G01 Y92.5
+G01 X-32.5 F1051.
+G00 Z16.
+(FACE PASS Z0.)
+G00 X-32.5 Y-12.5
+G00 Z2.
+G01 Z0. F526.
+G01 X132.5 F1051.
+G01 Y22.5
+G01 X-32.5 F1051.
+G01 Y57.5
+G01 X132.5 F1051.
+G01 Y92.5
+G01 X-32.5 F1051.
+G00 Z16.
+
+(OP 11 DRILL - SPOT DRILL D10 90DEG)
+M09
+M05
+G91 G28 Z0.
+G90
+M01
+T3 M06
+G00 G90 G55 X50. Y80.
+S1910 M03
+G43 H03 Z56. M08
+G00 Z16.
+G00 X50. Y80.
+G98 G81 X50. Y80. Z-4.3 R2. F96.
+X50. Y20.
+G80
+G00 Z16.
+
+(OP 12 DRILL - DRILL D6.8)
+M09
+M05
+G91 G28 Z0.
+G90
+M01
+T7 M06
+G00 G90 G55 X50. Y80.
+S4213 M03
+G43 H07 Z56. M08
+G00 Z16.
+G00 X50. Y80.
+G98 G81 X50. Y80. Z-16.97 R2. F516.
+X50. Y20.
+G80
+G00 Z16.
+
+(OP 13 CHAMFER - CHAMFER MILL D10 90DEG)
+M09
+M05
+G91 G28 Z0.
+G90
+M01
+T6 M06
+G00 G90 G55 X0. Y0.
+S7639 M03
+G43 H06 Z56. M08
+G00 Z16.
+(*** INSERT HSMWORKS TOOLPATH: CHAMFER Z-1. ***)
+(S7639 F688.)
+G00 Z16.
+
+(OP 14 DRILL - TAP M8)
+M09
+M05
+G91 G28 Z0.
+G90
+M01
+T8 M06
+G00 G90 G55 X50. Y80.
+S398
+G43 H08 Z56. M08
+G00 Z16.
+G00 X50. Y80.
+M29 S398
+G98 G84 X50. Y80. Z-12. R5. F497.5
+X50. Y20.
+G80
+G00 Z16.
+M09
+M05
+G91 G28 Z0.
+G90
+G91 G28 Y0.
+G90
+M30
+%</pre>
+</body></html>

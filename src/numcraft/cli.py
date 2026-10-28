@@ -90,7 +90,7 @@ def cmd_plan(a) -> int:
         Path(out).write_text(md, encoding="utf-8")
         print(f"Техкарта: {out}")
     if html_out:
-        Path(html_out).write_text(to_html(md, res.sheet.part.name), encoding="utf-8")
+        Path(html_out).write_text(to_html(md, res.sheet), encoding="utf-8")
         print(f"Техкарта (браузер): {html_out}")
     if not (out or html_out):
         print(md)

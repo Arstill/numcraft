@@ -255,11 +255,12 @@ def parse_description(text: str, material: Optional[str] = None) -> ParseResult:
                 d = 5.0
             r = RADIUS_RE.search(seg)
             common = dict(length=max(a, b), width=min(a, b), depth=d or 0.0, through=through, count=_count(seg),
+                          center=pts[0] if pts else None, along="x" if a >= b else "y",
                           side=side, tolerance=_f(tol.group(1)) if tol else None, ra=_f(ra.group(1)) if ra else None)
             if kind == "pocket":
                 f = PocketFeature(corner_radius=_f(r.group(1)) if r else 0.0,
                                   open_side=bool(re.search(r"открыт", low)),
-                                  center=pts[0] if pts else None, **common)
+                                  **common)
             else:
                 f = SlotFeature(open_ends=bool(re.search(r"открыт|сквозн\w*\s+по\s+длин", low)), **common)
         elif kind == "chamfer":
@@ -299,7 +300,7 @@ def parse_description(text: str, material: Optional[str] = None) -> ParseResult:
                 c = (size.x / 2, size.y / 2)
                 if isinstance(f, (HoleFeature, ThreadFeature)) and not f.positions:
                     f.positions = [c]
-                elif isinstance(f, PocketFeature) and f.center is None:
+                elif isinstance(f, (PocketFeature, SlotFeature)) and f.center is None:
                     f.center = c
         for f in feats:
             if isinstance(f, (HoleFeature, PocketFeature, SlotFeature)) and getattr(f, "through", False):

@@ -73,6 +73,8 @@ def to_markdown(sheet: TechSheet, details: bool = True) -> str:
         for x in s.notes:
             w(f"- {x}")
         w("")
+        w(f"<!--sk:s{s.number}-->")
+        w("")
         w("| Оп. | Операция | Стратегия HSMWorks | T | S, об/мин | F, мм/мин | ap, мм | ae, мм | Vc, м/мин | Подача |")
         w("|---|---|---|---|---|---|---|---|---|---|")
         for op in s.operations:
@@ -84,7 +86,10 @@ def to_markdown(sheet: TechSheet, details: bool = True) -> str:
             for op in s.operations:
                 w(f"### Оп. {op.number}. {op.title}")
                 w("")
+                w(f"<!--sk:o{op.number}-->")
                 w(f"- **Стратегия:** {op.strategy}")
+                if op.selection:
+                    w(f"- **Что выбрать в HSMWorks:** {op.selection}")
                 w(f"- **Инструмент:** T{op.tool.number} — {op.tool.label()}, вылет ≈ {_n(op.tool.stickout)} мм"
                   if op.tool.stickout else f"- **Инструмент:** T{op.tool.number} — {op.tool.label()}")
                 if op.z_depth is not None:
@@ -135,9 +140,11 @@ def to_json(sheet: TechSheet) -> str:
 
 
 _CSS = """
-:root{--bg:#fff;--fg:#1d1d1f;--muted:#666;--line:#ddd;--head:#f3f4f6;--hi:#fde8e8;--mid:#fff6db;--code:#f6f8fa}
+:root{--bg:#fff;--fg:#1d1d1f;--muted:#666;--line:#ddd;--head:#f3f4f6;--hi:#fde8e8;--mid:#fff6db;--code:#f6f8fa;
+--partfill:#e9edf2;--hl:#d9480f;--hlfill:rgba(217,72,15,.30);--datum:#1971c2}
 @media (prefers-color-scheme:dark){:root{--bg:#16181c;--fg:#e8e8e8;--muted:#9aa;--line:#333;--head:#22252b;
---hi:#4a1f1f;--mid:#3f3519;--code:#1e2127}}
+--hi:#4a1f1f;--mid:#3f3519;--code:#1e2127;--partfill:#262b33;--hl:#ff8a4c;--hlfill:rgba(255,138,76,.32);
+--datum:#5fa8ff}}
 body{background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
 max-width:1200px;margin:0 auto;padding:16px}
 h1{font-size:24px}h2{margin-top:32px;border-bottom:1px solid var(--line);padding-bottom:4px}
@@ -148,13 +155,36 @@ tr.high td{background:var(--hi)}tr.mid td{background:var(--mid)}
 pre{background:var(--code);padding:12px;overflow-x:auto;font-size:13px}
 blockquote{color:var(--muted);border-left:3px solid var(--line);margin:16px 0;padding-left:12px}
 details{margin:4px 0}summary{cursor:pointer;color:var(--muted)}
+details[open]{border-left:3px solid var(--hl);padding:0 0 4px 10px}
+.tools button{font:inherit;padding:4px 10px;border:1px solid var(--line);background:var(--head);color:var(--fg);
+border-radius:6px;cursor:pointer}
+figure.skf{margin:8px 0}figcaption{color:var(--muted);font-size:13px}.sk-note{color:var(--muted)}
+svg.sk{display:block;width:100%;max-width:520px;height:auto}
+.sk .stock{fill:none;stroke:var(--muted);stroke-width:calc(var(--sw)*1.2)}
+.sk .part{fill:var(--partfill);stroke:var(--fg);stroke-width:calc(var(--sw)*1.6)}
+.sk .feat{fill:var(--bg);stroke:var(--muted);stroke-width:var(--sw)}
+.sk .ref{fill:none;stroke:var(--muted);stroke-width:var(--sw)}
+.sk .hl{fill:var(--hlfill);stroke:var(--hl);stroke-width:calc(var(--sw)*2)}
+.sk .hll{fill:none;stroke:var(--hl);stroke-width:calc(var(--sw)*4)}
+.sk .datum{stroke:var(--datum);stroke-width:calc(var(--sw)*2.5)}
+.sk text{fill:var(--muted);font-family:system-ui,sans-serif}.sk .num{fill:var(--hl);font-weight:700}
+.sk .datum-t{fill:var(--datum);font-weight:600}
 """
 
 
-def to_html(md: str, title: str = "Техкарта") -> str:
-    """Минимальный Markdown → HTML для собственной разметки техкарты (заголовки, списки, таблицы, код)."""
+def to_html(md: str, sheet: TechSheet) -> str:
+    """Markdown техкарты → HTML; маркеры <!--sk:…--> заменяются схемами (SVG) установов и операций."""
     import html
     import re
+
+    from numcraft.sketch import setup_svg
+
+    title = f"Техкарта: {sheet.part.name}"
+    sketches = {}
+    for s in sheet.setups:
+        sketches[f"s{s.number}"] = setup_svg(sheet, s)
+        for op in s.operations:
+            sketches[f"o{op.number}"] = setup_svg(sheet, s, op)
 
     def inline(t: str) -> str:
         t = html.escape(t)
@@ -162,12 +192,20 @@ def to_html(md: str, title: str = "Техкарта") -> str:
 
     out = [f"<!doctype html><html lang='ru'><head><meta charset='utf-8'>"
            f"<meta name='viewport' content='width=device-width,initial-scale=1'><title>{html.escape(title)}</title>"
-           f"<style>{_CSS}</style></head><body>"]
+           f"<style>{_CSS}</style></head><body>",
+           "<p class='tools'><button onclick=\"document.querySelectorAll('details').forEach(d=>d.open=true)\">"
+           "Развернуть все операции</button> <button onclick=\"document.querySelectorAll('details')"
+           ".forEach(d=>d.open=false)\">Свернуть</button></p>"]
     lines = md.splitlines()
     i = 0
     in_details = False
     while i < len(lines):
         ln = lines[i]
+        m = re.match(r"<!--sk:(\w+)-->$", ln.strip())
+        if m:
+            out.append(sketches.get(m.group(1), ""))
+            i += 1
+            continue
         if ln.startswith("```"):
             j = i + 1
             while j < len(lines) and not lines[j].startswith("```"):

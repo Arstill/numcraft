@@ -183,3 +183,36 @@ def scallop_stepover(ball_r: float, ra_um: float) -> float:
     """Шаг по высоте гребешка h ≈ 4·Ra (мкм→мм): ae = 2·√(2·R·h − h²)."""
     h = 4 * ra_um / 1000
     return round(2 * math.sqrt(max(2 * ball_r * h - h * h, 1e-9)), 2)
+
+
+def selection(geom: str, depth: float = 0.0, d: float = 0.0, through: bool = False) -> str:
+    """Что выбрать в HSMWorks для операции (вкладка Geometry/Heights)."""
+    dz = _n(round(depth, 2))
+    dd = _n(d)
+    return {
+        "face": "Geometry: ничего не выбирать — берётся габарит заготовки (Setup → Stock). "
+                "Heights → Bottom: Model top.",
+        "outer_rough": "Pockets/Contours: нижняя кромка наружного контура детали (цепочкой). "
+                       f"Stock contours: вкл. Heights → Bottom: Model top, offset −{dz} мм.",
+        "outer_walls": "Contour selection: нижняя кромка наружного контура (цепочкой), сторона — снаружи. "
+                       f"Heights → Bottom: Model top, offset −{dz} мм.",
+        "pocket_area": ("Pockets: нижняя кромка окна (цепочкой); Bottom: −" + dz + " мм") if through else
+                       "Pockets: грань дна кармана (один щелчок — контур и глубина берутся автоматически).",
+        "pocket_corners": "Pockets: грань дна кармана. Rest machining: from previous operation(s).",
+        "pocket_floor": "Pockets: грань дна кармана.",
+        "pocket_walls": "Contour selection: кромка между дном и стенками кармана (цепочкой), сторона — внутри.",
+        "slot_area": "Pockets: грань дна паза" + (" (для сквозного — нижняя кромка, Bottom −" + dz + " мм)"
+                                                 if through else "") + ".",
+        "slot_walls": "Contour selection: кромка между дном и стенками паза (цепочкой), сторона — внутри.",
+        "holes": f"Holes: цилиндрическая грань отверстия Ø{dd} → «Select same diameter». "
+                 "Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.",
+        "hole_area": f"Pockets: нижняя кромка отверстия Ø{dd} (или дно, если глухое).",
+        "hole_walls": f"Holes / Circular: цилиндрическая грань Ø{dd}.",
+        "thread": "Thread: цилиндрическая грань отверстия под резьбу.",
+        "chamfer_outer": "Contour selection: верхняя кромка наружного контура (цепочкой).",
+        "chamfer_pockets": "Contour selection: верхние кромки карманов и пазов.",
+        "chamfer_holes": "Holes: верхние кромки отверстий (или 2D Chamfer по кромкам).",
+        "chamfer_all": "Contour selection: все верхние кромки (контур, карманы, отверстия).",
+        "surface": "Machining boundary: Silhouette или контур зоны; Model: деталь; "
+                   "Check surfaces: губки тисков.",
+    }.get(geom, "")

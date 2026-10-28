@@ -73,9 +73,13 @@ class Planner:
             out.append((round(x, 3), round(y, 3)))
         return out
 
-    def _op(self, title, strategy, tool, cd, stage, fids, params=None, **kw) -> Operation:
-        return Operation(title=title, strategy=strategy, tool=tool, cutting=cd, stage=stage,
-                         feature_ids=list(fids), params=params or {}, **kw)
+    def _op(self, title, strategy, tool, cd, stage, fids, params=None, geom: str = "", sel_d: float = 0.0,
+            through: bool = False, **kw) -> Operation:
+        op = Operation(title=title, strategy=strategy, tool=tool, cutting=cd, stage=stage,
+                       feature_ids=list(fids), params=params or {}, geom=geom, **kw)
+        depth = (op.z_start or 0) - (op.z_depth or 0)
+        op.selection = S.selection(geom, depth=depth, d=sel_d or tool.diameter, through=through)
+        return op
 
     def _end_mill(self, max_d: float, depth: float, why: str, min_d: float = 0.0) -> Optional[Tool]:
         t = tooling.pick_end_mill(self.g, max_d, min_lc=depth, min_d=min_d)
@@ -97,7 +101,7 @@ class Planner:
         title = (f"Торцовка в размер по толщине {_n(self.part.size.z)} мм (снять {_n(allowance)} мм)"
                  if bottom else f"Торцовка верха (снять {_n(allowance)} мм)")
         op = self._op(title, S.FACE, tool, cd, ST_FACE, [fid],
-                      S.face(tool, cd, allowance, p["ap_finish"]), z_depth=0.0)
+                      S.face(tool, cd, allowance, p["ap_finish"]), z_depth=0.0, geom="face")
         op.notes.append(f"Проходов по Z ≈ {max(n_pass, 1)}; последний — чистовой {_n(min(allowance, p['ap_finish']))} мм.")
         if bottom:
             op.notes.append("После торцовки замерить толщину микрометром; при необходимости — доп. проход с коррекцией Z.")
@@ -116,15 +120,17 @@ class Planner:
         if allowance > 2.0:
             cd = cutting.milling(tool, self.mat, self.machine, "adaptive", ap=min(depth, tool.flute_length))
             ops.append(self._op(f"Черновая {what}, глубина {_n(depth)} мм", S.ADAPTIVE_2D, tool, cd, ST_ROUGH,
-                                [f.id], S.adaptive(tool, cd, self.mat, depth, stock_contours=True), z_depth=-depth))
+                                [f.id], S.adaptive(tool, cd, self.mat, depth, stock_contours=True), z_depth=-depth,
+                                geom="outer_rough"))
         elif allowance > 0.3:
             cd = cutting.milling(tool, self.mat, self.machine, "contour", ap=min(depth, tool.flute_length),
                                  ae=round(allowance - 0.2, 2))
             ops.append(self._op(f"Получистовая {what} (припуск {_n(allowance)} мм)", S.CONTOUR_2D, tool, cd,
-                                ST_ROUGH, [f.id], S.contour_light_rough(tool, allowance), z_depth=-depth))
+                                ST_ROUGH, [f.id], S.contour_light_rough(tool, allowance), z_depth=-depth,
+                                geom="outer_walls"))
         cdf = cutting.milling(tool, self.mat, self.machine, "finish_wall", ap=min(depth, tool.flute_length))
         fin = self._op(f"Чистовая {what}", S.CONTOUR_2D, tool, cdf, ST_FINISH, [f.id],
-                       S.contour_finish(tool, cdf, depth, f.tolerance), z_depth=-depth)
+                       S.contour_finish(tool, cdf, depth, f.tolerance), z_depth=-depth, geom="outer_walls")
         if band:
             fin.notes.append("Перекрытие с поясом установа 1 — 0.3 мм; возможна ступенька 0.01–0.02 мм на стыке.")
         if f.tolerance and f.tolerance <= 0.02:
@@ -147,22 +153,23 @@ class Planner:
         name = f"карман {_n(f.length)}×{_n(f.width)}×{_n(depth)}{cnt}"
         cd = cutting.milling(rough, self.mat, self.machine, "adaptive", ap=min(depth, rough.flute_length))
         ops.append(self._op(f"Черновая: {name}", S.ADAPTIVE_2D, rough, cd, ST_ROUGH, [f.id],
-                            S.adaptive(rough, cd, self.mat, depth), z_depth=-depth))
+                            S.adaptive(rough, cd, self.mat, depth), z_depth=-depth, geom="pocket_area",
+                            through=f.through))
         if finisher and finisher is not rough:
             corner_rest = (rough.diameter / 2 - finisher.diameter / 2)
             if corner_rest > 1.0:
                 cdr = cutting.milling(finisher, self.mat, self.machine, "adaptive", ap=min(depth, finisher.flute_length))
                 ops.append(self._op(f"Дообработка углов R{_n(r_corner)}: {name}", S.ADAPTIVE_2D, finisher, cdr,
                                     ST_REST, [f.id], S.adaptive(finisher, cdr, self.mat, depth, rest=True),
-                                    z_depth=-depth))
+                                    z_depth=-depth, geom="pocket_corners"))
         fin = finisher or rough
         if not f.through:
             cdf = cutting.milling(fin, self.mat, self.machine, "finish_floor")
             ops.append(self._op(f"Чистовая дна: {name}", S.POCKET_2D, fin, cdf, ST_FINISH, [f.id],
-                                S.pocket(fin, cdf, floor_only=True), z_depth=-depth))
+                                S.pocket(fin, cdf, floor_only=True), z_depth=-depth, geom="pocket_floor"))
         cdw = cutting.milling(fin, self.mat, self.machine, "finish_wall", ap=min(depth, fin.flute_length))
         ops.append(self._op(f"Чистовая стенок: {name}", S.CONTOUR_2D, fin, cdw, ST_FINISH, [f.id],
-                            S.contour_finish(fin, cdw, depth, f.tolerance), z_depth=-depth))
+                            S.contour_finish(fin, cdw, depth, f.tolerance), z_depth=-depth, geom="pocket_walls"))
         if r_corner <= 0:
             self.questions.append(
                 f"Карман {f.id}: радиус внутренних углов не указан — принят радиус фрезы R{_n(fin.diameter / 2)}. "
@@ -178,7 +185,7 @@ class Planner:
         if exact and f.width <= 6 and not f.tolerance:
             cd = cutting.milling(exact, self.mat, self.machine, "slot")
             ops.append(self._op(f"Паз фрезой в размер: {name}", S.SLOT, exact, cd, ST_ROUGH, [f.id],
-                                S.slot(exact, cd), z_depth=-depth))
+                                S.slot(exact, cd), z_depth=-depth, geom="slot_area", through=f.through))
             ops[-1].notes.append("Ширина паза = диаметру фрезы; фактический размер +0.01…0.03 мм от биения.")
             return ops
         tool = self._end_mill(0.75 * f.width, depth + 1, f"паз {f.id}")
@@ -186,10 +193,11 @@ class Planner:
             return ops
         cd = cutting.milling(tool, self.mat, self.machine, "adaptive", ap=min(depth, tool.flute_length))
         ops.append(self._op(f"Черновая: {name}", S.ADAPTIVE_2D, tool, cd, ST_ROUGH, [f.id],
-                            S.adaptive(tool, cd, self.mat, depth), z_depth=-depth))
+                            S.adaptive(tool, cd, self.mat, depth), z_depth=-depth, geom="slot_area",
+                            through=f.through))
         cdw = cutting.milling(tool, self.mat, self.machine, "finish_wall", ap=min(depth, tool.flute_length))
         ops.append(self._op(f"Чистовая стенок: {name}", S.CONTOUR_2D, tool, cdw, ST_FINISH, [f.id],
-                            S.contour_finish(tool, cdw, depth, f.tolerance), z_depth=-depth))
+                            S.contour_finish(tool, cdw, depth, f.tolerance), z_depth=-depth, geom="slot_walls"))
         return ops
 
     def _spot(self, fid: str, d_hole: float, positions, chamfer: float = 0.2, z0: float = 0.0) -> Operation:
@@ -204,7 +212,8 @@ class Planner:
             note = "центровка без фаски (отверстие больше центровки)"
         op = self._op(f"Центровка под Ø{_n(d_hole)}", S.DRILL, tool, cd, ST_SPOT, [fid],
                       S.drill("G81", f"{_n(depth)} мм от поверхности входа", None, False),
-                      cycle="G81", z_depth=round(z0 - depth, 3), z_start=z0, positions=positions)
+                      cycle="G81", z_depth=round(z0 - depth, 3), z_start=z0, positions=positions,
+                      geom="holes", sel_d=d_hole)
         op.notes.append(note)
         return op
 
@@ -227,7 +236,7 @@ class Planner:
         note = f"{_n(round(total, 2))} мм ({'сквозь, с выходом вершины' if through else 'по вершине сверла'})"
         op = self._op(" ".join(x for x in (f"Сверление Ø{_n(d)}", purpose.strip()) if x), S.DRILL, tool, cd, ST_DRILL, [fid],
                       S.drill(cycle, note, peck, through), cycle=cycle, z_depth=round(z0 - total, 2),
-                      z_start=z0, positions=positions, peck=peck)
+                      z_start=z0, positions=positions, peck=peck, geom="holes", sel_d=d)
         return op
 
     def hole_ops(self, f: HoleFeature, positions) -> List[Operation]:
@@ -251,7 +260,7 @@ class Planner:
             rdepth = depth + (1.5 if f.through else 0)
             ops.append(self._op(f"Развёртывание Ø{_n(d)}{fit}{cnt}", S.DRILL, rt, cd, ST_REAM, [f.id],
                                 S.reaming(f"{_n(rdepth)} мм"), cycle="G85", z_depth=round(z0 - rdepth, 3),
-                                z_start=z0, positions=positions))
+                                z_start=z0, positions=positions, geom="holes", sel_d=d))
             if not f.through:
                 ops[-1].notes.append("Глухое отверстие: сверло углублено на 0.3D под заборный конус развёртки.")
         elif d <= tooling.MAX_TWIST_DRILL_PREFERRED:
@@ -266,13 +275,13 @@ class Planner:
                 cdr = cutting.milling(tool, self.mat, self.machine, "adaptive", ap=min(hd, tool.flute_length))
                 ops.append(self._op(f"Черновая выборка отверстия Ø{_n(d)}{cnt}", S.ADAPTIVE_2D, tool, cdr, ST_ROUGH,
                                     [f.id], S.adaptive(tool, cdr, self.mat, hd), z_depth=round(z0 - hd, 3),
-                                    z_start=z0, positions=positions))
+                                    z_start=z0, positions=positions, geom="hole_area", sel_d=d))
             if tool:
                 cd = cutting.milling(tool, self.mat, self.machine, "bore")
                 ops.append(self._op(f"Спиральная расточка Ø{_n(d)}{fit}{cnt}", S.BORE, tool, cd,
                                     ST_BORE, [f.id], S.bore(tool, cd, d, True, self.mat),
                                     z_depth=round(z0 - depth - (0.3 if f.through else 0), 3), z_start=z0,
-                                    positions=positions))
+                                    positions=positions, geom="hole_walls", sel_d=d))
                 if precise:
                     ops[-1].notes.append(f"Квалитет {fit} спиральной расточкой — на грани; для серий — расточная головка.")
         if f.counterbore:
@@ -283,7 +292,8 @@ class Planner:
                 cd = cutting.milling(tool, self.mat, self.machine, "bore")
                 ops.append(self._op(f"Цековка Ø{_n(cb.diameter)}×{_n(cb.depth)}{cnt}", S.BORE, tool, cd, ST_BORE,
                                     [f.id], S.bore(tool, cd, cb.diameter, True, self.mat),
-                                    z_depth=round(z0 - cb.depth, 3), z_start=z0, positions=positions))
+                                    z_depth=round(z0 - cb.depth, 3), z_start=z0, positions=positions,
+                                    geom="hole_walls", sel_d=cb.diameter))
         return ops
 
     def thread_ops(self, f: ThreadFeature, positions) -> List[Operation]:
@@ -312,7 +322,7 @@ class Planner:
             tz = tl + (3 * p if f.through else 0)
             ops.append(self._op(f"Нарезание резьбы {size}{cnt}", S.DRILL, tool, cd, ST_TAP, [f.id],
                                 S.tapping(p, f"{_n(tz)} мм"), cycle="G84", z_depth=round(z0 - tz, 2), z_start=z0,
-                                positions=positions))
+                                positions=positions, geom="holes", sel_d=drill_d))
             if not f.through:
                 ops[-1].notes.append(f"Запас под стружку и заборный конус: сверление на {_n(3 * p)} мм глубже резьбы.")
         else:
@@ -321,7 +331,7 @@ class Planner:
                 cd = cutting.milling(tool, self.mat, self.machine, "thread_mill")
                 ops.append(self._op(f"Резьбофрезерование {size}{cnt}", S.THREAD, tool, cd, ST_TAP, [f.id],
                                     S.thread_mill(p, tl), z_depth=round(z0 - tl, 3), z_start=z0,
-                                    positions=positions))
+                                    positions=positions, geom="thread"))
             else:
                 self.questions.append(f"Нет резьбофрезы для {size} — добавьте в библиотеку или задайте method=tap.")
         return ops
@@ -330,7 +340,7 @@ class Planner:
         tool = tooling.chamfer_mill()
         cd = cutting.milling(tool, self.mat, self.machine, "chamfer")
         op = self._op(f"Фаска {_n(f.size)}×45° — {what}", S.CHAMFER_2D, tool, cd, ST_CHAMFER, [f.id],
-                      S.chamfer(f.size, tool), z_depth=-(f.size + 0.5))
+                      S.chamfer(f.size, tool), z_depth=-(f.size + 0.5), geom=f"chamfer_{f.edges}")
         return [op]
 
     def surface_ops(self, f: SurfaceFeature) -> List[Operation]:
@@ -342,7 +352,7 @@ class Planner:
             p = S.adaptive(rough, cd, self.mat, depth)
             p["Stock to leave (припуск)"] = "0.3 мм по поверхности"
             ops.append(self._op(f"Черновая 3D-поверхности {f.id}", S.ADAPTIVE_3D, rough, cd, ST_ROUGH, [f.id], p,
-                                z_depth=-depth, notes=[f.description] if f.description else []))
+                                z_depth=-depth, notes=[f.description] if f.description else [], geom="surface"))
         r_lim = f.min_concave_radius or 5
         ball = tooling.ball_mill(min(2 * r_lim * 0.9, 10))
         if ball:
@@ -353,16 +363,38 @@ class Planner:
             cdf = cutting.milling(ball, self.mat, self.machine, "ball", ap=0.1, ae=fin)
             ops.append(self._op("Получистовая 3D", S.PARALLEL_3D, ball, cd, ST_3D, [f.id],
                                 {"Stepover": f"{_n(semi)} мм", "Stock to leave": "0.1 мм",
-                                 "Pass direction": "под 45° к основным рёбрам"}, z_depth=-depth))
+                                 "Pass direction": "под 45° к основным рёбрам"}, z_depth=-depth, geom="surface"))
             ops.append(self._op(f"Чистовая 3D (Ra {_n(ra)})", S.SCALLOP_3D, ball, cdf, ST_3D, [f.id],
                                 {"Stepover (по гребешку)": f"{_n(fin)} мм",
                                  "Альтернатива": f"{S.STEEP_SHALLOW_3D} — при крутых стенках > 60°",
-                                 "Tolerance": "0.005 мм, Smoothing вкл."}, z_depth=-depth))
+                                 "Tolerance": "0.005 мм, Smoothing вкл."}, z_depth=-depth, geom="surface"))
         return ops
 
     # ------------------------------------------------------------------ установы
+    def _holes_in_pockets(self) -> None:
+        """Отверстие целиком в дне кармана: вход — от дна (Z = −глубина), а не от верха детали."""
+        from numcraft.sketch import _feature_box
+
+        pockets = [(f, _feature_box(f)) for f in self.part.features
+                   if isinstance(f, (PocketFeature, SlotFeature)) and not f.through]
+        for h in self.part.features:
+            if not isinstance(h, (HoleFeature, ThreadFeature)) or not h.positions or h.z_start:
+                continue
+            r = h.diameter / 2 if isinstance(h, HoleFeature) else tooling.parse_thread(h.size)[0] / 2
+            for pk, box in pockets:
+                if box is None or pk.side != h.side:
+                    continue
+                inside = all(box[0] + r <= x <= box[2] - r and box[1] + r <= y <= box[3] - r for x, y in h.positions)
+                if inside:
+                    h.z_start = -pk.depth
+                    if h.through and h.depth and h.depth >= self.part.size.z - 1e-6:
+                        h.depth = round(self.part.size.z - pk.depth, 3)
+                    self.assumptions.append(f"{h.id}: отверстие в дне кармана {pk.id} — вход с Z{_n(-pk.depth)}.")
+                    break
+
     def plan(self) -> TechSheet:
         part = self.part
+        self._holes_in_pockets()
         self.stock = stock = self._stock()
         ps = part.size
         vise = self.machine.vise
