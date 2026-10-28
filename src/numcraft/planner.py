@@ -228,7 +228,7 @@ class Planner:
 
     def _drill(self, fid: str, d: float, depth: float, through: bool, positions, purpose: str,
                z0: float = 0.0) -> Operation:
-        tool = tooling.drill(d, depth)
+        tool = tooling.drill(d, depth + 0.3 * d + (1.0 if through else 0.0) - z0, self.g)
         tip = 0.3 * d if (tool.point_angle or 140) <= 118 else 0.18 * d
         total = depth + tip + (1.0 if through else 0.0)
         cycle, peck = self._drill_cycle(d, total)
@@ -255,7 +255,7 @@ class Planner:
             ops.append(self._spot(f.id, d_pre, positions, chamfer=f.chamfer or 0.2, z0=z0))
             ops.append(self._drill(f.id, d_pre, depth + (0 if f.through else 0.3 * d), f.through, positions,
                                    f"под развёртку Ø{_n(d)}{fit}{cnt}", z0=z0))
-            rt = tooling.reamer(d, fit or "")
+            rt = tooling.reamer(d, fit or "", depth=depth + (1.5 if f.through else 0) - z0)
             cd = cutting.reaming(rt, self.mat, self.machine)
             rdepth = depth + (1.5 if f.through else 0)
             ops.append(self._op(f"Развёртывание Ø{_n(d)}{fit}{cnt}", S.DRILL, rt, cd, ST_REAM, [f.id],
@@ -358,7 +358,7 @@ class Planner:
             ops.append(self._op(f"Черновая 3D-поверхности {f.id}", S.ADAPTIVE_3D, rough, cd, ST_ROUGH, [f.id], p,
                                 z_depth=-depth, notes=[f.description] if f.description else [], geom="surface"))
         r_lim = f.min_concave_radius or 5
-        ball = tooling.ball_mill(min(2 * r_lim * 0.9, 10))
+        ball = tooling.ball_mill(min(2 * r_lim * 0.9, 10), self.g)
         if ball:
             ra = f.ra or 3.2
             semi = S.scallop_stepover(ball.diameter / 2, ra * 3)

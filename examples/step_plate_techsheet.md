@@ -85,7 +85,7 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 <!--sk:o2-->
 - **Стратегия:** 2D Adaptive Clearing (адаптивная выборка)
 - **Что выбрать в HSMWorks:** Pockets/Contours: нижняя кромка наружного контура детали (цепочкой). Stock contours: вкл. Heights → Bottom: Model top, offset −20.3 мм.
-- **Инструмент:** T2 — Фреза концевая Ø16 z3 Lc32
+- **Инструмент:** T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45
 - **Глубина:** Z-20.3
 - Optimal load (оптимальная нагрузка): 2.4 мм (15 % D)
 - Maximum roughing stepdown (шаг по Z): 20.3 мм
@@ -103,7 +103,7 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 <!--sk:o3-->
 - **Стратегия:** 2D Adaptive Clearing (адаптивная выборка)
 - **Что выбрать в HSMWorks:** Pockets: грань дна кармана (один щелчок — контур и глубина берутся автоматически).
-- **Инструмент:** T2 — Фреза концевая Ø16 z3 Lc32
+- **Инструмент:** T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45
 - **Глубина:** Z-8
 - Optimal load (оптимальная нагрузка): 2.4 мм (15 % D)
 - Maximum roughing stepdown (шаг по Z): 8 мм
@@ -120,7 +120,7 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 <!--sk:o4-->
 - **Стратегия:** 2D Adaptive Clearing (адаптивная выборка)
 - **Что выбрать в HSMWorks:** Pockets: грань дна кармана. Rest machining: from previous operation(s).
-- **Инструмент:** T3 — Фреза концевая Ø8 z3 Lc19
+- **Инструмент:** T3 — Фреза концевая ZCC AL-3E-D8.0 Ø8 z3 Lc20
 - **Глубина:** Z-8
 - Optimal load (оптимальная нагрузка): 1.2 мм (15 % D)
 - Maximum roughing stepdown (шаг по Z): 8 мм
@@ -138,7 +138,7 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 <!--sk:o5-->
 - **Стратегия:** Drill (сверление)
 - **Что выбрать в HSMWorks:** Holes: цилиндрическая грань отверстия Ø6.6 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.
-- **Инструмент:** T4 — Центровка Ø10 90° (тв. сплав)
+- **Инструмент:** T4 — Центровка NC 90° ZCC 1143SC90-1000 Ø10
 - **Глубина:** Z-3.5
 - **Точки (X; Y):** (10; 10), (110; 10), (10; 70), (110; 70)
 - Cycle type (цикл): Drilling – rapid out (G81)
@@ -152,7 +152,7 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 <!--sk:o6-->
 - **Стратегия:** Drill (сверление)
 - **Что выбрать в HSMWorks:** Holes: цилиндрическая грань отверстия Ø6 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.
-- **Инструмент:** T4 — Центровка Ø10 90° (тв. сплав)
+- **Инструмент:** T4 — Центровка NC 90° ZCC 1143SC90-1000 Ø10
 - **Глубина:** Z-3.3
 - **Точки (X; Y):** (15; 40), (105; 40)
 - Cycle type (цикл): Drilling – rapid out (G81)
@@ -166,7 +166,7 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 <!--sk:o7-->
 - **Стратегия:** Drill (сверление)
 - **Что выбрать в HSMWorks:** Holes: цилиндрическая грань отверстия Ø9.8 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.
-- **Инструмент:** T4 — Центровка Ø10 90° (тв. сплав)
+- **Инструмент:** T4 — Центровка NC 90° ZCC 1143SC90-1000 Ø10
 - **Глубина:** Z-9.5
 - **Точки (X; Y):** (60; 40)
 - Cycle type (цикл): Drilling – rapid out (G81)
@@ -180,7 +180,7 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 <!--sk:o8-->
 - **Стратегия:** Drill (сверление)
 - **Что выбрать в HSMWorks:** Holes: цилиндрическая грань отверстия Ø6.6 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.
-- **Инструмент:** T5 — Сверло Ø6.6 5xD тв. сплав 140°
+- **Инструмент:** T5 — Сверло ZCC 1534SU03-0660 Ø6.6 3xD
 - **Глубина:** Z-22.19
 - **Точки (X; Y):** (10; 10), (110; 10), (10; 70), (110; 70)
 - Cycle type (цикл): Chip breaking – partial retract (G73)
@@ -195,7 +195,7 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 <!--sk:o9-->
 - **Стратегия:** Drill (сверление)
 - **Что выбрать в HSMWorks:** Holes: цилиндрическая грань отверстия Ø5.1 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.
-- **Инструмент:** T6 — Сверло Ø5.1 5xD тв. сплав 140°
+- **Инструмент:** T6 — Сверло ZCC 1534SU03-0510 Ø5.1 3xD
 - **Глубина:** Z-15.92
 - **Точки (X; Y):** (15; 40), (105; 40)
 - Cycle type (цикл): Chip breaking – partial retract (G73)
@@ -210,7 +210,7 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 <!--sk:o10-->
 - **Стратегия:** Drill (сверление)
 - **Что выбрать в HSMWorks:** Holes: цилиндрическая грань отверстия Ø9.8 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.
-- **Инструмент:** T7 — Сверло Ø9.8 5xD тв. сплав 140°
+- **Инструмент:** T7 — Сверло ZCC 1534SU03-0980 Ø9.8 3xD
 - **Глубина:** Z-22.76
 - **Точки (X; Y):** (60; 40)
 - Cycle type (цикл): Drilling – rapid out (G81)
@@ -224,7 +224,7 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 <!--sk:o11-->
 - **Стратегия:** 2D Contour (контур)
 - **Что выбрать в HSMWorks:** Contour selection: нижняя кромка наружного контура (цепочкой), сторона — снаружи. Heights → Bottom: Model top, offset −20.3 мм.
-- **Инструмент:** T2 — Фреза концевая Ø16 z3 Lc32
+- **Инструмент:** T2 — Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45
 - **Глубина:** Z-20.3
 - Stock to leave (припуск): 0
 - Finishing passes: 1
@@ -240,7 +240,7 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 <!--sk:o12-->
 - **Стратегия:** 2D Pocket (карман)
 - **Что выбрать в HSMWorks:** Pockets: грань дна кармана.
-- **Инструмент:** T3 — Фреза концевая Ø8 z3 Lc19
+- **Инструмент:** T3 — Фреза концевая ZCC AL-3E-D8.0 Ø8 z3 Lc20
 - **Глубина:** Z-8
 - Maximum stepover (шаг): 4.8 мм
 - Ramp type: Helix 2°
@@ -254,7 +254,7 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 <!--sk:o13-->
 - **Стратегия:** 2D Contour (контур)
 - **Что выбрать в HSMWorks:** Contour selection: кромка между дном и стенками кармана (цепочкой), сторона — внутри.
-- **Инструмент:** T3 — Фреза концевая Ø8 z3 Lc19
+- **Инструмент:** T3 — Фреза концевая ZCC AL-3E-D8.0 Ø8 z3 Lc20
 - **Глубина:** Z-8
 - Stock to leave (припуск): 0
 - Finishing passes: 1
@@ -287,7 +287,7 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 <!--sk:o15-->
 - **Стратегия:** Drill (сверление)
 - **Что выбрать в HSMWorks:** Holes: цилиндрическая грань отверстия Ø10 → «Select same diameter». Optimize order: вкл. Top: Hole top, Bottom: Hole bottom.
-- **Инструмент:** T9 — Развёртка Ø10H7 тв. сплав
+- **Инструмент:** T9 — Развёртка ZCC 3112H7-1000 Ø10H7
 - **Глубина:** Z-21.5
 - **Точки (X; Y):** (60; 40)
 - Cycle type (цикл): Reaming – feed out (G85)
@@ -333,13 +333,13 @@ STEP: ../tests/fixtures/plate_pocket_holes.step  (AUTOMOTIVE_DESIGN { 1 0 10303 
 | T / H / D | Инструмент | Артикул | Ø, мм | z | Lc, мм | L общ., мм | Вылет, мм | Материал | Операции |
 |---|---|---|---|---|---|---|---|---|---|
 | T1 / H1 / D1 | Торцевая фреза Ø50, 5 пластин (45°) | — | 50 | 5 | 6 | 50 | — | твердый сплав, пластины для Al / стали | 1, 16 |
-| T2 / H2 / D2 | Фреза концевая Ø16 z3 Lc32 | — | 16 | 3 | 32 | 92 | 37 | твердый сплав, без покрытия / ZrN | 2, 3, 11 |
-| T3 / H3 / D3 | Фреза концевая Ø8 z3 Lc19 | — | 8 | 3 | 19 | 63 | 24 | твердый сплав, без покрытия / ZrN | 4, 12, 13 |
-| T4 / H4 / D4 | Центровка Ø10 90° (тв. сплав) | — | 10 | 2 | — | 75 | 24 | твердый сплав | 5, 6, 7 |
-| T5 / H5 / D5 | Сверло Ø6.6 5xD тв. сплав 140° | — | 6.6 | 2 | 39.6 | 73 | 32 | твердый сплав, TiAlN | 8 |
-| T6 / H6 / D6 | Сверло Ø5.1 5xD тв. сплав 140° | — | 5.1 | 2 | 30.6 | 66 | 26 | твердый сплав, TiAlN | 9 |
-| T7 / H7 / D7 | Сверло Ø9.8 5xD тв. сплав 140° | — | 9.8 | 2 | 58.8 | 89 | 33 | твердый сплав, TiAlN | 10 |
+| T2 / H2 / D2 | Фреза концевая ZCC AL-3E-D16.0 Ø16 z3 Lc45 | AL-3E-D16.0 (склад) | 16 | 3 | 45 | 100 | 50 | твердый сплав, YK30F | 2, 3, 11 |
+| T3 / H3 / D3 | Фреза концевая ZCC AL-3E-D8.0 Ø8 z3 Lc20 | AL-3E-D8.0 (склад) | 8 | 3 | 20 | 60 | 25 | твердый сплав, YK30F | 4, 12, 13 |
+| T4 / H4 / D4 | Центровка NC 90° ZCC 1143SC90-1000 Ø10 | 1143SC90-1000 (склад) | 10 | 2 | 20 | 89 | 24 | твердый сплав, KDG303 | 5, 6, 7 |
+| T5 / H5 / D5 | Сверло ZCC 1534SU03-0660 Ø6.6 3xD | 1534SU03-0660 (склад) | 6.6 | 2 | 34 | 79 | 32 | твердый сплав, KDG303 | 8 |
+| T6 / H6 / D6 | Сверло ZCC 1534SU03-0510 Ø5.1 3xD | 1534SU03-0510 (склад) | 5.1 | 2 | 28 | 66 | 26 | твердый сплав, KDG303 | 9 |
+| T7 / H7 / D7 | Сверло ZCC 1534SU03-0980 Ø9.8 3xD | 1534SU03-0980 (склад) | 9.8 | 2 | 47 | 89 | 33 | твердый сплав, KDG303 | 10 |
 | T8 / H8 / D8 | Метчик ZCC 4701US-M6-6H (глухая, спираль 40° (C), DIN 371, HSS-E HG23) | 4701US-M6-6H (склад) | 6 | 3 | 10 | 80 | 22 | HSS-E, TiAlN | 14 |
-| T9 / H9 / D9 | Развёртка Ø10H7 тв. сплав | — | 10 | 6 | 30 | 110 | 32 | твердый сплав | 15 |
+| T9 / H9 / D9 | Развёртка ZCC 3112H7-1000 Ø10H7 | 3112H7-1000 (склад) | 10 | 6 | 25 | 110 | 32 | твердый сплав, KRG102 | 15 |
 
 > Режимы — стартовые для Haas VF-2. Первую деталь вести с коррекцией подачи 70–80 % и контролем нагрузки шпинделя. Траектории формирует HSMWorks; обязательна симуляция в HSMWorks перед выводом УП.

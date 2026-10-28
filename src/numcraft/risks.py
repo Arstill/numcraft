@@ -140,7 +140,11 @@ def assess(sheet: TechSheet, mat: Material, machine: Machine) -> List[Risk]:
             t = op.tool
             depth = (op.z_start or 0) - (op.z_depth or 0)
             ld = depth / t.diameter if t.diameter else 0
-            if t.kind == "end_mill" and t.flute_length and depth > t.flute_length + 0.01 and op.strategy != "Bore (спиральная расточка)":
+            if t.kind == "end_mill" and t.reach and t.flute_length < depth <= t.reach + 0.01:
+                add_op(op, "средний", "Фреза с шейкой", f"{t.article or t.label()}: Lc {_n(t.flute_length)} мм, "
+                       f"шейка {_n(t.reach)} мм на глубину {_n(round(depth, 2))} мм",
+                       "Стенки — в несколько проходов по Z (Multiple depths, шаг ≤ Lc), ae и fz −20…30 %.")
+            elif t.kind == "end_mill" and t.flute_length and depth > t.flute_length + 0.01 and op.strategy != "Bore (спиральная расточка)":
                 add_op(op, "высокий", "Длина режущей части", f"глубина {_n(round(depth, 2))} мм > Lc {_n(t.flute_length)} "
                        f"фрезы Ø{_n(t.diameter)}", "Хвостовик заденет стенку: фреза с удлинённой режущей частью "
                        "или шейкой (Neck), либо обработка в два пояса с переворотом.")
@@ -162,6 +166,13 @@ def assess(sheet: TechSheet, mat: Material, machine: Machine) -> List[Risk]:
             elif t.kind == "end_mill" and ld > 3:
                 add_op(op, "средний", "Вылет", f"L/D = {_n(round(ld, 1))} фрезой Ø{_n(t.diameter)}",
                        "Минимальный вылет, термопатрон/цанга ER с биением ≤ 0.01.")
+            if t.kind == "drill" and "СОЖ через инструмент" in t.description:
+                add_op(op, "высокий", "СОЖ через инструмент", f"{t.article}: сверло с внутренним подводом СОЖ, "
+                       f"а на VF-2 нет TSC", "Заказать опцию TSC либо сверлить ступенчато: пилотное сверло 3xD + "
+                       "G83 с малым Q, обильный полив.")
+            if t.kind == "drill" and t.reach and depth > t.reach + 0.01:
+                add_op(op, "высокий", "Длина сверла", f"{t.article}: глубина {_n(round(depth, 2))} мм > рабочей "
+                       f"длины {_n(t.reach)} мм", "Сверло большей длины (8xD и выше) или сверление с двух сторон.")
             if t.kind == "drill" and ld > 8:
                 add_op(op, "высокий", "Глубокое сверление", f"Ø{_n(t.diameter)} на {_n(round(depth, 2))} мм "
                        f"({_n(round(ld, 1))}xD)", "Сверло с внутренним подводом (нужен TSC) или пилотное "

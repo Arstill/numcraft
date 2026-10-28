@@ -71,7 +71,57 @@ def _group_ok(tool_group: str, group: str) -> bool:
     return tool_group in ("any", group)
 
 
-def end_mills(group: str) -> List[Tool]:
+@lru_cache(maxsize=1)
+def catalog_tools() -> list:
+    """Инструмент ZCC из основного каталога (knowledge/catalogs/zcc_tools.yaml), если импортирован."""
+    path = _DIR / "catalogs" / "zcc_tools.yaml"
+    if not path.exists():
+        return []
+    with open(path, "r", encoding="utf-8") as f:
+        return yaml.safe_load(f).get("tools", [])
+
+
+KIND_RU = {"end_mill": "Фреза концевая", "ball_mill": "Фреза сферическая", "drill": "Сверло",
+           "spot_drill": "Центровка NC 90°", "chamfer_mill": "Фасочная фреза 90°", "reamer": "Развёртка"}
+
+
+def _cat_tool(r: dict) -> Tool:
+    kind = r["kind"]
+    extra = ""
+    if kind == "end_mill":
+        extra = f" z{r.get('z', 0)} Lc{_n(r['lc'])}" + (f", шейка {_n(r['reach'])}" if r.get("reach") else "")
+    elif kind == "drill":
+        extra = f" {r['xd']}xD" + (" (СОЖ через инструмент)" if r.get("internal_coolant") else "")
+    elif kind == "reamer":
+        extra = r.get("fit", "")
+    elif kind == "ball_mill":
+        extra = f" R{_n(r['d'] / 2)}"
+    t = Tool(
+        kind=kind, diameter=float(r["d"]), flutes=int(r.get("z") or 2), flute_length=float(r.get("lc") or 0),
+        overall_length=float(r["oal"]), corner_radius=float(r.get("r") or (r["d"] / 2 if kind == "ball_mill" else 0)),
+        for_group=r["group"], point_angle=r.get("angle") or (140 if kind == "drill" else None),
+        tool_material="твердый сплав", coating=r.get("grade", ""), article=r["article"], in_stock=r["in_stock"],
+        reach=float(r.get("reach") or 0), shank_d=float(r.get("shank_d") or 0),
+        description=f"{KIND_RU.get(kind, kind)} ZCC {r['article']} Ø{_n(r['d'])}{extra}",
+    )
+    return t
+
+
+def _cat(kind: str, group: str) -> List[dict]:
+    return [r for r in catalog_tools() if r["kind"] == kind and _group_ok(r["group"], group)]
+
+
+def end_mills(group: str, neck: bool = False) -> List[Tool]:
+    """Концевые фрезы для группы материала: каталог ZCC (основные серии; запасные — только для недостающих Ø),
+    иначе — обобщённая библиотека tool_library.yaml."""
+    rows = [r for r in _cat("end_mill", group) if (r.get("length") == "neck") == neck]
+    if rows:
+        main = [r for r in rows if not r.get("spare")]
+        have = {r["d"] for r in main}
+        rows = main + [r for r in rows if r.get("spare") and r["d"] not in have]
+        return [_cat_tool(r) for r in rows]
+    if neck:
+        return []
     out = []
     for row in _library()["end_mills"]:
         if _group_ok(row.get("group", "any"), group):
@@ -84,25 +134,48 @@ def end_mills(group: str) -> List[Tool]:
     return out
 
 
+def _rank(t: Tool) -> tuple:
+    # со склада → толще хвостовик → короче
+    return (t.in_stock is False, -(t.shank_d or t.diameter), t.flute_length, t.overall_length)
+
+
 def pick_end_mill(group: str, max_d: float, min_lc: float = 0.0, min_d: float = 0.0) -> Optional[Tool]:
-    """Наибольшая фреза D ≤ max_d, которая достаёт на глубину (Lc ≥ min_lc); среди равных D — самая короткая.
-    Если ни одна не достаёт — наибольшая D с самой длинной режущей частью (риск отметит risks.py)."""
+    """Наибольшая фреза D ≤ max_d, которая достаёт на глубину: Lc ≥ min_lc и общая длина позволяет вылет
+    (глубина + 5 мм над деталью при зажиме ≥ 3·хвостовика). Среди равных D — со склада, жёстче, короче.
+    Если обычные не достают — фреза с шейкой; иначе — самая длинная (риск отметит risks.py)."""
     cands = [t for t in end_mills(group) if min_d - 1e-6 <= t.diameter <= max_d + 1e-6]
     if not cands:
         return None
-    fit = [t for t in cands if t.flute_length >= min_lc]
+
+    def reaches(t: Tool, by_neck: bool = False, slack: float = 0.0) -> bool:
+        need = min_lc - slack
+        ok_len = (t.reach if by_neck else t.flute_length) >= need
+        grip = max(20.0, 3 * (t.shank_d or t.diameter))
+        return ok_len and (not t.overall_length or t.overall_length - grip >= need + 4)
+
+    # точно в размер глубины (без запаса 1 мм) — лучше обычная фреза со склада, чем фреза с шейкой под заказ
+    fit = [t for t in cands if reaches(t)] or [t for t in cands if reaches(t, slack=1.0) and t.in_stock is not False]
     if fit:
         best_d = max(t.diameter for t in fit)
-        return min((t for t in fit if t.diameter == best_d), key=lambda t: t.flute_length)
+        return min((t for t in fit if t.diameter == best_d), key=_rank)
+    necked = [t for t in end_mills(group, neck=True) if min_d - 1e-6 <= t.diameter <= max_d + 1e-6
+              and reaches(t, by_neck=True)]
+    if necked:
+        best_d = max(t.diameter for t in necked)
+        return min((t for t in necked if t.diameter == best_d), key=_rank)
     best_d = max(t.diameter for t in cands)
-    return max((t for t in cands if t.diameter == best_d), key=lambda t: t.flute_length)
+    return max((t for t in cands if t.diameter == best_d), key=lambda t: (t.flute_length, t.overall_length))
 
 
 def face_mill() -> Tool:
     return _mk("face_mill", _library()["face_mills"][0], coating="пластины для Al / стали")
 
 
-def ball_mill(max_d: float) -> Optional[Tool]:
+def ball_mill(max_d: float, group: str = "any") -> Optional[Tool]:
+    rows = [r for r in _cat("ball_mill", group) if r["d"] <= max_d + 1e-6]
+    if rows:
+        best = max(r["d"] for r in rows)
+        return min((_cat_tool(r) for r in rows if r["d"] == best), key=_rank)
     rows = [r for r in _library()["ball_mills"] if r["d"] <= max_d]
     if not rows:
         return None
@@ -113,11 +186,19 @@ def ball_mill(max_d: float) -> Optional[Tool]:
     return t
 
 
-def spot_drill() -> Tool:
+def spot_drill(d: float = 10.0) -> Tool:
+    rows = _cat("spot_drill", "any")
+    if rows:
+        exact = [r for r in rows if math.isclose(r["d"], d)] or rows
+        return min((_cat_tool(r) for r in exact), key=lambda t: (t.in_stock is False, abs(t.diameter - d)))
     return _mk("spot_drill", _library()["spot_drills"][0])
 
 
-def chamfer_mill() -> Tool:
+def chamfer_mill(d: float = 10.0) -> Tool:
+    rows = _cat("chamfer_mill", "any")
+    if rows:
+        exact = [r for r in rows if math.isclose(r["d"], d)] or rows
+        return min((_cat_tool(r) for r in exact), key=lambda t: (t.in_stock is False, abs(t.diameter - d), -t.flutes))
     return _mk("chamfer_mill", _library()["chamfer_mills"][0])
 
 
@@ -128,12 +209,23 @@ def thread_mill(nominal_d: float) -> Optional[Tool]:
     return _mk("thread_mill", max(rows, key=lambda r: r["d"]))
 
 
-def drill(d: float, depth: float) -> Tool:
-    """Сверло под заданный диаметр: тв. сплав (короткое 5xD или длинное 8xD), до Ø3 — HSS-Co."""
+def drill(d: float, depth: float, group: str = "any", tsc: bool = False) -> Tool:
+    """Сверло точного диаметра из каталога ZCC с рабочей длиной ≥ глубины: сначала серия для материала
+    (алюминий — SC), затем универсальная SU; без внутреннего подвода СОЖ, если на станке нет TSC.
+    Самое короткое из подходящих (жёстче), со склада. Нет в каталоге — обобщённое сверло."""
     d = round(d, 2)
+    rows = [r for r in catalog_tools() if r["kind"] == "drill" and math.isclose(r["d"], d, abs_tol=0.001)]
+    if rows:
+        def key(r):
+            return (r.get("reach", 0) < depth,  # достаёт
+                    bool(r.get("internal_coolant")) and not tsc,  # СОЖ через инструмент — только при TSC
+                    not r["in_stock"],  # со склада
+                    r["group"] != group,  # серия под материал
+                    r["xd"], r["oal"])
+        return _cat_tool(sorted(rows, key=key)[0])
     ratio = 5 if depth <= 5 * d else 8 if depth <= 8 * d else 12
     hss = d < 3
-    t = Tool(
+    return Tool(
         kind="drill",
         diameter=d,
         flutes=2,
@@ -144,10 +236,14 @@ def drill(d: float, depth: float) -> Tool:
         point_angle=118 if hss else 140,
         description=f"Сверло Ø{_n(d)} {ratio}xD {'HSS-Co 118°' if hss else 'тв. сплав 140°'}",
     )
-    return t
 
 
-def reamer(d: float, fit: str) -> Tool:
+def reamer(d: float, fit: str, depth: float = 0.0) -> Tool:
+    rows = [r for r in catalog_tools() if r["kind"] == "reamer" and math.isclose(r["d"], d, abs_tol=0.001)
+            and (not fit or r.get("fit") == fit.upper())]
+    if rows:
+        r = sorted(rows, key=lambda r: (r.get("reach", 0) < depth, not r["in_stock"], r["oal"]))[0]
+        return _cat_tool(r)
     return Tool(kind="reamer", diameter=d, flutes=6, flute_length=round(d * 2 + 10, 0),
                 overall_length=round(d * 6 + 50, 0), description=f"Развёртка Ø{_n(d)}{fit} тв. сплав")
 

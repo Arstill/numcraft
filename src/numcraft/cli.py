@@ -173,6 +173,14 @@ def cmd_cut(a) -> int:
 def cmd_catalog(a) -> int:
     from numcraft.catalogs import zcc
 
+    if a.what == "main":
+        from numcraft.catalogs.zcc_main import build_yaml, parse
+
+        text = Path(a.file).read_text(encoding="utf-8")
+        out = a.out or str(Path(__file__).parent / "knowledge" / "catalogs" / "zcc_tools.yaml")
+        Path(out).write_text(build_yaml(text), encoding="utf-8")
+        print(f"Инструментов ZCC: {len(parse(text))} → {out}")
+        return 0
     if a.what == "text":
         out = a.out or str(Path(a.file).with_suffix(".txt"))
         print(f"Выгружаю текст из {a.file} … (большой каталог — несколько минут)")
@@ -286,9 +294,10 @@ def main(argv=None) -> int:
     pc.add_argument("--rpm", type=int)
     pc.set_defaults(fn=cmd_cut)
 
-    pk = sub.add_parser("catalog", help="импорт каталога ZCC: taps — метчики в библиотеку, text — выгрузка текста")
-    pk.add_argument("what", choices=["taps", "text"])
-    pk.add_argument("file", help="PDF каталога")
+    pk = sub.add_parser("catalog", help="каталог ZCC: taps — метчики из PDF, text — текст из PDF, "
+                                         "main — фрезы/свёрла из текста основного каталога")
+    pk.add_argument("what", choices=["taps", "text", "main"])
+    pk.add_argument("file", help="PDF каталога (для main — .txt, выгруженный командой text)")
     pk.add_argument("-o", "--out", help="куда сохранить")
     pk.add_argument("--pages", help="страницы, напр. 120-380 (для text)")
     pk.set_defaults(fn=cmd_catalog)
