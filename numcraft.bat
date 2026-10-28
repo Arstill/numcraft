@@ -1,5 +1,7 @@
 @echo off
-rem Перетащите на этот файл STEP и/или PDF чертежа детали - техкарта откроется в браузере.
+rem Два способа:
+rem  1) перетащить STEP и/или PDF на значок numcraft.bat;
+rem  2) открыть numcraft.bat двойным щелчком, перетащить файлы в окно и нажать Enter.
 chcp 65001 >nul
 set PYTHONUTF8=1
 
@@ -27,11 +29,24 @@ if errorlevel 1 (
   )
 )
 
-if "%~1"=="" (
-  echo Всё готово. Перетащите на numcraft.bat файлы детали: STEP-модель и PDF чертежа.
+cd /d "%~dp0src"
+
+if not "%~1"=="" (
+  %PY% -m numcraft plan %* --gcode --open
+  echo.
   pause
   exit /b
 )
-cd /d "%~dp0src"
-%PY% -m numcraft plan %* --gcode --open
-if errorlevel 1 pause
+
+:ask
+echo.
+echo ============================================================
+echo  Перетащите в это окно STEP-модель и/или PDF чертежа детали
+echo  (можно по очереди), затем нажмите Enter.
+echo  Пустой Enter - выход.
+echo ============================================================
+set "FILES="
+set /p FILES=Файлы: 
+if not defined FILES exit /b
+%PY% -m numcraft plan %FILES% --gcode --open
+goto ask
