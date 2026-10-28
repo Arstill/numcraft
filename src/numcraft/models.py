@@ -253,6 +253,7 @@ class TechSheet(BaseModel):
     assumptions: List[str] = Field(default_factory=list)
     questions: List[str] = Field(default_factory=list)
     gcode: Optional[str] = None
+    model3d: Optional[dict] = None  # данные 3D-вида (рёбра модели), см. numcraft.model3d
 
 
 def _n(v: float) -> str:

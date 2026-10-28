@@ -141,12 +141,12 @@ def to_json(sheet: TechSheet) -> str:
 
 _CSS = """
 :root{--bg:#fff;--fg:#1d1d1f;--muted:#666;--line:#ddd;--head:#f3f4f6;--hi:#fde8e8;--mid:#fff6db;--code:#f6f8fa;
---partfill:#e9edf2;--hl:#d9480f;--hlfill:rgba(217,72,15,.30);--datum:#1971c2}
+--partfill:#e9edf2;--hl:#d9480f;--hlfill:rgba(217,72,15,.30);--datum:#1971c2;--partbg:#f7f8fa}
 @media (prefers-color-scheme:dark){:root{--bg:#16181c;--fg:#e8e8e8;--muted:#9aa;--line:#333;--head:#22252b;
 --hi:#4a1f1f;--mid:#3f3519;--code:#1e2127;--partfill:#262b33;--hl:#ff8a4c;--hlfill:rgba(255,138,76,.32);
---datum:#5fa8ff}}
+--datum:#5fa8ff;--partbg:#1b1e23}}
 body{background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
-max-width:1200px;margin:0 auto;padding:16px}
+max-width:1760px;margin:0 auto;padding:16px}
 h1{font-size:24px}h2{margin-top:32px;border-bottom:1px solid var(--line);padding-bottom:4px}
 h3{font-size:15px;margin:18px 0 4px}
 table{border-collapse:collapse;width:100%;margin:8px 0;font-size:14px;display:block;overflow-x:auto}
@@ -178,6 +178,7 @@ def to_html(md: str, sheet: TechSheet) -> str:
     import re
 
     from numcraft.sketch import setup_svg
+    from numcraft.viewer3d import CSS as V3D_CSS, viewer_html
 
     title = f"Техкарта: {sheet.part.name}"
     sketches = {}
@@ -192,7 +193,7 @@ def to_html(md: str, sheet: TechSheet) -> str:
 
     out = [f"<!doctype html><html lang='ru'><head><meta charset='utf-8'>"
            f"<meta name='viewport' content='width=device-width,initial-scale=1'><title>{html.escape(title)}</title>"
-           f"<style>{_CSS}</style></head><body>",
+           f"<style>{_CSS}{V3D_CSS}</style></head><body><div class='layout'><main>",
            "<p class='tools'><button onclick=\"document.querySelectorAll('details').forEach(d=>d.open=true)\">"
            "Развернуть все операции</button> <button onclick=\"document.querySelectorAll('details')"
            ".forEach(d=>d.open=false)\">Свернуть</button></p>"]
@@ -204,6 +205,8 @@ def to_html(md: str, sheet: TechSheet) -> str:
         m = re.match(r"<!--sk:(\w+)-->$", ln.strip())
         if m:
             out.append(sketches.get(m.group(1), ""))
+            if m.group(1).startswith("o") and sheet.model3d:
+                out.append(f"<button class='btn3d' onclick='nc3dShow({m.group(1)[1:]})'>Показать в 3D</button>")
             i += 1
             continue
         if ln.startswith("```"):
@@ -250,5 +253,8 @@ def to_html(md: str, sheet: TechSheet) -> str:
         i += 1
     if in_details:
         out.append("</details>")
-    out.append("</body></html>")
+    out.append("</main>")
+    if sheet.model3d:
+        out.append("<aside>" + viewer_html(sheet.model3d) + "</aside>")
+    out.append("</div></body></html>")
     return "\n".join(out)

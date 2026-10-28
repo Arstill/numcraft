@@ -11,6 +11,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List, Optional
 
+from numcraft import model3d
 from numcraft.gcode import generate
 from numcraft.knowledge.machine import load_machine
 from numcraft.knowledge.materials import UnknownMaterial, resolve_material
@@ -47,10 +48,11 @@ class Result:
     step_summary: Optional[str] = None
 
 
-def build_part(inp: Inputs) -> tuple[Part, List[str], Optional[str]]:
+def build_part(inp: Inputs) -> tuple[Part, List[str], Optional[str], Optional[stp.StepAnalysis]]:
     notes: List[str] = []
     missing: List[str] = []
     step_summary = None
+    analysis = None
     part: Optional[Part] = None
     info = drw.analyze_drawing(inp.drawing_path) if inp.drawing_path else None
 
@@ -103,14 +105,19 @@ def build_part(inp: Inputs) -> tuple[Part, List[str], Optional[str]]:
         dnotes = drw.apply_to_part(part, info)
         notes = [n for n in notes if not any(f"под метчик {sz}:" in n for sz in info.converted)] + dnotes
     notes += [f"Допущение при разборе: {m}" for m in missing]
-    return part, notes, step_summary
+    return part, notes, step_summary, analysis
 
 
 def run(inp: Inputs, gcode: bool = False, dialect: str = "fanuc", max_rpm: Optional[int] = None) -> Result:
-    part, notes, step_summary = build_part(inp)
+    part, notes, step_summary, analysis = build_part(inp)
     machine = load_machine(max_rpm=max_rpm)
     sheet = plan_part(part, machine)
     sheet.assumptions = notes + sheet.assumptions
+    if analysis is not None:
+        origin = (analysis.bbox_min[0], analysis.bbox_min[1], analysis.bbox_max[2])
+        sheet.model3d = model3d.build(sheet, analysis.edges, origin)
+    else:
+        sheet.model3d = model3d.build(sheet)
     if gcode:
         sheet.gcode = generate(sheet, dialect=dialect)  # type: ignore[arg-type]
     return Result(sheet=sheet, source_notes=notes, step_summary=step_summary)

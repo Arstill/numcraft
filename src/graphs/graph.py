@@ -33,7 +33,7 @@ def intake_node(state: AssistantState) -> Dict[str, Any]:
                  drawing_path=None if image else drawing, part_json=state.get("part_json"),
                  material=state.get("material"), name=state.get("name"))
     try:
-        part, notes, step_summary = build_part(inp)
+        part, notes, step_summary, _ = build_part(inp)
     except InputError as e:
         return {"missing": e.missing, "part": None}
     return {"part": part.model_dump(), "notes": notes, "step_summary": step_summary, "missing": []}

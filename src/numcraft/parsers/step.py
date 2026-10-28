@@ -182,6 +182,7 @@ class StepAnalysis:
     directions: List[str] = field(default_factory=list)
     is_3d: bool = False
     warnings: List[str] = field(default_factory=list)
+    edges: List[List[Vec]] = field(default_factory=list)  # рёбра модели (полилинии, СК файла, мм) — для 3D-вида
 
     @property
     def size(self) -> Vec:
@@ -214,6 +215,49 @@ class _Model:
         loc = self.point(a[1])
         axis = self.direction(a[2]) if isinstance(a[2], Ref) else (0.0, 0.0, 1.0)
         return loc, axis
+
+    def frame(self, r) -> Tuple[Vec, Vec, Vec]:
+        """AXIS2_PLACEMENT_3D → (начало, ось Z, ось X)."""
+        a = self.args(r)
+        loc, axis = self.placement(r)
+        if len(a) > 3 and isinstance(a[3], Ref):
+            ref = self.direction(a[3])
+        else:
+            ref = (1.0, 0.0, 0.0) if abs(axis[0]) < 0.9 else (0.0, 1.0, 0.0)
+        d = _dot(ref, axis)  # ортогонализация
+        return loc, axis, _unit((ref[0] - d * axis[0], ref[1] - d * axis[1], ref[2] - d * axis[2]))
+
+    def edge_polyline(self, ec) -> Optional[List[Vec]]:
+        a = self.args(ec)
+        p1, p2 = self.edge_vertices(ec)
+        curve = a[3]
+        name = self.name(curve)
+        if name == "SEAM_CURVE":
+            return None  # шов цилиндра — не настоящее ребро
+        if name == "SURFACE_CURVE":
+            curve = self.args(curve)[1]
+            name = self.name(curve)
+        if name in ("CIRCLE", "ELLIPSE"):
+            ca = self.args(curve)
+            c, ax, xr = self.frame(ca[1])
+            yr = (ax[1] * xr[2] - ax[2] * xr[1], ax[2] * xr[0] - ax[0] * xr[2], ax[0] * xr[1] - ax[1] * xr[0])
+            ra = ca[2] * self.k
+            rb = (ca[3] if name == "ELLIPSE" else ca[2]) * self.k
+
+            def ang(p: Vec) -> float:
+                d = _sub(p, c)
+                return math.atan2(_dot(d, yr) / rb, _dot(d, xr) / ra)
+
+            start, end = (p1, p2) if a[4] == ".T." else (p2, p1)
+            a0 = ang(start)
+            sweep = 2 * math.pi if self.edge_closed(ec) else (ang(end) - a0) % (2 * math.pi) or 2 * math.pi
+            n = max(4, math.ceil(sweep / (2 * math.pi) * 64))
+            return [tuple(c[i] + ra * math.cos(a0 + sweep * j / n) * xr[i] + rb * math.sin(a0 + sweep * j / n) * yr[i]
+                          for i in range(3)) for j in range(n + 1)]  # type: ignore[misc]
+        if name == "B_SPLINE_CURVE_WITH_KNOTS":
+            ctrl = [self.point(r) for r in self.args(curve)[2]]
+            return [p1] + ctrl[1:-1] + [p2]
+        return [p1, p2]
 
     def face_loops(self, face) -> List[List[int]]:
         """Список контуров грани, каждый — список id EDGE_CURVE."""
@@ -422,6 +466,19 @@ def analyze_step(text: str, file_name: str = "") -> StepAnalysis:
     if torus and not res.is_3d:
         res.warnings.append(f"Торовые грани ({torus}) — вероятно, скругления дна кармана: нужна радиусная фреза.")
     res.inner_radii = sorted(set(res.inner_radii))
+    seen = set()
+    for fi in face_info.values():
+        for lp in fi["loops"]:
+            for ec in lp:
+                if ec in seen:
+                    continue
+                seen.add(ec)
+                try:
+                    pl = md.edge_polyline(ec)
+                except (KeyError, IndexError, TypeError, ZeroDivisionError):
+                    pl = None
+                if pl:
+                    res.edges.append(pl)
     return res
 
 
