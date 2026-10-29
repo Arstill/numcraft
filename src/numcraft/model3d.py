@@ -159,8 +159,14 @@ def build(sheet: TechSheet, step_edges: Optional[Sequence[Sequence[Vec]]] = None
     top = next((s.stock_top for s in sheet.setups if s.side == "top"), 0.0)
     bot = next((s.stock_top for s in sheet.setups if s.side == "bottom"), 0.0)
     mx, my = (sheet.stock.x - ps.x) / 2, (sheet.stock.y - ps.y) / 2
+    def origin(s) -> list:
+        # нуль установа в СК установа (грань вверх): центр/угол грани; Z0 установа 1 — верх заготовки
+        w_, h_, _ = face_dims(s.side, ps)
+        cx, cy = (w_ / 2, h_ / 2) if sheet.part.datum == "center" else (0.0, 0.0)
+        return [round(cx, 2), round(cy, 2), round(s.z_shift, 2)]
+
     ops = [{"n": op.number, "title": op.title, "tool": f"T{op.tool.number} — {op.tool.label()}",
-            "geom": op.geom, "ids": op.feature_ids, "side": s.side,
+            "origin": origin(s), "geom": op.geom, "ids": op.feature_ids, "side": s.side,
             "setup": s.title, "wcs": s.wcs}
            for s in sheet.setups for op in s.operations]
     return {
@@ -169,6 +175,7 @@ def build(sheet: TechSheet, step_edges: Optional[Sequence[Sequence[Vec]]] = None
         "datum": sheet.part.datum,
         "stock": [-mx, -my, -ps.z - bot, ps.x + mx, ps.y + my, top],
         "edges": edges,
+        "origin0": origin(sheet.setups[0]) if sheet.setups else [0, 0, 0],
         "ops": ops,
         "pockets": [f.id for f in sheet.part.features if isinstance(f, (PocketFeature, SlotFeature))],
         "holes": [f.id for f in sheet.part.features if isinstance(f, (HoleFeature, ThreadFeature))],

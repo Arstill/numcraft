@@ -38,8 +38,18 @@ def test_plan_has_setup_per_side_and_sketches():
     assert [s.wcs for s in res.sheet.setups] == ["G54", "G55", "G56", "G57", "G58"]
     front = res.sheet.setups[2]
     drill = next(o for o in front.operations if o.tool.kind == "drill")
-    assert drill.positions == [(50.0, 20.0)]
+    assert drill.positions == [(0.0, 0.0)]  # Ø10 в центре передней грани 100×40, нуль — центр грани
     svg = setup_svg(res.sheet, front, drill)
     assert "Вид на грань" in svg and 'class="hl"' in svg
     tags = {t for e in res.sheet.model3d["edges"] for t in e["t"]}
     assert {f.id for f in res.sheet.part.features} <= tags
+
+
+def test_y_up_model_is_laid_flat():
+    a = analyze_step_file(str(Path(__file__).parent / "fixtures" / "plate_y_up.step"))
+    assert a.orientation and a.size == (120.0, 80.0, 20.0)
+    part, _ = to_part(a, "6061")
+    sides = sorted((f.type, f.side) for f in part.features)
+    assert sides == [("hole", "front"), ("hole", "top"), ("pocket", "top")]
+    res = run(Inputs(step_path=str(Path(__file__).parent / "fixtures" / "plate_y_up.step"), material="6061"))
+    assert [s.side for s in res.sheet.setups] == ["top", "bottom", "front"]

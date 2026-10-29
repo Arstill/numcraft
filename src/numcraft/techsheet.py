@@ -94,7 +94,9 @@ def to_markdown(sheet: TechSheet, details: bool = True) -> str:
                 w(f"- **Инструмент:** T{op.tool.number} — {op.tool.label()}, вылет ≈ {_n(op.tool.stickout)} мм"
                   if op.tool.stickout else f"- **Инструмент:** T{op.tool.number} — {op.tool.label()}")
                 if op.z_depth is not None:
-                    w(f"- **Глубина:** Z{_n(op.z_depth)}")
+                    zs = s.z_shift  # Z0 установа (установ 1 — верх заготовки)
+                    entry = f", вход с Z{_n(round(op.z_start - zs, 3))}" if op.cycle and (op.z_start - zs) else ""
+                    w(f"- **Глубина:** до Z{_n(round(op.z_depth - zs, 3))}{entry} (от Z0 установа)")
                 if op.positions:
                     pts = ", ".join(f"({_n(x)}; {_n(y)})" for x, y in op.positions[:12])
                     more = f" … всего {len(op.positions)}" if len(op.positions) > 12 else ""

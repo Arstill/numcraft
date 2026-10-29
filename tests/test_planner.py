@@ -59,8 +59,8 @@ def test_pocket_corner_radius_limits_finisher():
 
 
 def test_bottom_features_are_flipped():
-    p = Part(material="сталь 45", size=Box(x=100, y=60, z=15), features=[
-        HoleFeature(diameter=6, side="bottom", positions=[(20, 10)])])
+    p = Part(material="сталь 45", size=Box(x=100, y=60, z=15), datum="corner", features=[
+        HoleFeature(diameter=6, side="bottom", through=False, depth=5, positions=[(20, 10)])])
     sheet = plan_part(p)
     bottom = next(s for s in sheet.setups if s.side == "bottom")
     drill = next(o for o in bottom.operations if o.tool.kind == "drill")
@@ -92,3 +92,33 @@ def test_risk_for_deep_small_radius_pocket():
 def test_stock_smaller_than_part_rejected():
     with pytest.raises(ValueError):
         plan_part(Part(material="6061", size=Box(x=100, y=50, z=10), stock=Box(x=90, y=50, z=12)))
+
+
+def test_order_face_contour_pockets_holes():
+    ops = plan_part(_part()).setups[0].operations
+    first = {}
+    for i, o in enumerate(ops):
+        kind = ("face" if o.geom == "face" else "contour" if o.geom.startswith("outer") else
+                "pocket" if o.geom.startswith("pocket") else "hole" if o.cycle else "other")
+        first.setdefault(kind, i)
+    assert first["face"] < first["contour"] < first["pocket"] < first["hole"]
+    # чистовая контура — до карманов (контур готов до переворота)
+    fin_contour = max(i for i, o in enumerate(ops) if o.geom.startswith("outer"))
+    assert fin_contour < first["pocket"]
+
+
+def test_datum_center_and_stock_top():
+    sheet = plan_part(_part())
+    s1, s2 = sheet.setups[:2]
+    assert "центр заготовки" in s1.datum[0] and "верх заготовки" in s1.datum[1]
+    assert s1.z_shift == 1.0  # торцовка 1 мм: верх детали на Z-1
+    assert "низ детали" in s2.datum[1]
+    drill = next(o for o in s1.operations if o.cycle and o.tool.kind == "drill" and o.tool.diameter == 6.6)
+    assert (-50.0, -30.0) in drill.positions  # отверстие (10; 10) от центра плиты 120×80
+
+
+def test_bottom_through_holes_merged_into_top_setup():
+    p = Part(material="6061", size=Box(x=100, y=60, z=15), stock=Box(x=100, y=60, z=15), features=[
+        HoleFeature(diameter=6.6, side="bottom", positions=[(20, 10)])])
+    sheet = plan_part(p)
+    assert [s.side for s in sheet.setups] == ["top"]

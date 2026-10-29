@@ -157,7 +157,7 @@ class Part(BaseModel):
     quantity: int = 1
     features: List[Feature] = Field(default_factory=list)
     general_tolerance: Optional[str] = None  # напр. "ISO 2768-m"
-    datum: Literal["corner", "center"] = "corner"
+    datum: Literal["corner", "center"] = "center"  # нуль XY: центр заготовки/грани (по умолчанию) или угол
     notes: List[str] = Field(default_factory=list)
 
 
@@ -233,7 +233,8 @@ class Setup(BaseModel):
     side: Side
     title: str
     wcs: str = "G54"
-    stock_top: float = 0.0  # высота заготовки над Z0 в начале установа, мм
+    stock_top: float = 0.0  # высота заготовки над верхом детали в начале установа, мм
+    z_shift: float = 0.0  # где Z0 установа относительно верха детали (установ 1: Z0 — верх заготовки)
     workholding: List[str]
     datum: List[str]
     operations: List[Operation] = Field(default_factory=list)

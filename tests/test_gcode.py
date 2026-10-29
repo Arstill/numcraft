@@ -6,7 +6,7 @@ from numcraft.planner import plan_part
 
 
 def _sheet():
-    return plan_part(Part(name="Кронштейн", material="6061", size=Box(x=100, y=60, z=15), features=[
+    return plan_part(Part(name="Кронштейн", material="6061", size=Box(x=100, y=60, z=15), datum="corner", features=[
         HoleFeature(diameter=6.6, count=2, positions=[(10, 10), (90, 50)]),
         ThreadFeature(size="M6", depth=10, positions=[(50, 30)]),
         HoleFeature(diameter=8, positions=[], note="без координат"),
@@ -31,7 +31,8 @@ def test_fanuc_program_structure():
     assert all(line.isascii() for line in lines)
     assert "G43 H01" in g
     assert "M29 S" in g  # жёсткое нарезание FANUC
-    assert re.search(r"G98 G84 X50\. Y30\. Z-10\. R5\. F\d+", g)
+    # Z0 установа 1 — верх заготовки (торцовка 1 мм): резьба гл. 10 от верха детали → Z-11, R-плоскость +5 от детали
+    assert re.search(r"G98 G84 X50\. Y30\. Z-11\. R4\. F\d+", g)
     assert "NO HOLE COORDINATES" in g
     assert "G91 G28 Z0." in g
 

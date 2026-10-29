@@ -93,7 +93,7 @@ function draw(){C=center();
   ctx.stroke();}
  ctx.globalAlpha=1;
  // нуль установа
- const o=M.datum==='center'?[X/2,Y/2,0]:[0,0,0],L=diag*0.18,wcs=cur?cur.wcs:'G54';
+ const o=cur&&flipped()?cur.origin:(cur&&cur.side==='top'?cur.origin:M.origin0),L=diag*0.18,wcs=cur&&(flipped()||cur.side==='top')?cur.wcs:'G54';
  const Q=p=>{const r=rot(p[0],p[1],p[2]);return [W/2+(r[0]+panX)*s,H/2-(r[1]+panY)*s];};
  const O=Q(o);const ax=[[[o[0]+L,o[1],o[2]],'X','#e03131'],[[o[0],o[1]+L,o[2]],'Y','#2f9e44'],[[o[0],o[1],o[2]+L],'Z','#1971c2']];
  ctx.font='600 13px system-ui,sans-serif';ax.forEach(([p,t,c])=>{const q=Q(p);ctx.strokeStyle=c;ctx.fillStyle=c;ctx.lineWidth=2.5;

@@ -27,8 +27,10 @@ XY_STOCK_ALLOWANCE = 3.0  # на сторону, для пиленой плит�
 TOP_ALLOWANCE = 1.0
 
 # Этапы внутри установа (порядок операций)
-ST_FACE, ST_ROUGH, ST_REST, ST_SPOT, ST_DRILL, ST_FINISH, ST_BORE, ST_3D, ST_CHAMFER, ST_TAP, ST_REAM = (
-    10, 20, 25, 30, 40, 50, 55, 58, 60, 70, 80)
+# торцовка → наружный контур (черновой, чистовой) → карманы/пазы (черновая, углы, чистовая) → 3D →
+# отверстия (центровка, сверление, расточка) → фаски → резьба → развёртка
+ST_FACE, ST_CONTOUR_R, ST_CONTOUR_F, ST_ROUGH, ST_REST, ST_FINISH, ST_3D, ST_SPOT, ST_DRILL, ST_BORE, ST_CHAMFER, \
+    ST_TAP, ST_REAM = (10, 12, 14, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80)
 
 FITS = ("H6", "H7", "H8", "H9")
 
@@ -126,17 +128,17 @@ class Planner:
         what = "пояса контура (дообработка после переворота)" if band else "наружного контура"
         if allowance > 2.0:
             cd = cutting.milling(tool, self.mat, self.machine, "adaptive", ap=min(depth, tool.flute_length))
-            ops.append(self._op(f"Черновая {what}, глубина {_n(depth)} мм", S.ADAPTIVE_2D, tool, cd, ST_ROUGH,
+            ops.append(self._op(f"Черновая {what}, глубина {_n(depth)} мм", S.ADAPTIVE_2D, tool, cd, ST_CONTOUR_R,
                                 [f.id], S.adaptive(tool, cd, self.mat, depth, stock_contours=True), z_depth=-depth,
                                 geom="outer_rough"))
         elif allowance > 0.3:
             cd = cutting.milling(tool, self.mat, self.machine, "contour", ap=min(depth, tool.flute_length),
                                  ae=round(allowance - 0.2, 2))
             ops.append(self._op(f"Получистовая {what} (припуск {_n(allowance)} мм)", S.CONTOUR_2D, tool, cd,
-                                ST_ROUGH, [f.id], S.contour_light_rough(tool, allowance), z_depth=-depth,
+                                ST_CONTOUR_R, [f.id], S.contour_light_rough(tool, allowance), z_depth=-depth,
                                 geom="outer_walls"))
         cdf = cutting.milling(tool, self.mat, self.machine, "finish_wall", ap=min(depth, tool.flute_length))
-        fin = self._op(f"Чистовая {what}", S.CONTOUR_2D, tool, cdf, ST_FINISH, [f.id],
+        fin = self._op(f"Чистовая {what}", S.CONTOUR_2D, tool, cdf, ST_CONTOUR_F, [f.id],
                        S.contour_finish(tool, cdf, depth, f.tolerance), z_depth=-depth, geom="outer_walls")
         if band:
             fin.notes.append("Перекрытие с поясом установа 1 — 0.3 мм; возможна ступенька 0.01–0.02 мм на стыке.")
@@ -403,8 +405,40 @@ class Planner:
                     self.assumptions.append(f"{h.id}: отверстие в дне кармана {pk.id} — вход с Z{_n(-pk.depth)}.")
                     break
 
+    def _merge_through(self) -> None:
+        """Меньше установов: сквозной элемент, который один «держит» сторону, переносим на противоположную
+        сторону, где установ всё равно нужен (низ → верх; бок → противоположный бок с элементами)."""
+        from numcraft.faces import face_dims as fd
+
+        opposite = {"bottom": "top", "front": "back", "back": "front", "left": "right", "right": "left"}
+        feats = [f for f in self.part.features if not isinstance(f, (ContourFeature, FaceFeature, ChamferFeature))]
+
+        def movable(f) -> bool:
+            return isinstance(f, (HoleFeature, ThreadFeature, PocketFeature, SlotFeature)) and \
+                getattr(f, "through", False) and not getattr(f, "z_start", 0) and \
+                not (isinstance(f, HoleFeature) and f.counterbore)
+
+        for side, opp in opposite.items():
+            here = [f for f in feats if f.side == side]
+            there = [f for f in feats if f.side == opp]
+            if not here or not all(movable(f) for f in here):
+                continue
+            if opp != "top" and not there:
+                continue
+            w, _, _ = fd(side, self.part.size)
+            for f in here:
+                if side != "bottom":  # зеркально по ширине грани (вид с противоположной стороны)
+                    if getattr(f, "positions", None):
+                        f.positions = [(round(w - u, 3), v) for u, v in f.positions]
+                    if getattr(f, "center", None):
+                        f.center = (round(w - f.center[0], 3), f.center[1])
+                f.side = opp
+            self.assumptions.append(f"Сквозные элементы стороны «{SIDE_RU[side]}» делаются с «{SIDE_RU[opp]}» "
+                                    "— на один установ меньше.")
+
     def plan(self) -> TechSheet:
         part = self.part
+        self._merge_through()
         self._holes_in_pockets()
         self.stock = stock = self._stock()
         ps = part.size
@@ -464,7 +498,7 @@ class Planner:
         if through and bottom_allow < 2.5:
             wh1.append("Снизу почти нет припуска: параллели развести так, чтобы под сквозными элементами был зазор.")
         s1 = Setup(number=1, side="top", title="Установ 1 — верх (сторона A)", wcs="G54",
-                   stock_top=round(top_allow, 3), workholding=wh1,
+                   stock_top=round(top_allow, 3), z_shift=round(top_allow, 3), workholding=wh1,
                    datum=self._datum_text(top_allow, flip=False), operations=s1_ops)
         if contours and contour_depth_1 < ps.z:
             s1.notes.append(
@@ -519,8 +553,11 @@ class Planner:
             setups.append(Setup(
                 number=len(setups) + 1, side=side, title=f"Установ {len(setups) + 1} — {name}", wcs=wcs,
                 workholding=hold,
-                datum=[f"{wcs}: X0 Y0 — левый нижний угол грани «{name}» (вид на грань: X вдоль грани "
-                       f"{_n(w)} мм, Y по высоте {_n(h)} мм).", "Z0 — плоскость грани."],
+                datum=[f"{wcs}: X0 Y0 — " + ("центр грани" if part.datum == "center" else "левый нижний угол грани")
+                       + f" «{name}» (вид на грань: X вдоль грани {_n(w)} мм, Y по высоте {_n(h)} мм).",
+                       "Z0 — плоскость грани (обработана, касание щупом).",
+                       "HSMWorks: новый Setup, ось Z — по нормали к этой грани, WCS — Model box point "
+                       + ("«Top center»" if part.datum == "center" else "«Top», левый нижний угол") + "."],
                 operations=ops))
 
         tools = self._finalize(setups)
@@ -529,19 +566,25 @@ class Planner:
         return sheet
 
     def _datum_text(self, allowance: float, flip: bool) -> List[str]:
-        wcs = "G55" if flip else "G54"
-        if self.part.datum == "center":
-            xy = f"{wcs}: X0 Y0 — центр детали (ощупывание двух пар сторон" + (
-                " обработанного контура)" if flip else " заготовки)")
-        else:
-            xy = f"{wcs}: X0 Y0 — левый передний угол детали" + (
-                " по обработанному контуру" if flip else
-                f" (щуп по заготовке, затем сместить на припуск +{_n(XY_STOCK_ALLOWANCE)} мм внутрь)")
-        z = (f"Z0 — верх готовой детали; заготовка выше на {_n(allowance)} мм (торцовка в ноль)."
-             if not flip else
-             f"Z0 — верх детали после торцовки: от верха параллелей + толщина {_n(self.part.size.z)} мм "
-             f"(сейчас сверху припуск {_n(allowance)} мм).")
-        return [xy, z]
+        if not flip:
+            xy = ("G54: X0 Y0 — центр заготовки: ощупать заготовку щупом с двух сторон по X и по Y"
+                  if self.part.datum == "center" else
+                  f"G54: X0 Y0 — левый передний угол детали (щуп по заготовке, затем сместить на припуск "
+                  f"+{_n(XY_STOCK_ALLOWANCE)} мм внутрь)")
+            z = (f"Z0 — верх заготовки (касание фрезой/щупом). Торцовка снимает {_n(allowance)} мм — "
+                 f"верх детали будет на Z−{_n(allowance)}; все глубины в таблицах — от этого Z0."
+                 if allowance > 0.02 else "Z0 — верх заготовки (он же верх детали, припуска нет).")
+            cam = ("HSMWorks: Setup → Work Coordinate System — Stock box point, "
+                   + ("«Top center» (верх, центр)" if self.part.datum == "center" else "«Top», левый передний угол"))
+            return [xy, z, cam]
+        xy = ("G55: X0 Y0 — центр детали по обработанному контуру (щуп по двум парам сторон)"
+              if self.part.datum == "center" else "G55: X0 Y0 — левый передний угол по обработанному контуру")
+        z = (f"Z0 — низ детали (готовый размер по толщине {_n(self.part.size.z)} мм): деталь на параллелях, "
+             f"Z0 = верх параллелей + {_n(self.part.size.z)} мм; необработанная поверхность сейчас выше на "
+             f"{_n(allowance)} мм — её снимает торцовка.")
+        cam = ("HSMWorks: новый Setup с переворотом (Orientation: Z — вниз по модели), WCS — Model box point "
+               + ("«Top center»" if self.part.datum == "center" else "«Top», левый передний угол"))
+        return [xy, z, cam]
 
     def _feature_ops(self, feats, side: str) -> List[Operation]:
         ops: List[Operation] = []

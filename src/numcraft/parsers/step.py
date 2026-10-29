@@ -183,16 +183,25 @@ class StepAnalysis:
     is_3d: bool = False
     warnings: List[str] = field(default_factory=list)
     edges: List[List[Vec]] = field(default_factory=list)  # рёбра модели (полилинии, СК файла, мм) — для 3D-вида
+    plane_dirs: Dict[str, int] = field(default_factory=dict)  # внутренние плоскости по направлениям нормали
+    orientation: str = ""  # как деталь развёрнута относительно модели
 
     @property
     def size(self) -> Vec:
         return tuple(round(self.bbox_max[i] - self.bbox_min[i], 3) for i in range(3))  # type: ignore
 
 
+def _rot(R, v: Vec) -> Vec:
+    if R is None:
+        return v
+    return tuple(R[i][0] * v[0] + R[i][1] * v[1] + R[i][2] * v[2] for i in range(3))  # type: ignore[return-value]
+
+
 class _Model:
-    def __init__(self, ents: Dict[int, Tuple[str, list]], scale: float):
+    def __init__(self, ents: Dict[int, Tuple[str, list]], scale: float, R=None):
         self.e = ents
         self.k = scale
+        self.R = R  # поворот модели: основная сторона детали → +Z, длинная сторона → X
 
     def name(self, r) -> str:
         return self.e.get(int(r), ("?", []))[0]
@@ -203,12 +212,12 @@ class _Model:
     def point(self, r) -> Vec:
         c = self.args(r)[1]
         c = list(c) + [0.0] * (3 - len(c))
-        return (c[0] * self.k, c[1] * self.k, c[2] * self.k)
+        return _rot(self.R, (c[0] * self.k, c[1] * self.k, c[2] * self.k))
 
     def direction(self, r) -> Vec:
         c = self.args(r)[1]
         c = list(c) + [0.0] * (3 - len(c))
-        return _unit((c[0], c[1], c[2]))
+        return _rot(self.R, _unit((c[0], c[1], c[2])))
 
     def placement(self, r) -> Tuple[Vec, Vec]:
         a = self.args(r)
@@ -303,10 +312,49 @@ def _units_scale(raw: str) -> Tuple[float, str]:
     return 1.0, "мм (не указаны — принято)"
 
 
-def analyze_step(text: str, file_name: str = "") -> StepAnalysis:
+AXIS_VEC = {"X": (1.0, 0.0, 0.0), "Y": (0.0, 1.0, 0.0), "Z": (0.0, 0.0, 1.0)}
+
+
+def _orientation(a: "StepAnalysis"):
+    """Как деталь ляжет на стол: на самую большую плоскость (наименьший габарит — вверх), при близких
+    габаритах (±10 %) — по оси, где больше отверстий. Верх — сторона, с которой больше элементов.
+    Длинная из оставшихся сторон — вдоль X станка. Возвращает (матрица поворота | None, описание)."""
+    ext = {ax: a.bbox_max[i] - a.bbox_min[i] for i, ax in enumerate("XYZ")}
+    holes = {ax: sum(1 for h in a.holes if h.axis == ax) for ax in "XYZ"}
+    smallest = min(ext.values())
+    cands = [ax for ax in "XYZ" if ext[ax] <= smallest * 1.1 + 1e-6]
+    up_ax = max(cands, key=lambda ax: (holes[ax], ax == "Z"))
+    plus = a.plane_dirs.get("+" + up_ax, 0) + sum(1 for h in a.holes if h.axis == up_ax and h.open_end >= 0)
+    minus = a.plane_dirs.get("-" + up_ax, 0) + sum(1 for h in a.holes if h.axis == up_ax and h.open_end == -1)
+    sign = 1.0 if plus >= minus else -1.0
+    u = tuple(sign * c for c in AXIS_VEC[up_ax])
+    rest = [ax for ax in "XYZ" if ax != up_ax]
+    long_ax = max(rest, key=lambda ax: (ext[ax], ax == "X"))
+    xv = AXIS_VEC[long_ax]
+    yv = (u[1] * xv[2] - u[2] * xv[1], u[2] * xv[0] - u[0] * xv[2], u[0] * xv[1] - u[1] * xv[0])
+    R = (xv, yv, u)
+    if R == ((1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0)):
+        return None, ""
+    note = (f"Деталь развёрнута для обработки: верх — сторона {'+' if sign > 0 else '−'}{up_ax} модели "
+            f"(габарит {_n(ext[up_ax])} мм — толщина), вдоль X станка — ось {long_ax} модели "
+            f"({_n(ext[long_ax])} мм).")
+    return R, note
+
+
+def analyze_step(text: str, file_name: str = "", orient: bool = True) -> StepAnalysis:
     ents, header = parse_step(text)
+    res = _analyze(ents, header, text, file_name, None)
+    if orient:
+        R, note = _orientation(res)
+        if R is not None:
+            res = _analyze(ents, header, text, file_name, R)
+            res.orientation = note
+    return res
+
+
+def _analyze(ents, header: str, text: str, file_name: str, R) -> StepAnalysis:
     scale, units = _units_scale(text)
-    md = _Model(ents, scale)
+    md = _Model(ents, scale, R)
     res = StepAnalysis(file_name=file_name, units=units)
     if m := re.search(r"FILE_SCHEMA\s*\(\s*\(\s*'([^']+)'", header):
         res.schema = m.group(1)
@@ -432,6 +480,12 @@ def analyze_step(text: str, file_name: str = "") -> StepAnalysis:
         loc, axis = md.placement(md.args(fi["surf"])[1])
         n = axis if fi["same"] else (-axis[0], -axis[1], -axis[2])
         snap = _snap_axis(n)
+        if snap:
+            i = "XYZ".index(snap[0])
+            c = loc[i]
+            if abs(c - res.bbox_min[i]) > 1e-3 and abs(c - res.bbox_max[i]) > 1e-3:
+                key = ("+" if snap[1] > 0 else "-") + snap[0]
+                res.plane_dirs[key] = res.plane_dirs.get(key, 0) + 1
         if not snap or snap[0] != "Z":
             continue  # боковые стенки обрабатываются сверху контуром
         z = loc[2]
@@ -592,7 +646,7 @@ def to_part(a: StepAnalysis, material: str, name: Optional[str] = None) -> Tuple
     if len(sides_used) > 1:
         notes.append("Элементы по сторонам: " + ", ".join(SIDE_NAME[s_] for s_ in sides_used) + ".")
     part = Part(name=name or a.product or "Деталь из STEP", material=material, size=size, features=feats)
-    return part, notes + a.warnings
+    return part, ([a.orientation] if a.orientation else []) + notes + a.warnings
 
 
 SIDE_NAME = {"top": "сверху", "bottom": "снизу", "front": "спереди", "back": "сзади", "left": "слева",
@@ -609,6 +663,8 @@ def summary_ru(a: StepAnalysis) -> str:
         f"Тип обработки: {'3D (есть поверхности свободной формы)' if a.is_3d else '2.5D'}",
         f"Направления обработки: {', '.join(a.directions) or '+Z'}",
     ]
+    if a.orientation:
+        lines.append(f"Ориентация: {a.orientation}")
     if a.holes:
         lines.append(f"Отверстия ({len(a.holes)}):")
         for h in sorted(a.holes, key=lambda h: (h.axis, h.diameter)):

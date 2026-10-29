@@ -83,7 +83,8 @@ class _Writer:
             self("G90")
 
 
-def _face_body(w: _Writer, op: Operation, sheet: TechSheet, setup: Setup, stock_top: float, clear: float):
+def _face_body(w: _Writer, op: Operation, sheet: TechSheet, setup: Setup, stock_top: float, clear: float,
+               zs: float = 0.0):
     part, stock = sheet.part, sheet.stock
     r = op.tool.diameter / 2
     step = op.tool.diameter * 0.7
@@ -108,10 +109,10 @@ def _face_body(w: _Writer, op: Operation, sheet: TechSheet, setup: Setup, stock_
         levels.append(0.0)
     f = num(round(op.cutting.feed))
     for lv in levels:
-        w(f"(FACE PASS Z{num(lv)})")
+        w(f"(FACE PASS Z{num(lv - zs)})")
         w(f"G00 X{num(xs)} Y{num(ys[0])}")
-        w(f"G00 Z{num(lv + 2)}")
-        w(f"G01 Z{num(lv)} F{num(round(op.cutting.feed / 2))}")
+        w(f"G00 Z{num(lv - zs + 2)}")
+        w(f"G01 Z{num(lv - zs)} F{num(round(op.cutting.feed / 2))}")
         left = True
         for i, y in enumerate(ys):
             if i:
@@ -166,10 +167,13 @@ def generate(sheet: TechSheet, dialect: Dialect = "fanuc", program_start: int = 
         w.home_z()
 
         stock_top = setup.stock_top
-        clear = math.ceil(stock_top + 10)
+        zs = setup.z_shift  # Z0 установа относительно верха детали (установ 1 — верх заготовки)
+        clear = math.ceil(stock_top - zs + 10)
 
         current: Optional[int] = None
         for op in setup.operations:
+            op = op.model_copy(update={"z_depth": None if op.z_depth is None else round(op.z_depth - zs, 3),
+                                       "z_start": round(op.z_start - zs, 3)})
             key = _strategy_key(op)
             w("")
             w(f"(OP {op.number} {STRATEGY_EN.get(key, key.upper())} - {tool_en(op.tool)})")
@@ -191,7 +195,7 @@ def generate(sheet: TechSheet, dialect: Dialect = "fanuc", program_start: int = 
             elif op.tool.kind != "tap":
                 w(f"S{c.rpm} M03")
             if key == "face":
-                _face_body(w, op, sheet, setup, stock_top, clear)
+                _face_body(w, op, sheet, setup, stock_top, clear, zs)
                 continue
             elif op.cycle:
                 _cycle_body(w, op, clear)
