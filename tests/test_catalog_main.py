@@ -50,3 +50,49 @@ def test_reamer_spot_chamfer_from_catalog():
     assert tooling.reamer(10, "H7").article == "3112H7-1000"
     assert tooling.spot_drill().article.startswith("1143SC90")
     assert tooling.chamfer_mill().article.startswith("5601R90")
+
+
+TWO_GRADES = """
+===== PAGE 1398 =====
+SC drill – NC tapping device 90° General machining
+1143SC90
+Article d1 (h6) d 2 (h6) l 1 l2 KDG303 YK20F
+1143SC90-0500 5 5 62 10 Ɣż
+1143SC90-1000 10 10 89 20 Ɣ
+ƔEx stockżOn demand
+"""
+
+
+def test_grade_decides_material():
+    rows = parse(TWO_GRADES)
+    by = {(r["article"], r["grade"]): r for r in rows}
+    assert by[("1143SC90-0500", "KDG303")]["group"] == "steel" and by[("1143SC90-0500", "KDG303")]["in_stock"]
+    al = by[("1143SC90-0500", "YK20F")]
+    assert al["group"] == "aluminum" and not al["in_stock"]
+    assert ("1143SC90-1000", "YK20F") not in by  # одна отметка — только первая марка
+    su = {r["group"] for r in parse(PAGE) if r["series"] == "1534SU03"}
+    assert su == {"steel"}  # SU — KDG303, для стали
+
+
+def test_aluminum_never_gets_steel_tools():
+    # Ø4.5 есть на складе в SU (KDG303) — но для алюминия нужно SC (YK20F), пусть и под заказ
+    al = tooling.drill(4.5, 12, "aluminum")
+    assert al.article.startswith(("1105SC03", "1101SC05")) and "YK20F" in al.coating
+    st = tooling.drill(4.5, 12, "steel")
+    assert st.article.startswith("1534SU03") and "KDG303" in st.coating
+    assert tooling.spot_drill(group="aluminum").article == "1143SC90-0500"
+    assert "YK20F" in tooling.spot_drill(group="aluminum").coating
+    assert "KDG303" in tooling.spot_drill(group="steel").coating
+    # фасочники и развёртки ZCC — только для стали; для алюминия обобщённые с явной пометкой
+    for t in (tooling.chamfer_mill(group="aluminum"), tooling.reamer(10, "H7", group="aluminum")):
+        assert t.article is None and "нет в каталоге ZCC для алюминия" in t.label()
+    assert tooling.reamer(10, "H7", group="steel").article == "3112H7-1000"
+    for d in (3, 6, 10, 12):
+        t = tooling.pick_end_mill("aluminum", d, min_d=d)
+        assert t.for_group == "aluminum" and t.article.startswith("AL-")
+    ball = tooling.ball_mill(6, "aluminum")
+    assert ball.for_group == "aluminum" and ball.article.startswith(("AL-2B", "NM-2B"))
+    necked = tooling.pick_end_mill("aluminum", 4, min_lc=22, min_d=3)
+    assert necked.for_group == "aluminum"
+    for t in (tooling.drill(d, 3 * d, "aluminum") for d in (2.5, 3.3, 4.2, 5, 6.8, 8.5, 10.2)):
+        assert t.for_group == "aluminum"

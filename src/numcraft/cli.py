@@ -168,16 +168,16 @@ def cmd_cut(a) -> int:
     mat = resolve_material(a.material)
     machine = load_machine(max_rpm=a.rpm)
     if a.tool == "drill":
-        t = tooling.drill(a.d, a.d * 3)
+        t = tooling.drill(a.d, a.d * 3, mat.group)
         cd = cutting.drilling(t, mat, machine)
     elif a.tool == "tap":
         t = tooling.tap(a.thread or f"M{_n(a.d)}", through=False)
         cd = cutting.tapping(t, mat, machine)
     elif a.tool == "reamer":
-        t = tooling.reamer(a.d, "")
+        t = tooling.reamer(a.d, "", group=mat.group)
         cd = cutting.reaming(t, mat, machine)
     elif a.tool == "face_mill":
-        t = tooling.face_mill()
+        t = tooling.face_mill(mat.group)
         cd = cutting.face_milling(t, mat, machine, ap=a.ap or mat.face_mill["ap"], width=t.diameter)
     else:
         t = tooling.pick_end_mill(mat.group, a.d, min_d=a.d)

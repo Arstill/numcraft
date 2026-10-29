@@ -12,33 +12,59 @@ from __future__ import annotations
 import re
 from typing import Dict, List, Optional, Tuple
 
-# Серии, которые нужны планировщику (Haas VF-2, алюминий 6061/7075, сталь 45/1045)
+# Серии, которые нужны планировщику (Haas VF-2, алюминий 6061/7075, сталь 45/1045).
+# group — назначение серии по заголовку каталога («General machining of Al and Al alloys», «Non-ferrous
+# metals», «Steel, cast iron»…). Пригодность конкретного артикула для материала определяет марка сплава
+# (GRADE_GROUP): одна строка таблицы с двумя марками даёт две записи.
 SERIES: Dict[str, dict] = {
     # концевые фрезы
     "AL-3E": {"kind": "end_mill", "group": "aluminum", "length": "std"},
     "AL-3EL": {"kind": "end_mill", "group": "aluminum", "length": "long"},
     "AL-2E": {"kind": "end_mill", "group": "aluminum", "length": "std", "spare": True},
     "AL-2EL": {"kind": "end_mill", "group": "aluminum", "length": "long", "spare": True},
+    "NM-2EP": {"kind": "end_mill", "group": "aluminum", "length": "neck"},
+    "ALP-1EP": {"kind": "end_mill", "group": "aluminum", "length": "neck", "spare": True},
     "UM-4E": {"kind": "end_mill", "group": "steel", "length": "std"},
     "UM-4EL": {"kind": "end_mill", "group": "steel", "length": "long"},
     "GM-4E": {"kind": "end_mill", "group": "steel", "length": "std", "spare": True},
     "GM-4EL": {"kind": "end_mill", "group": "steel", "length": "long", "spare": True},
     "GM-4EFP": {"kind": "end_mill", "group": "steel", "length": "neck"},
-    "GM-2EFP": {"kind": "end_mill", "group": "any", "length": "neck"},
+    "GM-2EFP": {"kind": "end_mill", "group": "steel", "length": "neck"},
     # сферические
     "AL-2B": {"kind": "ball_mill", "group": "aluminum"},
+    "NM-2B": {"kind": "ball_mill", "group": "aluminum", "spare": True},
     "GM-2B": {"kind": "ball_mill", "group": "steel"},
-    # свёрла (C — с внутренним подводом СОЖ)
-    "1534SU03": {"kind": "drill", "group": "any", "xd": 3},
-    "1536SU05": {"kind": "drill", "group": "any", "xd": 5},
-    "1538SU08C": {"kind": "drill", "group": "any", "xd": 8},
+    # свёрла: SU — «General machining» (KDG303, сталь), SC — «Non-ferrous metals» (YK20F); C — СОЖ через инструмент
+    "1534SU03": {"kind": "drill", "group": "steel", "xd": 3},
+    "1536SU05": {"kind": "drill", "group": "steel", "xd": 5},
+    "1538SU08C": {"kind": "drill", "group": "steel", "xd": 8},
     "1105SC03": {"kind": "drill", "group": "aluminum", "xd": 3},
     "1101SC05": {"kind": "drill", "group": "aluminum", "xd": 5},
-    # центровка NC 90°, фасочник 90°, развёртка
+    # центровка NC 90° (KDG303 / YK20F), фасочник 90° (KMG303), развёртка («Steel, cast iron»)
     "1143SC90": {"kind": "spot_drill", "group": "any"},
-    "5601R90": {"kind": "chamfer_mill", "group": "any"},
-    "5501R90": {"kind": "chamfer_mill", "group": "any", "spare": True},
-    "3112H7": {"kind": "reamer", "group": "any"},
+    "5601R90": {"kind": "chamfer_mill", "group": "steel"},
+    "5501R90": {"kind": "chamfer_mill", "group": "steel", "spare": True},
+    "3112H7": {"kind": "reamer", "group": "steel"},
+}
+
+# Марка сплава → материал, для которого она предназначена (каталог: Grade overview C37, B360, C153).
+# YK20F/YK30F формально «steel, cast iron and non ferrous», но без покрытия — для стали 45 берём PVD-марки.
+GRADE_GROUP = {
+    "YK10F": "aluminum", "YK20F": "aluminum", "YK30F": "aluminum", "YK40F": "aluminum",
+    "KMG309": "aluminum", "KMD401": "aluminum",  # KMG309 — «non ferrous», KMD401 — DLC для цветных
+    "KDG303": "steel", "KDG304": "steel", "KDG305": "steel",
+    "KMG303": "steel", "KMG405": "steel", "KMG406": "steel", "KMG555": "steel", "KMG5515": "steel",
+    "KRG102": "steel",
+}
+GRADE_RU = {
+    "YK10F": "без покрытия, для цветных металлов", "YK20F": "без покрытия, для цветных металлов",
+    "YK30F": "без покрытия, для алюминия", "YK40F": "без покрытия, для алюминия и цветных",
+    "KMG309": "PVD, для цветных металлов", "KMD401": "DLC, для алюминия и цветных",
+    "KDG303": "PVD, для стали/нерж./чугуна", "KDG304": "PVD, для стального литья/чугуна",
+    "KDG305": "PVD, для нерж./жаропрочных", "KMG303": "PVD, для стали ≤48 HRC/нерж./чугуна",
+    "KMG405": "PVD, для стали ≤55 HRC/нерж.", "KMG406": "PVD, для стали ≤55 HRC/нерж.",
+    "KMG555": "PVD, для закалённой стали 55–68 HRC", "KMG5515": "PVD, для закалённой стали",
+    "KRG102": "PVD, для стали/чугуна",
 }
 
 MARKS = {"Ɣ": True, "ż": False, "●": True, "○": False}
@@ -74,7 +100,7 @@ def _series_of(article: str) -> Optional[str]:
 
 
 def _article_d(article: str, kind: str) -> Optional[float]:
-    m = re.search(r"-D(\d+(?:\.\d+)?)S?$", article)
+    m = re.search(r"-D(\d+(?:\.\d+)?)S?(?:-M\d+S?)?$", article)
     if m:
         return float(m.group(1))
     m = re.search(r"-(\d{4})(?:S)?$", article)
@@ -180,12 +206,25 @@ def parse(text: str) -> List[dict]:
                 # 5601R904FM-R20-1000 — фреза-скругление R2.0 (R075 → 0.75)
                 dg = rm.group(1)
                 rec.update(kind="round_mill", r=float("0." + dg[1:]) if dg.startswith("0") else int(dg) / 10)
-            if rec and grade_cols:
-                rec["grade"] = grade_cols[0]
-            if rec and _plausible(rec):
-                ad = _article_d(art, meta["kind"])
-                if ad is None or abs(ad - rec["d"]) < 0.011:
-                    out.append(rec)
+            if not rec or not _plausible(rec):
+                continue
+            ad = _article_d(art, meta["kind"])
+            if ad is not None and abs(ad - rec["d"]) >= 0.011:
+                continue
+            out += _by_grade(rec, meta, grade_cols, marks)
+    return out
+
+
+def _by_grade(rec: dict, meta: dict, grade_cols: List[str], marks: List[bool]) -> List[dict]:
+    """Строка таблицы → запись на каждую марку сплава, в которой артикул выпускается.
+    Отметки (склад / под заказ) идут по столбцам марок слева направо; пустой столбец — марки нет."""
+    if not grade_cols:
+        return [dict(rec, series_fit=True)]
+    out = []
+    for grade, mark in zip(grade_cols, marks):
+        group = GRADE_GROUP.get(grade, meta["group"])
+        out.append(dict(rec, group=group, grade=grade, in_stock=mark,
+                        series_fit=meta["group"] in ("any", group)))
     return out
 
 

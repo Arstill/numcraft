@@ -13,6 +13,10 @@ HOLDER_GAUGE_MM = 60  # вылет патрона CT40 от торца шпин�
 VISE_STACK_MM = 160  # высота тисков + параллелей
 
 
+GROUP_RU = {"aluminum": "алюминия", "steel": "стали"}
+GROUP_ACC = {"aluminum": "алюминий", "steel": "сталь"}
+
+
 def assess(sheet: TechSheet, mat: Material, machine: Machine) -> List[Risk]:
     risks: List[Risk] = []
     part, stock = sheet.part, sheet.stock
@@ -140,6 +144,14 @@ def assess(sheet: TechSheet, mat: Material, machine: Machine) -> List[Risk]:
             t = op.tool
             depth = (op.z_start or 0) - (op.z_depth or 0)
             ld = depth / t.diameter if t.diameter else 0
+            if t.for_group not in ("any", mat.group):
+                add_op(op, "высокий", "Инструмент не для материала",
+                       f"{t.article or t.label()}: предназначен для {GROUP_RU.get(t.for_group, t.for_group)}, "
+                       f"а деталь — {mat.name}", "Заменить на инструмент под материал заготовки.")
+            elif t.article is None and "в каталоге ZCC" in t.label() and "нет" in t.label():
+                add_op(op, "средний", "Нет в каталоге ZCC", f"{t.label()}",
+                       f"Подобрать у другого поставщика под {GROUP_ACC.get(mat.group, mat.name)}"
+                       + (" (без покрытия или DLC, полированные канавки)." if mat.group == "aluminum" else "."))
             if t.kind == "end_mill" and t.reach and t.flute_length < depth <= t.reach + 0.01:
                 add_op(op, "средний", "Фреза с шейкой", f"{t.article or t.label()}: Lc {_n(t.flute_length)} мм, "
                        f"шейка {_n(t.reach)} мм на глубину {_n(round(depth, 2))} мм",

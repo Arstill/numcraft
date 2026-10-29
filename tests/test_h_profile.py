@@ -30,6 +30,14 @@ def test_plan_order_and_tools():
     top = sheet.setups[0].operations
     assert top[0].geom == "face" and top[1].geom.startswith("outer")
     rnd = [o for s in sheet.setups for o in s.operations if o.geom == "round_edges"]
-    assert rnd and all(o.tool.kind == "round_mill" and o.tool.article.startswith("5601R904FM-R20") for o in rnd)
+    # фрезы-скругления ZCC 5601R…FM — только KMG303 (сталь): для алюминия каталожной нет, это сказано явно
+    assert rnd and all(o.tool.kind == "round_mill" and o.tool.article is None
+                       and "нет в каталоге ZCC для алюминия" in o.tool.label() for o in rnd)
     assert not any(o.title.startswith("Фаска") for s in sheet.setups for o in s.operations)
     assert not any(r.topic == "СОЖ через инструмент" for r in sheet.risks)
+
+
+def test_steel_round_mill_from_catalog():
+    sheet = run(Inputs(step_path=STEP, material="сталь 45")).sheet
+    rnd = [o for s in sheet.setups for o in s.operations if o.geom == "round_edges"]
+    assert rnd and all(o.tool.article.startswith("5601R904FM-R20") for o in rnd)

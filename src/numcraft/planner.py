@@ -101,7 +101,7 @@ class Planner:
         if allowance <= 0.02:
             return []
         stock_min = min(self.stock.x, self.stock.y)
-        tool = tooling.face_mill() if stock_min >= 30 else self._end_mill(16, 0, "торцовка")
+        tool = tooling.face_mill(self.g) if stock_min >= 30 else self._end_mill(16, 0, "торцовка")
         p = self.mat.face_mill
         ap = min(allowance, p["ap"])
         cd = cutting.face_milling(tool, self.mat, self.machine, ap=ap, width=width) if tool.kind == "face_mill" \
@@ -214,7 +214,7 @@ class Planner:
         return ops
 
     def _spot(self, fid: str, d_hole: float, positions, chamfer: float = 0.2, z0: float = 0.0) -> Operation:
-        tool = tooling.spot_drill()
+        tool = tooling.spot_drill(group=self.g)
         cd = cutting.spot_drilling(tool, self.mat, self.machine)
         spot_d = d_hole + 2 * chamfer
         if spot_d <= tool.diameter - 0.5:
@@ -268,7 +268,7 @@ class Planner:
             ops.append(self._spot(f.id, d_pre, positions, chamfer=f.chamfer or 0.2, z0=z0))
             ops.append(self._drill(f.id, d_pre, depth + (0 if f.through else 0.3 * d), f.through, positions,
                                    f"под развёртку Ø{_n(d)}{fit}{cnt}", z0=z0))
-            rt = tooling.reamer(d, fit or "", depth=depth + (1.5 if f.through else 0) - z0)
+            rt = tooling.reamer(d, fit or "", depth=depth + (1.5 if f.through else 0) - z0, group=self.g)
             cd = cutting.reaming(rt, self.mat, self.machine)
             rdepth = depth + (1.5 if f.through else 0)
             ops.append(self._op(f"Развёртывание Ø{_n(d)}{fit}{cnt}", S.DRILL, rt, cd, ST_REAM, [f.id],
@@ -358,7 +358,7 @@ class Planner:
 
     def chamfer_ops(self, f: ChamferFeature, what: str) -> List[Operation]:
         if f.profile == "round":
-            tool = tooling.round_mill(f.size)
+            tool = tooling.round_mill(f.size, self.g)
             cd = cutting.milling(tool, self.mat, self.machine, "chamfer")
             op = self._op(f"Скругление рёбер R{_n(f.size)} — {what}", S.ROUND_2D, tool, cd, ST_CHAMFER, [f.id],
                           S.corner_round(f.size, tool), z_depth=-(f.size + 0.2), geom="round_edges")
@@ -368,7 +368,7 @@ class Planner:
                 op.notes.append("Фрезы-скругления такого радиуса нет в каталоге ZCC — заказать или сделать "
                                 "сферической фрезой 3D-стратегией (Scallop/Contour) по модели.")
             return [op]
-        tool = tooling.chamfer_mill()
+        tool = tooling.chamfer_mill(group=self.g)
         cd = cutting.milling(tool, self.mat, self.machine, "chamfer")
         op = self._op(f"Фаска {_n(f.size)}×45° — {what}", S.CHAMFER_2D, tool, cd, ST_CHAMFER, [f.id],
                       S.chamfer(f.size, tool), z_depth=-(f.size + 0.5), geom=f"chamfer_{f.edges}")

@@ -93,13 +93,13 @@ def cutting_data(material: str, tool_kind: str = "end_mill", diameter: float = 1
     """
     mat, machine = resolve_material(material), load_machine()
     if tool_kind == "drill":
-        t = tooling.drill(diameter, diameter * 3)
+        t = tooling.drill(diameter, diameter * 3, mat.group)
         cd = cutting.drilling(t, mat, machine)
     elif tool_kind == "tap":
         t = tooling.tap(thread or f"M{int(diameter)}", through=False)
         cd = cutting.tapping(t, mat, machine)
     elif tool_kind == "reamer":
-        t = tooling.reamer(diameter, "")
+        t = tooling.reamer(diameter, "", group=mat.group)
         cd = cutting.reaming(t, mat, machine)
     else:
         t = tooling.pick_end_mill(mat.group, diameter, min_d=diameter)
