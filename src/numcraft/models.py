@@ -95,6 +95,7 @@ class HoleFeature(_FeatureBase):
     ra: Optional[float] = None
     counterbore: Optional[Counterbore] = None
     chamfer: Optional[float] = None
+    walls: int = 1  # сквозное через несколько стенок (между ними пустота)
 
 
 class ThreadFeature(_FeatureBase):
@@ -110,8 +111,9 @@ class ThreadFeature(_FeatureBase):
 
 class ChamferFeature(_FeatureBase):
     type: Literal["chamfer"] = "chamfer"
-    size: float = 0.5
+    size: float = 0.5  # катет фаски или радиус скругления
     edges: Literal["outer", "all", "pockets", "holes"] = "outer"
+    profile: Literal["chamfer", "round"] = "chamfer"  # фаска 45° или скругление ребра R
 
 
 class SurfaceFeature(_FeatureBase):

@@ -204,6 +204,10 @@ class Planner:
         ops.append(self._op(f"Черновая: {name}", S.ADAPTIVE_2D, tool, cd, ST_ROUGH, [f.id],
                             S.adaptive(tool, cd, self.mat, depth), z_depth=-depth, geom="slot_area",
                             through=f.through))
+        if not f.through:
+            cdf = cutting.milling(tool, self.mat, self.machine, "finish_floor")
+            ops.append(self._op(f"Чистовая дна: {name}", S.POCKET_2D, tool, cdf, ST_FINISH, [f.id],
+                                S.pocket(tool, cdf, floor_only=True), z_depth=-depth, geom="slot_area"))
         cdw = cutting.milling(tool, self.mat, self.machine, "finish_wall", ap=min(depth, tool.flute_length))
         ops.append(self._op(f"Чистовая стенок: {name}", S.CONTOUR_2D, tool, cdw, ST_FINISH, [f.id],
                             S.contour_finish(tool, cdw, depth, f.tolerance), z_depth=-depth, geom="slot_walls"))
@@ -275,6 +279,9 @@ class Planner:
         elif d <= tooling.MAX_TWIST_DRILL_PREFERRED:
             ops.append(self._spot(f.id, d, positions, chamfer=f.chamfer or 0.2, z0=z0))
             ops.append(self._drill(f.id, round(d, 1), depth, f.through, positions, cnt, z0=z0))
+            if f.walls > 1:
+                ops[-1].notes.append(f"Отверстие через {f.walls} стенки с пустотой между ними: подача на входе во "
+                                     "вторую стенку −50 % (увод сверла), G83 с выводом стружки на каждой стенке.")
         else:
             # крупное отверстие — спиральная расточка концевой фрезой
             tool = self._end_mill(min(0.75 * d, 16), depth + 1, f"расточка Ø{_n(d)}", min_d=0.4 * d)
@@ -350,6 +357,17 @@ class Planner:
         return ops
 
     def chamfer_ops(self, f: ChamferFeature, what: str) -> List[Operation]:
+        if f.profile == "round":
+            tool = tooling.round_mill(f.size)
+            cd = cutting.milling(tool, self.mat, self.machine, "chamfer")
+            op = self._op(f"Скругление рёбер R{_n(f.size)} — {what}", S.ROUND_2D, tool, cd, ST_CHAMFER, [f.id],
+                          S.corner_round(f.size, tool), z_depth=-(f.size + 0.2), geom="round_edges")
+            if f.note:
+                op.notes.append(f.note)
+            if not tool.article:
+                op.notes.append("Фрезы-скругления такого радиуса нет в каталоге ZCC — заказать или сделать "
+                                "сферической фрезой 3D-стратегией (Scallop/Contour) по модели.")
+            return [op]
         tool = tooling.chamfer_mill()
         cd = cutting.milling(tool, self.mat, self.machine, "chamfer")
         op = self._op(f"Фаска {_n(f.size)}×45° — {what}", S.CHAMFER_2D, tool, cd, ST_CHAMFER, [f.id],
@@ -508,8 +526,11 @@ class Planner:
 
         # --- Установ 2: низ
         bottom_feats = by_side.get("bottom", [])
-        chamfers_both = [f for f in part.features if isinstance(f, ChamferFeature) and f.edges in ("outer", "all")
-                         and f.side == "top"]
+        explicit_bottom = any(isinstance(f, ChamferFeature) and f.side == "bottom" for f in part.features)
+        # фаска «по контуру» из описания — и на нижние кромки; из STEP/с явным низом — только где указано
+        chamfers_both = [] if explicit_bottom else [
+            f for f in part.features if isinstance(f, ChamferFeature) and f.edges in ("outer", "all")
+            and f.side == "top" and not f.note.startswith("из STEP")]
         if bottom_allow > 0.02 or bottom_feats:
             s2_ops: List[Operation] = []
             s2_ops += self.face_ops(bottom_allow, stock.y, "B", bottom=True)
@@ -519,10 +540,13 @@ class Planner:
             s2_ops += self._feature_ops(bottom_feats, "bottom")
             for ch in chamfers_both:
                 s2_ops += self.chamfer_ops(ch, "кромки низа")
+            open_top = [f for f in by_side.get("top", []) if isinstance(f, (PocketFeature, SlotFeature))]
             wh2 = [
                 "Переворот вокруг оси X (передняя грань уходит назад).",
                 f"{vise.name}: зажим по обработанным боковым граням, гладкие или мягкие губки; "
                 "под обработанный верх — чистые параллели.",
+            ] + ([f"Параллели — под сплошные участки верха (стенки), не под паз/карман "
+                  f"{', '.join(f.id for f in open_top)}: иначе деталь прогнётся при торцовке."] if open_top else []) + [
                 f"Захват ≥ {_n(vise.min_grip_mm)} мм; деталь выступает над губками на {_n(round(bottom_allow + 2, 1))} мм "
                 "и больше (торцовка не должна задеть губки).",
             ]

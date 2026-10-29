@@ -35,6 +35,7 @@ GEOM_RU = {
     "chamfer_pockets": "кромки карманов и пазов",
     "chamfer_holes": "кромки отверстий",
     "chamfer_all": "все верхние кромки",
+    "round_edges": "рёбра под скругление",
     "surface": "3D-поверхность (зона по модели)",
 }
 
@@ -135,7 +136,7 @@ def setup_svg(sheet: TechSheet, setup: Setup, op: Optional[Operation] = None) ->
     el.append(_rect(fr, 0, 0, ps.x, ps.y, "part", r=cr))
     if geom in ("outer_walls", "outer_rough"):
         el.append(_rect(fr, 0, 0, ps.x, ps.y, "hll", r=cr))
-    if geom in ("chamfer_outer", "chamfer_all"):
+    if geom in ("chamfer_outer", "chamfer_all", "round_edges"):
         el.append(_rect(fr, 0, 0, ps.x, ps.y, "hll", r=cr, dashed=True))
 
     labels: List[str] = []
@@ -151,7 +152,7 @@ def setup_svg(sheet: TechSheet, setup: Setup, op: Optional[Operation] = None) ->
                     kind = "карман" if isinstance(f, PocketFeature) else "паз"
                     unplaced.append(f"{f.id} ({kind} {_n(f.length)}×{_n(f.width)})")
                 continue
-            r = f.corner_radius if isinstance(f, PocketFeature) else min(f.length, f.width) / 2
+            r = f.corner_radius if isinstance(f, PocketFeature) else (0.0 if f.open_ends else min(f.length, f.width) / 2)
             if vis == "ref":
                 el.append(_rect(fr, *box, "ref", r=r, dashed=True))
                 continue

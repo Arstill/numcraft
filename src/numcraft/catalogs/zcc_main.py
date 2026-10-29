@@ -152,7 +152,7 @@ def parse(text: str) -> List[dict]:
             if not m or not _series_of(m.group(1)):
                 continue
             # -W — хвостовик Weldon, -G — другая геометрия (GM-4E-G), -R.. — фрезы-скругления
-            if re.search(r"-(W|G)$|-R\d+-", m.group(1)):
+            if re.search(r"-(W|G)$", m.group(1)):
                 continue
             art, rest = m.group(1), m.group(2)
             marks = [MARKS[c] for c in rest if c in MARKS]
@@ -175,6 +175,11 @@ def parse(text: str) -> List[dict]:
                     continue
             vals = dict(zip(dim_cols, toks))
             rec = _record(art, series, meta, vals, marks)
+            rm = re.search(r"-R(\d+)-", art)
+            if rec and rm and meta["kind"] == "chamfer_mill":
+                # 5601R904FM-R20-1000 — фреза-скругление R2.0 (R075 → 0.75)
+                dg = rm.group(1)
+                rec.update(kind="round_mill", r=float("0." + dg[1:]) if dg.startswith("0") else int(dg) / 10)
             if rec and grade_cols:
                 rec["grade"] = grade_cols[0]
             if rec and _plausible(rec):

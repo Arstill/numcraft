@@ -22,6 +22,7 @@ CIRCULAR = "Circular (круговой)"
 THREAD = "Thread (резьбофрезерование)"
 CHAMFER_2D = "2D Contour — Chamfer (фаска)"
 DRILL = "Drill (сверление)"
+ROUND_2D = "2D Contour — Radius mill (скругление ребра)"
 ADAPTIVE_3D = "Adaptive Clearing 3D (адаптивная черновая)"
 PARALLEL_3D = "Parallel (параллельная)"
 SCALLOP_3D = "Scallop (постоянный гребешок)"
@@ -213,6 +214,18 @@ def selection(geom: str, depth: float = 0.0, d: float = 0.0, through: bool = Fal
         "chamfer_pockets": "Contour selection: верхние кромки карманов и пазов.",
         "chamfer_holes": "Holes: верхние кромки отверстий (или 2D Chamfer по кромкам).",
         "chamfer_all": "Contour selection: все верхние кромки (контур, карманы, отверстия).",
+        "round_edges": "Contour selection: рёбра под скругление (кромки грани, цепочкой); в Heights — "
+                       "Bottom по кромке с Axial offset −R.",
         "surface": "Machining boundary: Silhouette или контур зоны; Model: деталь; "
                    "Check surfaces: губки тисков.",
     }.get(geom, "")
+
+
+def corner_round(r: float, tool: Tool) -> Dict[str, str]:
+    return {
+        "Tool type (тип инструмента)": f"Radius mill / Corner rounding, R{_n(r)}",
+        "Contour selection": "рёбра со скруглением (кромка грани, цепочкой)",
+        "Heights → Bottom": f"по кромке, Axial offset −{_n(r)} мм (центр радиуса фрезы на уровне кромки)",
+        "Stock to leave": "0; Finishing passes: 1",
+        "Lead-in / Lead-out": "касательный, вне детали",
+    }

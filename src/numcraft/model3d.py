@@ -68,7 +68,7 @@ def _synthetic(sheet: TechSheet) -> List[dict]:
             box = _feature_box(f)
             if box is None:
                 continue
-            r = f.corner_radius if isinstance(f, PocketFeature) else min(f.length, f.width) / 2
+            r = f.corner_radius if isinstance(f, PocketFeature) else (0.0 if f.open_ends else min(f.length, f.width) / 2)
             depth = thick if f.through else f.depth
             edges.append({"p": m(_rrect(*box, r, 0)), "t": [f.id] + face_tag})
             edges.append({"p": m(_rrect(*box, r, depth)), "t": [f.id]})

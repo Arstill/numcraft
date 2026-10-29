@@ -67,7 +67,7 @@ function rot(x,y,z){x-=C[0];y-=C[1];z-=C[2];const r=R;
 function hl(e){if(!cur)return false;const g=cur.geom,ids=cur.ids,face=cur.side==='bottom'?'bot':'top';
  if(g==='face')return e.ts.has(face);
  if(g==='outer_rough'||g==='outer_walls')return e.ts.has('outer');
- if(g==='chamfer_outer')return e.ts.has('outer')&&e.ts.has(face);
+ if(g==='chamfer_outer'||g==='round_edges')return e.ts.has('outer')&&e.ts.has(face);
  if(g==='chamfer_all')return e.ts.has(face);
  if(g==='chamfer_pockets')return M.pockets.some(i=>e.ts.has(i))&&e.ts.has(face);
  if(g==='chamfer_holes')return M.holes.some(i=>e.ts.has(i))&&(e.ts.has(face)||Math.abs(e.hi)<0.05);

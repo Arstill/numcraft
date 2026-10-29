@@ -21,7 +21,9 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 
 from numcraft.knowledge.tooling import METRIC_COARSE
-from numcraft.models import Box, Counterbore, HoleFeature, Part, PocketFeature, SurfaceFeature, _n
+from numcraft.models import (
+    Box, ChamferFeature, ContourFeature, Counterbore, HoleFeature, Part, PocketFeature, SlotFeature, SurfaceFeature, _n,
+)
 
 Vec = Tuple[float, float, float]
 
@@ -151,6 +153,8 @@ class StepHole:
     through: bool
     open_end: int  # +1: открыт в сторону +axis, -1: в сторону −axis, 0: оба (сквозное)
     counterbore: Optional[Tuple[float, float]] = None  # (Ø, глубина)
+    cb_end: int = 0  # с какого торца цековка: +1 — со стороны +оси, −1 — со стороны −оси
+    segments: List[Tuple[float, float]] = field(default_factory=list)  # участки по оси, где есть материал
     faces: int = 1
 
     @property
@@ -184,6 +188,7 @@ class StepAnalysis:
     warnings: List[str] = field(default_factory=list)
     edges: List[List[Vec]] = field(default_factory=list)  # рёбра модели (полилинии, СК файла, мм) — для 3D-вида
     plane_dirs: Dict[str, int] = field(default_factory=dict)  # внутренние плоскости по направлениям нормали
+    edge_rounds: List[tuple] = field(default_factory=list)  # наружные скругления рёбер: (R, ось, точка на оси)
     orientation: str = ""  # как деталь развёрнута относительно модели
 
     @property
@@ -284,6 +289,20 @@ class _Model:
             loops.append(edges)
         return loops
 
+    def outer_loop(self, face, loops: List[List[int]]) -> List[int]:
+        """Внешний контур грани: FACE_OUTER_BOUND (SolidWorks пишет его не первым), иначе — самый большой."""
+        bounds = self.args(face)[1]
+        for b, lp in zip(bounds, loops):
+            if self.name(b) == "FACE_OUTER_BOUND":
+                return lp
+        if not loops:
+            return []
+
+        def span(lp):
+            vs = [p for ec in lp for p in self.edge_vertices(ec)]
+            return sum(max(v[i] for v in vs) - min(v[i] for v in vs) for i in range(3)) if vs else 0
+        return max(loops, key=span)
+
     def edge_vertices(self, ec) -> Tuple[Vec, Vec]:
         a = self.args(ec)
         return self.point(self.args(a[1])[1]), self.point(self.args(a[2])[1])
@@ -319,7 +338,7 @@ def _orientation(a: "StepAnalysis"):
     """Как деталь ляжет на стол: на самую большую плоскость (наименьший габарит — вверх), при близких
     габаритах (±10 %) — по оси, где больше отверстий. Верх — сторона, с которой больше элементов.
     Длинная из оставшихся сторон — вдоль X станка. Возвращает (матрица поворота | None, описание)."""
-    ext = {ax: a.bbox_max[i] - a.bbox_min[i] for i, ax in enumerate("XYZ")}
+    ext = {ax: round(a.bbox_max[i] - a.bbox_min[i], 3) for i, ax in enumerate("XYZ")}
     holes = {ax: sum(1 for h in a.holes if h.axis == ax) for ax in "XYZ"}
     smallest = min(ext.values())
     cands = [ax for ax in "XYZ" if ext[ax] <= smallest * 1.1 + 1e-6]
@@ -402,7 +421,13 @@ def _analyze(ents, header: str, text: str, file_name: str, R) -> StepAnalysis:
         loc, axis = md.placement(sa[1])
         r = round(sa[2] * scale, 4)
         if fi["same"]:
-            continue  # выпуклая (бобышка, наружное скругление)
+            # выпуклая: наружное скругление ребра (неполный цилиндр) или бобышка
+            closed_c = any(md.edge_closed(ec) and md.edge_curve_type(ec) in ("CIRCLE", "ELLIPSE")
+                           for lp in fi["loops"] for ec in lp)
+            snap = _snap_axis(axis)
+            if not closed_c and snap:
+                res.edge_rounds.append((r, snap[0], loc))
+            continue
         # каноническая ось: направление со знаком «+» по наибольшей компоненте
         big = max(range(3), key=lambda i: abs(axis[i]))
         if axis[big] < 0:
@@ -454,6 +479,13 @@ def _analyze(ents, header: str, text: str, file_name: str, R) -> StepAnalysis:
             through=o_lo and o_hi, open_end=0 if (o_lo and o_hi) else (1 if o_hi else -1 if o_lo else 0),
             faces=len(items),
         )
+        segs: List[List[float]] = []
+        for t0, t1 in sorted(it["t"] for it in items):
+            if segs and t0 <= segs[-1][1] + 0.05:
+                segs[-1][1] = max(segs[-1][1], t1)
+            else:
+                segs.append([t0, t1])
+        hole.segments = [(round(a_, 3), round(b_, 3)) for a_, b_ in segs]
         by_axis_line[(axis, foot)].append(hole)
 
     # соосные ступени → цековки
@@ -466,8 +498,10 @@ def _analyze(ents, header: str, text: str, file_name: str, R) -> StepAnalysis:
                 if big.t_max >= base.t_max - 1e-3:
                     base.t_max = big.t_max
                     base.open_end = base.open_end or 1
+                    base.cb_end = 1
                 else:
                     base.t_min = big.t_min
+                    base.cb_end = -1
             else:
                 res.holes.append(big)
         res.holes.append(base)
@@ -491,9 +525,9 @@ def _analyze(ents, header: str, text: str, file_name: str, R) -> StepAnalysis:
         z = loc[2]
         if abs(z - zmax) < 1e-3 or abs(z - zmin) < 1e-3:
             continue
-        outer = fi["loops"][0] if fi["loops"] else []
-        if all(md.edge_curve_type(ec) in ("CIRCLE", "ELLIPSE") for ec in outer) and len(fi["loops"]) == 1:
-            continue  # дно глухого отверстия
+        if all(md.edge_curve_type(ec) in ("CIRCLE", "ELLIPSE") for lp in fi["loops"] for ec in lp):
+            continue  # дно глухого отверстия / ступень цековки (только окружности)
+        outer = md.outer_loop(f, fi["loops"])
         vs = [p for ec in outer for p in md.edge_vertices(ec)]
         if not vs:
             continue
@@ -549,11 +583,12 @@ TAP_DRILLS = {drill: f"M{_n(size)}" for size, (_, drill) in METRIC_COARSE.items(
 
 def _hole_side(h: StepHole) -> str:
     axis = h.axis
+    end = h.cb_end if h.counterbore and h.cb_end else h.open_end  # цековка — со стороны входа
     if axis == "Z":
-        return "bottom" if h.open_end == -1 else "top"
+        return "bottom" if end == -1 else "top"
     if axis == "X":
-        return "left" if h.open_end == -1 else "right"
-    return "back" if h.open_end == 1 else "front"
+        return "left" if end == -1 else "right"
+    return "back" if end == 1 else "front"
 
 
 def to_part(a: StepAnalysis, material: str, name: Optional[str] = None) -> Tuple[Part, List[str]]:
@@ -571,6 +606,11 @@ def to_part(a: StepAnalysis, material: str, name: Optional[str] = None) -> Tuple
     for h in a.holes:
         if h.axis not in axis_vec:
             continue  # наклонное — предупреждение уже в warnings
+        if h.through and len(h.segments) >= 2:
+            mat = "+".join(_n(round(b_ - a_, 2)) for a_, b_ in h.segments)
+            notes.append(f"Ø{_n(h.diameter)} длиной {_n(h.depth)} мм проходит через {len(h.segments)} стенки "
+                         f"(материал {mat} мм, между ними пустота): удлинённым сверлом с одной стороны — "
+                         "один установ; коротким — с двух сторон, +1 установ.")
         side = _hole_side(h)
         av = axis_vec[h.axis]
         # точка входа: открытый торец со стороны грани (+ сторона оси — top/back/right)
@@ -578,11 +618,13 @@ def to_part(a: StepAnalysis, material: str, name: Optional[str] = None) -> Tuple
         p = tuple(h.position[i] + t_entry * av[i] for i in range(3))
         u, v, d = to_face(side, p[0] - x0, p[1] - y0, p[2] - z_top, size)
         cb = (round(h.counterbore[0], 3), round(h.counterbore[1], 3)) if h.counterbore else None
-        key = (h.diameter, round(h.depth, 3), h.through, side, cb, round(-d, 3) if abs(d) > 0.01 else 0.0)
+        key = (h.diameter, round(h.depth, 3), h.through, side, cb, round(-d, 3) if abs(d) > 0.01 else 0.0,
+               len(h.segments) if h.through else 1)
         groups[key].append((round(u, 3), round(v, 3)))
-    for (d, depth, through, side, cb, z_start), pts in groups.items():
+    for (d, depth, through, side, cb, z_start, walls), pts in groups.items():
         feats.append(HoleFeature(diameter=d, depth=depth, through=through, count=len(pts), positions=pts, side=side,
-                                 z_start=z_start, counterbore=Counterbore(diameter=cb[0], depth=cb[1]) if cb else None))
+                                 z_start=z_start, walls=walls,
+                                 counterbore=Counterbore(diameter=cb[0], depth=cb[1]) if cb else None))
         for drill, thread in TAP_DRILLS.items():
             if abs(d - drill) < 0.01:
                 notes.append(f"Ø{_n(d)} ({len(pts)} шт., {SIDE_NAME[side]}) — диаметр под метчик {thread}: "
@@ -598,6 +640,23 @@ def to_part(a: StepAnalysis, material: str, name: Optional[str] = None) -> Tuple
     def overlap(b1, b2) -> bool:
         return min(b1[1], b2[1]) - max(b1[0], b2[0]) > tol and min(b1[3], b2[3]) - max(b1[2], b2[2]) > tol
 
+    def spans(bb) -> Tuple[bool, bool]:
+        """Элемент проходит насквозь по X / по Y (открыт с обоих торцов) — это паз, а не карман."""
+        return (bb[0] - xmin < tol and xmax - bb[1] < tol), (bb[2] - ymin < tol and ymax - bb[3] < tol)
+
+    def flat_feature(bb, depth: float, side: str, note: str, open_side: bool):
+        L, W = bb[1] - bb[0], bb[3] - bb[2]
+        cx, cy = (bb[0] + bb[1]) / 2 - x0, (bb[2] + bb[3]) / 2 - y0
+        thru_x, thru_y = spans(bb)
+        if thru_x != thru_y:  # открыт с обоих торцов в одном направлении — сквозной паз
+            length, width = (L, W) if thru_x else (W, L)
+            return SlotFeature(side=side, length=round(length, 3), width=round(width, 3), depth=round(depth, 3),
+                               open_ends=True, center=(round(cx, 3), round(cy, 3)), along="x" if thru_x else "y",
+                               note=note + ", сквозной паз")
+        return PocketFeature(side=side, length=round(max(L, W), 3), width=round(min(L, W), 3), depth=round(depth, 3),
+                             corner_radius=r_min if side == "top" else 0.0, open_side=open_side,
+                             center=(round(cx, 3), round(cy, 3)), along="x" if L >= W else "y", note=note)
+
     for c in downs:
         bb = c.bbox
         touch = {"left": bb[0] - xmin < tol, "right": xmax - bb[1] < tol,
@@ -606,19 +665,14 @@ def to_part(a: StepAnalysis, material: str, name: Optional[str] = None) -> Tuple
         sides = [s_ for s_, t in touch.items() if t]
         below = [f for f in ups if f.z < c.z - tol and overlap(f.bbox, bb)]
         floor = max(below, key=lambda f: f.z) if below else None
-        if not sides:
-            # «потолок» внутри — дно кармана, обрабатываемого снизу
-            L, W = bb[1] - bb[0], bb[3] - bb[2]
-            feats.append(PocketFeature(side="bottom", length=round(max(L, W), 3), width=round(min(L, W), 3),
-                                       depth=round(c.z - zmin, 3), center=(round((bb[0] + bb[1]) / 2 - x0, 3),
-                                                                           round((bb[2] + bb[3]) / 2 - y0, 3)),
-                                       along="x" if L >= W else "y", note="из STEP: карман снизу"))
+        if floor is None or not sides:
+            # под «потолком» нет пола — выборка открыта вниз: карман/паз со стороны низа
+            feats.append(flat_feature(bb, c.z - zmin, "bottom", "из STEP: снизу", open_side=bool(sides)))
             continue
         side = min(sides, key=lambda s_: depths[s_])
-        if floor is not None:
-            used.add(id(floor))
-        z_lo = floor.z if floor is not None else zmin
-        # окно/паз в боковой грани: u — вдоль грани, v — по высоте
+        used.add(id(floor))
+        z_lo = floor.z
+        # окно/паз в боковой грани (есть и пол, и потолок): u — вдоль грани, v — по высоте
         corners = [to_face(side, x - x0, y - y0, z - z_top, size)
                    for x in (bb[0], bb[1]) for y in (bb[2], bb[3]) for z in (z_lo, c.z)]
         us, vs = [q[0] for q in corners], [q[1] for q in corners]
@@ -626,16 +680,27 @@ def to_part(a: StepAnalysis, material: str, name: Optional[str] = None) -> Tuple
         feats.append(PocketFeature(side=side, length=round(max(lu, lv), 3), width=round(min(lu, lv), 3),
                                    depth=round(depths[side], 3), along="x" if lu >= lv else "y",
                                    center=(round((max(us) + min(us)) / 2, 3), round((max(vs) + min(vs)) / 2, 3)),
-                                   open_side=floor is None, note=f"из STEP: окно/паз, {SIDE_NAME[side]}"))
+                                   note=f"из STEP: окно/паз, {SIDE_NAME[side]}"))
     for fl in ups:
         if id(fl) in used:
             continue
-        L, W = round(fl.bbox[1] - fl.bbox[0], 3), round(fl.bbox[3] - fl.bbox[2], 3)
-        cx, cy = (fl.bbox[0] + fl.bbox[1]) / 2 - x0, (fl.bbox[2] + fl.bbox[3]) / 2 - y0
-        depth = round(z_top - fl.z, 3)
-        feats.append(PocketFeature(length=max(L, W), width=min(L, W), depth=depth, corner_radius=r_min,
-                                   open_side=fl.open_side, center=(round(cx, 3), round(cy, 3)),
-                                   along="x" if L >= W else "y", note="из STEP: пол на Z" + _n(-depth)))
+        feats.append(flat_feature(fl.bbox, z_top - fl.z, "top", f"из STEP: пол на Z{_n(fl.z - z_top)}",
+                                  open_side=fl.open_side))
+    # наружные скругления рёбер: горизонтальные — по верхним/нижним кромкам, вертикальные — углы контура
+    rounds: Dict[tuple, int] = defaultdict(int)
+    for r, ax, loc in a.edge_rounds:
+        if ax == "Z":
+            rounds[("contour", r)] += 1
+        else:
+            side = "top" if abs(loc[2] - (z_top - r)) < 0.05 else "bottom" if abs(loc[2] - (zmin + r)) < 0.05 else None
+            if side:
+                rounds[(side, r)] += 1
+    for (where, r), n in sorted(rounds.items()):
+        if where == "contour":
+            feats.append(ContourFeature(corner_radius=r, note=f"из STEP: углы контура R{_n(r)}"))
+        else:
+            feats.append(ChamferFeature(side=where, size=r, profile="round", edges="outer",
+                                        note=f"из STEP: скругление рёбер R{_n(r)} ({n} шт.)"))
     if a.is_3d:
         feats.append(SurfaceFeature(description="поверхности свободной формы из STEP",
                                     min_concave_radius=r_min or None))
@@ -646,7 +711,8 @@ def to_part(a: StepAnalysis, material: str, name: Optional[str] = None) -> Tuple
     if len(sides_used) > 1:
         notes.append("Элементы по сторонам: " + ", ".join(SIDE_NAME[s_] for s_ in sides_used) + ".")
     part = Part(name=name or a.product or "Деталь из STEP", material=material, size=size, features=feats)
-    return part, ([a.orientation] if a.orientation else []) + notes + a.warnings
+    out = ([a.orientation] if a.orientation else []) + notes + a.warnings
+    return part, list(dict.fromkeys(out))
 
 
 SIDE_NAME = {"top": "сверху", "bottom": "снизу", "front": "спереди", "back": "сзади", "left": "слева",

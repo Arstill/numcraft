@@ -82,6 +82,7 @@ def catalog_tools() -> list:
 
 
 KIND_RU = {"end_mill": "Фреза концевая", "ball_mill": "Фреза сферическая", "drill": "Сверло",
+           "round_mill": "Фреза-скругление",
            "spot_drill": "Центровка NC 90°", "chamfer_mill": "Фасочная фреза 90°", "reamer": "Развёртка"}
 
 
@@ -202,6 +203,20 @@ def chamfer_mill(d: float = 10.0) -> Tool:
     return _mk("chamfer_mill", _library()["chamfer_mills"][0])
 
 
+def round_mill(r: float) -> Tool:
+    """Фреза-скругление (corner rounding) под радиус ребра: каталог ZCC 5601R…FM-R…, иначе обобщённая."""
+    rows = [x for x in catalog_tools() if x["kind"] == "round_mill" and math.isclose(x.get("r", 0), r, abs_tol=0.01)]
+    if rows:
+        x = min(rows, key=lambda x: (not x["in_stock"], x["d"]))
+        t = _cat_tool(x)
+        t.corner_radius = r
+        t.description = f"Фреза-скругление ZCC {x['article']} R{_n(r)} Ø{_n(x['d'])}"
+        return t
+    d = max(6.0, 2 * r + 4)
+    return Tool(kind="round_mill", diameter=d, flutes=4, corner_radius=r, overall_length=60,
+                description=f"Фреза-скругление R{_n(r)} Ø{_n(d)} (нет в каталоге — заказать/подобрать)")
+
+
 def thread_mill(nominal_d: float) -> Optional[Tool]:
     rows = [r for r in _library()["thread_mills"] if r["d"] < nominal_d * 0.8]
     if not rows:
@@ -222,7 +237,15 @@ def drill(d: float, depth: float, group: str = "any", tsc: bool = False) -> Tool
                     not r["in_stock"],  # со склада
                     r["group"] != group,  # серия под материал
                     r["xd"], r["oal"])
-        return _cat_tool(sorted(rows, key=key)[0])
+        best = sorted(rows, key=key)[0]
+        if best.get("reach", 0) >= depth and not (best.get("internal_coolant") and not tsc):
+            return _cat_tool(best)
+        # в каталоге нет достающего сверла без СОЖ через инструмент — удлинённое HSS-Co (DIN 340)
+        flute = round(max(depth + 2 * d, d * 12), 0)
+        return Tool(kind="drill", diameter=d, flutes=2, flute_length=flute, reach=flute,
+                    overall_length=round(flute + 40, 0), tool_material="HSS-Co", coating="TiN", point_angle=130,
+                    description=f"Сверло Ø{_n(d)} удлинённое DIN 340 HSS-Co (канавка ≥ {_n(flute)} мм) — "
+                                f"нет в каталоге ZCC без СОЖ через инструмент")
     ratio = 5 if depth <= 5 * d else 8 if depth <= 8 * d else 12
     hss = d < 3
     return Tool(

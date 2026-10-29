@@ -166,14 +166,19 @@ def assess(sheet: TechSheet, mat: Material, machine: Machine) -> List[Risk]:
             elif t.kind == "end_mill" and ld > 3:
                 add_op(op, "средний", "Вылет", f"L/D = {_n(round(ld, 1))} фрезой Ø{_n(t.diameter)}",
                        "Минимальный вылет, термопатрон/цанга ER с биением ≤ 0.01.")
-            if t.kind == "drill" and "СОЖ через инструмент" in t.description:
+            if t.kind == "drill" and "(СОЖ через инструмент)" in t.description:
                 add_op(op, "высокий", "СОЖ через инструмент", f"{t.article}: сверло с внутренним подводом СОЖ, "
                        f"а на VF-2 нет TSC", "Заказать опцию TSC либо сверлить ступенчато: пилотное сверло 3xD + "
                        "G83 с малым Q, обильный полив.")
             if t.kind == "drill" and t.reach and depth > t.reach + 0.01:
                 add_op(op, "высокий", "Длина сверла", f"{t.article}: глубина {_n(round(depth, 2))} мм > рабочей "
                        f"длины {_n(t.reach)} мм", "Сверло большей длины (8xD и выше) или сверление с двух сторон.")
-            if t.kind == "drill" and ld > 8:
+            walls = [f for f in part.features if f.id in op.feature_ids and getattr(f, "walls", 1) > 1]
+            if t.kind == "drill" and walls and ld > 5:
+                add_op(op, "средний", "Сверление через стенки", f"Ø{_n(t.diameter)} на {_n(round(depth, 2))} мм через "
+                       f"{walls[0].walls} стенки с пустотой", "Удлинённое сверло, G83; на входе во вторую стенку "
+                       "подачу −50 % (увод). Альтернатива — короткое сверло с двух сторон (+1 установ).")
+            elif t.kind == "drill" and ld > 8:
                 add_op(op, "высокий", "Глубокое сверление", f"Ø{_n(t.diameter)} на {_n(round(depth, 2))} мм "
                        f"({_n(round(ld, 1))}xD)", "Сверло с внутренним подводом (нужен TSC) или пилотное "
                        "отверстие 2xD + длинное сверло; G83 с малым Q.")
